@@ -1,0 +1,34 @@
+- type: entity
+  parent: BaseStructure
+  id: CryogenicSleepUnitAncient
+  name: ancient cryogenic sleep unit
+  description: A super-cooled container that kept crewmates safe during space travel. It's broken now.
+  components:
+  - type: Sprite
+    noRot: false
+    sprite: Structures/cryoancient.rsi
+    layers:
+    - state: sleeper_0
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: sleeper_1
+      map: ["enum.StorageVisualLayers.Door"]
+  - type: InteractionOutline
+  - type: Physics
+    canCollide: false
+  - type: DragInsertContainer
+    containerId: storage
+  - type: ExitContainerOnMove
+    containerId: storage
+  - type: PointLight
+    color: Cyan
+    radius: 1.5
+    energy: 0.5
+    castShadows: false
+  - type: EntityStorage
+  - type: ContainerContainer
+    containers:
+      entity_storage: !type:Container
+  - type: Appearance
+  - type: EntityStorageVisuals
+    stateDoorOpen: sleeper_0
+    stateDoorClosed: sleeper_1

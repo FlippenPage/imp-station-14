@@ -155,6 +155,9 @@
       reagents:
       - ReagentId: CarpoToxin
         Quantity: 5
+  - type: FoodSequenceElement
+    entries:
+      Burger: RawCarpFilletBurger
 
 - type: entity
   name: raw bacon
@@ -382,6 +385,9 @@
       reagents:
       - ReagentId: Ichor
         Quantity: 10
+  - type: FoodSequenceElement
+    entries:
+      Burger: DragonBurger
 
 - type: entity
   name: raw rat meat
@@ -460,6 +466,9 @@
           Quantity: 4
         - ReagentId: Fat
           Quantity: 4
+  - type: FoodSequenceElement
+    entries:
+      Burger: RottenMeatBurger
 
 - type: entity
   name: raw spider meat
@@ -504,6 +513,9 @@
   id: FoodMeatWheat
   description: This doesn't look like meat, but your standards aren't that high to begin with.
   components:
+  - type: FlavorProfile
+    flavors:
+      - falsemeat
   - type: Sprite
     state: clump
   - type: SolutionContainerManager
@@ -522,6 +534,7 @@
   - type: Tag
     tags:
     - Raw
+    - Meat
   - type: Sprite
     state: snake
   - type: SolutionContainerManager
@@ -532,6 +545,9 @@
           Quantity: 10
         - ReagentId: Toxin
           Quantity: 2
+  - type: FoodSequenceElement
+    entries:
+      Burger: RawSnakeMeatBurger
 
 - type: entity
   name: raw xeno meat
@@ -674,8 +690,16 @@
     tags:
     - Raw
     - Meat
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Slime
+        Quantity: 10
   - type: Sprite
     state: slime
+  - type: FoodSequenceElement
+    entries:
+      Burger: SlimeballBurger
 
 - type: entity
   name: raw snail meat
@@ -698,30 +722,34 @@
           Quantity: 4 #It makes saline if you add salt!
 
 - type: entity
-  name: raw finfin meat
+  name: anomalous meat mass
   parent: FoodMeatRawBase
-  id: FoodMeatFinfin
-  description: A slab of raw finfin. He was your best friend!
+  id: FoodMeatAnomaly
+  description: An impossibly dense slab of meat. Just looking at it makes you uncomfortable.
   components:
   - type: Sprite
-    state: finfin
+    state: anomalymeat
   - type: SolutionContainerManager
     solutions:
       food:
         reagents:
         - ReagentId: UncookedAnimalProteins
-          Quantity: 9
+          Quantity: 90
         - ReagentId: Fat
-          Quantity: 9
+          Quantity: 90
   - type: SliceableFood
-    count: 3
-    slice: FoodMeatFinfinCutlet
+    count: 10
+    sliceTime: 5
+    slice: FoodMeat #That's... So much meat
   - type: InternalTemperature
-    conductivity: 0.41
+    conductivity: 0.43
   - type: Construction
-    graph: FinfinSteak
+    graph: AnomalyMeatSteak
     node: start
-    defaultTarget: cooked finfin
+    defaultTarget: anomaly steak
+  - type: Tag
+    tags:
+    - Meat
 
 # Cooked
 
@@ -822,8 +850,8 @@
     node: bacon
   - type: FoodSequenceElement
     entries:
-      Burger: MeatBecon
-      Taco: MeatBecon
+      Burger: MeatBacon
+      Taco: MeatBacon
 
 - type: entity
   name: cooked bear
@@ -1196,10 +1224,10 @@
       Taco: MeatSnail
 
 - type: entity
-  name: cooked finfin
+  name: anomalous steak
   parent: FoodMeatBase
-  id: FoodMeatFinfinCooked
-  description: A cooked piece of finfin. Best used in other recipes.
+  id: FoodMeatAnomalyCooked
+  description: A gigantic mass of cooked meat. A meal for a dinner party, or someone REALLY hungry.
   components:
   - type: Tag
     tags:
@@ -1207,52 +1235,22 @@
     - Meat
   - type: Sprite
     layers:
-    - state: finfin-cooked
+    - state: anomalymeat-cooked #Kinda hard to cook this... thing evenly
   - type: SolutionContainerManager
     solutions:
       food:
         reagents:
         - ReagentId: Nutriment
-          Quantity: 5
+          Quantity: 100
         - ReagentId: Protein
-          Quantity: 5
+          Quantity: 50
   - type: SliceableFood
-    count: 3
-    slice: FoodMeatFinfinCutletCooked
+    count: 10
+    sliceTime: 5
+    slice: FoodMeatCooked
   - type: Construction
-    graph: FinfinSteak
-    node: cooked finfin
-
-- type: entity
-  name: fried finfin
-  parent: FoodMeatBase
-  id: FoodMeatFinfinFried
-  description: A juicy hunk of finfin meat, fried to perfection.
-  components:
-  - type: Tag
-    tags:
-    - Cooked
-    - Meat
-  - type: Sprite
-    layers:
-    - state: chicken-fried
-      map: [ "enum.DamageStateVisualLayers.Base" ]
-  - type: RandomSprite
-    available:
-      - enum.DamageStateVisualLayers.Base:
-          chicken-fried: ""
-          chicken2-fried: ""
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5
-        - ReagentId: Protein
-          Quantity: 5
-  - type: FoodSequenceElement
-    entries:
-      Burger: MeatBall
+    graph: AnomalyMeatSteak
+    node: anomaly steak
 
 # Cutlets
 
@@ -1493,6 +1491,9 @@
     color: red
   - type: StaticPrice
     price: 30
+  - type: FoodSequenceElement
+    entries:
+      Burger: MeatTomatoCutletBurger
 
 - type: entity
   name: salami slice
@@ -1515,6 +1516,9 @@
           Quantity: 1
         - ReagentId: Protein
           Quantity: 1
+  - type: FoodSequenceElement
+    entries:
+      Burger: SalamiBurger
 
 - type: entity
   name: raw finfin cutlet
@@ -1810,3 +1814,34 @@
     entries:
       Burger: XenoCutlet
       Taco: XenoCutlet
+
+- type: entity
+  name: raw thaven fillet
+  parent: FoodMeatBase
+  # MeatFish?...
+  id: FoodSpElfMeat
+  description: Concerning.
+  components:
+  - type: FlavorProfile
+    flavors:
+      - fishy
+  - type: Tag
+    tags:
+    - Raw
+    - Meat
+  - type: Sprite
+    state: fish
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: CarpoToxin
+          Quantity: 5
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: CarpoToxin
+        Quantity: 5
+  - type: FoodSequenceElement
+    entries:
+      Burger: ThavenBurger

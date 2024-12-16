@@ -25,6 +25,7 @@
   cost: 10000
   recipeUnlocks:
   - BoxShotgunIncendiary
+  - MagazineDMRIncendiary
   - MagazineRifleIncendiary
   - MagazinePistolIncendiary
   - MagazineLightRifleIncendiary
@@ -61,6 +62,8 @@
   - BoxShellTranquilizer
   - BoxBeanbag
   - WeaponDisabler
+  - WeaponShotgunKammererBeanbag
+  - WeaponShotgunEnforcerBeanbag
 
 - type: technology
   id: UraniumMunitions
@@ -74,6 +77,7 @@
   recipeUnlocks:
   - MagazineRifleUranium
   - MagazinePistolUranium
+  - MagazineDMRUranium
   - MagazineLightRifleUranium
   - SpeedLoaderMagnumUranium
   - MagazineBoxPistolUranium

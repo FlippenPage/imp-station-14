@@ -10,6 +10,8 @@
     - id: CargoShuttleComputerCircuitboard
     - id: CargoShuttleConsoleCircuitboard
     - id: SalvageMagnetMachineCircuitboard
+    - id: ShipyardComputerCircuitboard
+    - id: SalvageExpeditionsComputerCircuitboard
     - id: CigPackGreen
       prob: 0.50
     - id: ClothingHeadsetAltCargo
@@ -17,6 +19,7 @@
     - id: RubberStampApproved
     - id: RubberStampDenied
     - id: RubberStampQm
+    - id: AstroNavCartridge
 
 - type: entity
   id: LockerQuarterMasterFilled
@@ -50,6 +53,7 @@
     - id: SpaceCash1000
     - id: WeaponDisabler
     - id: ClothingEyesGlassesCommand
+    - id: TicketPad #imp special
 
 # No laser table + Laser table
 - type: entityTable
@@ -68,7 +72,7 @@
     - id: ClothingOuterHardsuitCap
     - id: ClothingMaskGasCaptain
     - id: JetpackCaptainFilled
-    - id: OxygenTankFilled
+    - id: OxygenTankCommandFilled
 
 # No laser locker, used when the antique laser is placed in the special display crate
 - type: entity
@@ -171,7 +175,7 @@
     - id: ClothingOuterHardsuitEngineeringWhite
     - id: ClothingShoesBootsMagAdv
     - id: JetpackVoidFilled
-    - id: OxygenTankFilled
+    - id: OxygenTankCommandFilled
 
 # No hardsuit locker
 - type: entity
@@ -218,6 +222,7 @@
     - id: MedicalTechFabCircuitboard
     - id: MedkitFilled
     - id: RubberStampCMO
+    - id: MedTekCartridge
 
 # Hardsuit table, used for suit storage as well
 - type: entityTable
@@ -226,7 +231,7 @@
     children:
     - id: ClothingMaskBreathMedical
     - id: ClothingOuterHardsuitMedical
-    - id: OxygenTankFilled
+    - id: OxygenTankCommandFilled
 
 # No hardsuit locker
 - type: entity
@@ -259,6 +264,7 @@
   id: LockerFillResearchDirectorNoHardsuit
   table: !type:AllSelector
     children:
+    - id: Intellicard
     - id: BoxEncryptionKeyScience
     - id: CircuitImprinterMachineCircuitboard
     - id: ClothingBeltUtilityFilled
@@ -276,7 +282,7 @@
     children:
     - id: ClothingMaskBreath
     - id: ClothingOuterHardsuitRd
-    - id: OxygenTankFilled
+    - id: OxygenTankCommandFilled
 
 # No hardsuit locker
 - type: entity
@@ -309,6 +315,7 @@
   id: LockerFillHeadOfSecurityNoHardsuit
   table: !type:AllSelector
     children:
+    - id: ClothingMaskGasSecurity
     - id: WeaponEnergyShotgun
     - id: BookSpaceLaw
     - id: BoxEncryptionKeySecurity
@@ -325,6 +332,9 @@
     - id: RubberStampHos
     - id: SecurityTechFabCircuitboard
     - id: WeaponDisabler
+    - id: WantedListCartridge
+    - id: ClothingNeckBronzeheart
+    - id: TicketPad #imp special
 
 # Hardsuit table, used for suit storage as well
 - type: entityTable
@@ -334,7 +344,7 @@
     - id: ClothingMaskGasSwat
     - id: ClothingOuterHardsuitSecurityRed
     - id: JetpackSecurityFilled
-    - id: OxygenTankFilled
+    - id: OxygenTankCommandFilled
 
 # No hardsuit locker
 - type: entity

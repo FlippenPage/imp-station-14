@@ -164,6 +164,10 @@
   - type: Sprite
     state: chocolatebar-open
   - type: Item
+  - type: Tag
+    tags:
+      - FoodSnack
+      - ReptilianFood
   - type: SolutionContainerManager
     solutions:
       food:
@@ -565,8 +569,18 @@
     - Trash
   - type: PhysicalComposition
     materialComposition:
-      Steel: 100
+      Steel: 50
+      Plastic: 50
   - type: SpaceGarbage
+  - type: Food
+    requiresSpecialDigestion: true
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+          - ReagentId: Trash
+            Quantity: 10
   - type: StaticPrice
     price: 0
 

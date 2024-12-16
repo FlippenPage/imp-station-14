@@ -39,6 +39,12 @@
     - id: PlushieMoth
     - id: PlushieArachind
     - id: PlushiePenguin
+    - id: PlushieGray
+    - id: PlushieUrsaMinor
+    - id: PlushieBug
+      weight: 0.1
+    - id: PlushieDecapoid
+    - id: PlushieSnail
 
 - type: entity
   id: CrateFunPlushie
@@ -345,6 +351,7 @@
       - id: ClothingHeadHatMagician
       - id: BeachBall
       - id: ClothingShoesSkates
+      - id: RubberChicken
 
 - type: entity
   id: CrateFunBikeHornImplants

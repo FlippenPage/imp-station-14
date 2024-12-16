@@ -561,6 +561,17 @@
     slope: 0.3
 
 - type: artifactEffect
+  id: EffectLocalKnockdown
+  targetDepth: 3
+  effectHint: artifact-effect-hint-environment
+  effectProb: 0.7
+  components:
+  - type: KnockdownArtifact
+    range: 8
+    entireGrid: false
+    knockdownTime: 4
+
+- type: artifactEffect
   id: EffectMaterialSpawn
   targetDepth: 3
   effectHint: artifact-effect-hint-creation
@@ -644,10 +655,13 @@
     spawns:
     - id: PresentRandom
       prob: 0.95
+      orGroup: present
     - id: PresentRandomUnsafe
       prob: 0.03
+      orGroup: present
     - id: PresentRandomInsane
       prob: 0.02
+      orGroup: present
 
 - type: artifactEffect
   id: EffectAnomaly
@@ -662,6 +676,7 @@
 - type: artifactEffect
   id: EffectBoom
   targetDepth: 4
+  effectProb: 0.75
   effectHint: artifact-effect-hint-environment
   components:
   - type: TriggerArtifact
@@ -698,6 +713,7 @@
   id: EffectFaunaSpawnDangerous
   targetDepth: 4
   effectHint: artifact-effect-hint-creation
+  effectProb: 1
   components:
   - type: SpawnArtifact
     maxSpawns: 10
@@ -706,6 +722,7 @@
       orGroup: fauna
     - id: MobAngryBee
       orGroup: fauna
+      maxAmount: 10
     - id: MobBearSpace
       orGroup: fauna
     - id: MobBee
@@ -720,6 +737,9 @@
     - id: MobGrenadePenguin
       orGroup: fauna
       maxAmount: 2
+    - id: DuckDuckGooseSpawner
+      orGroup: fauna
+      prob: 1
     - id: MobPurpleSnake
       orGroup: fauna
     - id: MobSpiderSpace
@@ -731,6 +751,9 @@
     - id: MobDragonDungeon
       orGroup: fauna
       prob: 0.05
+    - id: MobGoliath
+      orGroup: fauna
+      prob: 0.3
 
 - type: artifactEffect
   id: EffectBigIgnite
@@ -753,7 +776,7 @@
     reagents:
     - SpaceDrugs
     - BrosochloricBros
-    - Pilk
+    - JuiceThatMakesYouUngh
     - Nocturine
     - MuteToxin
     - Phlogiston
@@ -763,7 +786,19 @@
     - JuiceThatMakesYouWeh
     - Lead
     - ForeverWeed
+
+- type: artifactEffect
+  id: EffectFoamRomerol
+  targetDepth: 4
+  effectProb: 0.05
+  effectHint: artifact-effect-hint-biochemical
+  components:
+  - type: FoamArtifact
+    minFoamAmount: 30
+    maxFoamAmount: 40
+    reagents:
     - Romerol
+    - Pilk
 
 - type: artifactEffect
   id: EffectPolyClownSpider
@@ -791,6 +826,16 @@
   - type: PolyOthersArtifact
     polymorphPrototypeName: ArtifactBee
     range: 5
+
+- type: artifactEffect
+  id: EffectPolyRod
+  targetDepth: 4
+  effectProb: 0.15
+  effectHint: artifact-effect-hint-polymorph
+  components:
+  - type: PolyOthersArtifact
+    polymorphPrototypeName: ArtifactRod
+    range: 4
 
 - type: artifactEffect
   id: EffectHealAllPowerful
@@ -833,13 +878,14 @@
   components:
   - type: DamageNearbyArtifact
     damageChance: 0.85
+    radius: 15
     whitelist:
       tags:
       - Window
       - Wall
     damage:
       types:
-        Structural: 300
+        Structural: 50
 
 - type: artifactEffect
   id: EffectPresentSpawn
@@ -850,14 +896,17 @@
     maxSpawns: 7
     spawns:
     - id: PresentRandom
-      prob: 0.9
+      prob: 0.7
+      orGroup: present
     - id: PresentRandomUnsafe
-      prob: 0.06
+      prob: 0.2
+      orGroup: present
     - id: PresentRandomInsane
-      prob: 0.03
+      prob: 0.1
+      orGroup: present
 
 - type: artifactEffect
-  id: EffectBookSpawn
+  id: EffectBookSpawnMundane
   targetDepth: 4
   effectHint: artifact-effect-hint-creation
   components:
@@ -865,25 +914,160 @@
     maxSpawns: 1
     spawns:
     - id: BookRandomStory
-      prob: 0.95
+      prob: 0.5
+      orGroup: book
+    - id: BookGatsby
+      prob: 0.05
+      orGroup: book
+    - id: BookTEGtorial
+      prob: 0.05
+      orGroup: book
+    - id: BookClownLaw
+      prob: 0.05
+      orGroup: book
+    - id: BookAgony
+      prob: 0.05
+      orGroup: book
+    - id: BookJanitorTale
+      prob: 0.05
+      orGroup: book
+    - id: BookInspiration
+      prob: 0.05
+      orGroup: book
+    - id: BookJourney
+      prob: 0.05
+      orGroup: book
+    - id: BookMap
+      prob: 0.05
+      orGroup: book
+    - id: BookRufus
+      prob: 0.05
+      orGroup: book
+    - id: BookMorgue
+      prob: 0.05
+      orGroup: book
+    - id: BookMedicalOfficer
+      prob: 0.05
+      orGroup: book
+    - id: BookWatched
+      prob: 0.05
+      orGroup: book
+    - id: BookTemple
+      prob: 0.05
+      orGroup: book
+    - id: BookAurora
+      prob: 0.05
+      orGroup: book
+    - id: BookEarth
+      prob: 0.05
+      orGroup: book
+    - id: BookNames
+      prob: 0.05
+      orGroup: book
+    - id: BookIanDesert
+      prob: 0.05
+      orGroup: book
+    - id: BookIanArctic
+      prob: 0.05
+      orGroup: book
+    - id: BookIanCity
+      prob: 0.05
+      orGroup: book
+    - id: BookIanMountain
+      prob: 0.05
+      orGroup: book
+    - id: BookIanOcean
+      prob: 0.05
+      orGroup: book
+    - id: BookIanRanch
+      prob: 0.05
+      orGroup: book
+    - id: BookIanLostWolfPup
+      prob: 0.05
+      orGroup: book
+    - id: BookFeather
+      prob: 0.05
+      orGroup: book
+    - id: BookCafe
+      prob: 0.05
+      orGroup: book
+    - id: BookPossum
+      prob: 0.05
+      orGroup: book
+    - id: BookSun
+      prob: 0.05
+      orGroup: book
+    - id: BookStruck
+      prob: 0.05
+      orGroup: book
+    - id: BookSlothClownMMD
+      prob: 0.05
+      orGroup: book
+    - id: BookSlothClownPranks
+      prob: 0.05
+      orGroup: book
+    - id: BookSlothClownSSS
+      prob: 0.05
+      orGroup: book
+    - id: BookIanAntarctica
+      prob: 0.05
+      orGroup: book
+    - id: BookWorld
+      prob: 0.05
+      orGroup: book
+    - id: BookTruth
+      prob: 0.05
+      orGroup: book
+    - id: BookNarsieLegend
+      prob: 0.05
+      orGroup: book
+
+- type: artifactEffect
+  id: EffectBookSpawnMagic
+  targetDepth: 4
+  effectHint: artifact-effect-hint-creation
+  effectProb: 0.1
+  components:
+  - type: SpawnArtifact
+    maxSpawns: 1
+    spawns:
     - id: WizardsGrimoire
-      prob: 0.001
+      prob: 0.1
+      orGroup: magicbook
     - id: SpawnSpellbook
-      prob: 0.01
+      prob: 1
+      orGroup: magicbook
     - id: ForceWallSpellbook
-      prob: 0.01
+      prob: 1
+      orGroup: magicbook
     - id: BlinkBook
-      prob: 0.01
+      prob: 1
+      orGroup: magicbook
     - id: SmiteBook
-      prob: 0.003
+      prob: 0.3
+      orGroup: magicbook
     - id: KnockSpellbook
-      prob: 0.01
+      prob: 1
+      orGroup: magicbook
     - id: FireballSpellbook
-      prob: 0.01
+      prob: 1
+      orGroup: magicbook
     - id: SpawnSpaceGreaseSpellbook
-      prob: 0.01
+      prob: 1
+      orGroup: magicbook
     - id: ScrollRunes
-      prob: 0.01
+      prob: 1
+      orGroup: magicbook
+
+- type: artifactEffect
+  id: EffectGridKnockdown
+  targetDepth: 4
+  effectHint: artifact-effect-hint-stationwide-disruption
+  effectProb: 0.6
+  components:
+  - type: KnockdownArtifact
+    entireGrid: true
+    knockdownTime: 2.5
 
 - type: artifactEffect
   id: EffectSingulo

@@ -87,6 +87,7 @@
 
 - type: reaction
   id: SpaceGlue
+  preserveDNA: true
   minTemp: 370
   reactants:
     SpaceLube:
@@ -102,12 +103,10 @@
   reactants:
     Mucin:
       amount: 1
-    SpaceLube:
-      amount: 2
     Tricordrazine:
-      amount: 2
+      amount: 1
   products:
-    PropulsionGel: 5
+    PropulsionGel: 2
 
 - type: reaction
   id: Licoxide
@@ -228,3 +227,13 @@
   effects:
     - !type:CreateEntityReactionEffect
       entity: MaterialGunpowder
+
+- type: reaction
+  id: JuiceThatMakesYouUngh
+  reactants:
+    VentCrud:
+      amount: 1
+    Lemonade:
+      amount: 1
+  products:
+    JuiceThatMakesYouUngh: 2

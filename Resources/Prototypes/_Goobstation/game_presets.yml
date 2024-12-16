@@ -1,0 +1,35 @@
+- type: gamePreset
+  id: Changeling
+  alias:
+    - ling
+    - lings
+    - changeling
+  name: changeling-gamemode-title
+  description: changeling-gamemode-description
+  cooldown: 1
+  showInVote: false
+  rules:
+    - Changeling
+    - SubGamemodesRule
+    - BasicStationEventScheduler
+    - MeteorSwarmScheduler
+    - SpaceTrafficControlEventScheduler
+    - BasicRoundstartVariation
+    - MidpopLimiter
+
+- type: gamePreset
+  id: Secretling
+  alias:
+    - sling
+    - slings
+    - secretling
+  name: secret-title
+  description: secret-description
+  showInVote: false
+  rules:
+    - Changeling
+    - SubGamemodesRule
+    - BasicStationEventScheduler
+    - MeteorSwarmScheduler
+    - SpaceTrafficControlEventScheduler
+    - BasicRoundstartVariation

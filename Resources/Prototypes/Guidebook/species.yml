@@ -13,6 +13,8 @@
     - Vox
     - Gray
     - Snail
+    - SpElf
+    - Decapoid
 
 - type: guideEntry
   id: Arachnid
@@ -57,9 +59,19 @@
 - type: guideEntry
   id: Gray
   name: Gray
-  text: "/ServerInfo/Guidebook/Mobs/Gray.xml"
+  text: "/ServerInfo/_Impstation/Guidebook/Mobs/Gray.xml"
 
 - type: guideEntry
   id: Snail
   name: Gastropoid
-  text: "/ServerInfo/Guidebook/Mobs/Snail.xml"
+  text: "/ServerInfo/_Impstation/Guidebook/Mobs/Snail.xml"
+
+- type: guideEntry
+  id: SpElf
+  name: Thaven
+  text: "/ServerInfo/_Impstation/Guidebook/Mobs/SpElf.xml"
+
+- type: guideEntry
+  id: Decapoid
+  name: Decapoid
+  text: "/ServerInfo/_Impstation/Guidebook/Mobs/Decapoid.xml"

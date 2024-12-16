@@ -22,6 +22,8 @@
     rules:
     - id: Thief
       prob: 0.5
+    - id: Heretic # goob edit
+      prob: 0.2
 
 - type: entity
   id: DeathMatch31
@@ -104,7 +106,7 @@
       spawnerPrototype: SpawnPointNukeopsCommander
       startingGear: SyndicateCommanderGearFull
       roleLoadout:
-      - RoleSurvivalSyndicate
+      - RoleSurvivalNukie
       components:
       - type: NukeOperative
       - type: RandomMetadata
@@ -114,15 +116,14 @@
       - type: NpcFactionMember
         factions:
         - Syndicate
-      mindComponents:
-      - type: NukeopsRole
-        prototype: NukeopsCommander
+      mindRoles:
+      - MindRoleNukeopsCommander
     - prefRoles: [ NukeopsMedic ]
       fallbackRoles: [ Nukeops, NukeopsCommander ]
       spawnerPrototype: SpawnPointNukeopsMedic
       startingGear: SyndicateOperativeMedicFull
       roleLoadout:
-      - RoleSurvivalSyndicate
+      - RoleSurvivalNukie
       components:
       - type: NukeOperative
       - type: RandomMetadata
@@ -132,9 +133,8 @@
       - type: NpcFactionMember
         factions:
         - Syndicate
-      mindComponents:
-      - type: NukeopsRole
-        prototype: NukeopsMedic
+      mindRoles:
+      - MindRoleNukeopsMedic
     - prefRoles: [ Nukeops ]
       fallbackRoles: [ NukeopsCommander, NukeopsMedic ]
       spawnerPrototype: SpawnPointNukeopsOperative
@@ -142,7 +142,7 @@
       playerRatio: 10
       startingGear: SyndicateOperativeGearFull
       roleLoadout:
-      - RoleSurvivalSyndicate
+      - RoleSurvivalNukie
       components:
       - type: NukeOperative
       - type: RandomMetadata
@@ -152,9 +152,8 @@
       - type: NpcFactionMember
         factions:
         - Syndicate
-      mindComponents:
-      - type: NukeopsRole
-        prototype: Nukeops
+      mindRoles:
+      - MindRoleNukeops
 
 - type: entity
   abstract: true
@@ -168,17 +167,6 @@
     sets:
     - groups: TraitorObjectiveGroups
     maxDifficulty: 5
-  - type: AntagSelection
-    agentName: traitor-round-end-agent-name
-
-- type: entity
-  abstract: true
-  parent: BaseGameRule
-  id: BaseTraitorRuleNoRandomObjectives
-  components:
-  - type: TraitorRule
-  # TODO: codewords in yml
-  # TODO: uplink in yml
   - type: AntagSelection
     agentName: traitor-round-end-agent-name
 
@@ -200,71 +188,22 @@
         components:
         - AntagImmune
       lateJoinAdditional: true
-      mindComponents:
-      - type: TraitorRole
-        prototype: Traitor
+      mindRoles:
+      - MindRoleTraitor
 
 - type: entity
-  parent: BaseTraitorRuleNoRandomObjectives
-  id: SpyVsSpy3TC
+  id: TraitorReinforcement
+  parent: BaseTraitorRule
   components:
   - type: TraitorRule
-    startingBalance: 3
-  - type: GameRule
-    minPlayers: 15
-    delay:
-      min: 240
-      max: 420
-  - type: AntagObjectives
-    objectives:
-    - KillRandomTraitorSvSObjective
-    - RandomTraitorAliveSvSObjective
-    - EscapeShuttleObjective
+    giveUplink: false
+    giveCodewords: false # It would actually give them a different set of codewords than the regular traitors, anyway
+    giveBriefing: false
   - type: AntagSelection
     definitions:
     - prefRoles: [ Traitor ]
-      fallbackRoles: [ TraitorSleeper ]
-      max: 100
-      playerRatio: 1
-      blacklist:
-        components:
-        - AntagImmune
-      lateJoinAdditional: true
-      forceAllPossible: true
-      mindComponents:
-      - type: TraitorRole
-        prototype: Traitor
-
-- type: entity
-  parent: BaseTraitorRuleNoRandomObjectives
-  id: SpyVsSpy
-  components:
-  - type: TraitorRule
-    startingBalance: 0
-  - type: GameRule
-    minPlayers: 15
-    delay:
-      min: 2
-      max: 4
-  - type: AntagObjectives
-    objectives:
-    - KillRandomTraitorSvSObjective
-    - RandomTraitorAliveSvSObjective
-    - EscapeShuttleObjective
-  - type: AntagSelection
-    definitions:
-    - prefRoles: [ Traitor ]
-      fallbackRoles: [ TraitorSleeper ]
-      max: 100
-      playerRatio: 1
-      blacklist:
-        components:
-        - AntagImmune
-      lateJoinAdditional: true
-      forceAllPossible: true
-      mindComponents:
-      - type: TraitorRole
-        prototype: Traitor
+      mindRoles:
+      - MindRoleTraitor
 
 - type: entity
   id: Revolutionary
@@ -286,9 +225,8 @@
       components:
       - type: Revolutionary
       - type: HeadRevolutionary
-      mindComponents:
-      - type: RevolutionaryRole
-        prototype: HeadRev
+      mindRoles:
+      - MindRoleHeadRevolutionary
 
 - type: entity
   id: Sandbox
@@ -327,12 +265,13 @@
         sound: "/Audio/Ambience/Antag/zombie_start.ogg"
       components:
       - type: PendingZombie
+        minInitialInfectedGrace: 300
+        maxInitialInfectedGrace: 600
       - type: ZombifyOnDeath
       - type: IncurableZombie
       - type: InitialInfected
-      mindComponents:
-      - type: InitialInfectedRole
-        prototype: InitialInfected
+      mindRoles:
+      - MindRoleInitialInfected
 
 # event schedulers
 
@@ -350,7 +289,6 @@
         tableId: CalmPestEventsTable
       - !type:NestedSelector
         tableId: SpicyPestEventsTable
-        
 
 - type: entityTable
   id: SleeperlessGameRulesTable
@@ -362,6 +300,10 @@
         tableId: SleeperlessAntagEventsTable
       - !type:NestedSelector
         tableId: CargoGiftsTable
+      - !type:NestedSelector
+        tableId: CalmPestEventsTable
+      - !type:NestedSelector
+        tableId: SpicyPestEventsTable
 
 - type: entityTable
   id: SpaceTrafficControlTable
@@ -439,24 +381,3 @@
     - id: BloodbathPuddleMessVariationPass
       prob: 0.01
       orGroup: puddleMess
-
-- type: entity
-  parent: BaseGameRule
-  id: Changeling
-  components:
-  - type: ChangelingRule
-  - type: GameRule
-    minPlayers: 15
-    delay:
-      min: 30
-      max: 60
-  - type: AntagSelection
-    agentName: changeling-roundend-name
-    definitions:
-    - prefRoles: [ Changeling ]
-      max: 6
-      playerRatio: 15
-      lateJoinAdditional: true
-      mindComponents:
-      - type: ChangelingRole
-        prototype: Changeling

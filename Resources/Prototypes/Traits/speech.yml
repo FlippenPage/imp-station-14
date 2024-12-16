@@ -11,8 +11,11 @@
     removes:
     - type: LizardAccent
     - type: MothAccent
+    - type: SnalienAccent
+    - type: GrayAccent
     - type: ReplacementAccent
       accent: dwarf
+    - type: NoContractionsAccent
 
 # 1 Cost
 
@@ -64,6 +67,15 @@
     accent: italian
 
 - type: trait
+  id: SpanishAccent
+  name: trait-spanish-name
+  description: trait-spanish-desc
+  category: SpeechTraits
+  cost: 1
+  components:
+  - type: SpanishAccent
+
+- type: trait
   id: Liar
   name: trait-liar-name
   description: trait-liar-desc
@@ -74,6 +86,55 @@
     accent: liar
 
 - type: trait
+  id: Scrambled
+  name: trait-scrambled-name
+  description: trait-scrambled-desc
+  category: SpeechTraits
+  cost: 1
+  components:
+  - type: ScrambledAccent
+
+- type: trait
+  id: NoContractions
+  name: trait-nocontractions-name
+  description: trait-nocontractions-desc
+  category: SpeechTraits
+  cost: 1
+  components:
+  - type: ReplacementAccent
+    accent: nocontractions
+  - type: NoContractionsAccent
+
+- type: trait
+  id: SharpInflection
+  name: trait-sharpinflection-name
+  description: trait-sharpinflection-desc
+  category: SpeechTraits
+  cost: 1
+  components:
+  - type: SharpInflection
+
+- type: trait
+  id: Monotonous
+  name: trait-monotonous-name
+  description: trait-monotonous-desc
+  category: SpeechTraits
+  cost: 1
+  components:
+  - type: Monotonous
+
+- type: trait
+  id: BasicFrenchAccent
+  name: trait-basicfrench-name
+  description: trait-basicfrench-desc
+  category: SpeechTraits
+  cost: 1
+  components:
+  - type: BasicFrenchAccent
+
+# 2 Cost
+
+- type: trait
   id: Snalien
   name: trait-snalien-name
   description: trait-snalien-desc
@@ -82,14 +143,12 @@
   components:
   - type: SnalienAccent
 
-# 2 Cost
-
 - type: trait
   id: SocialAnxiety
   name: trait-socialanxiety-name
   description: trait-socialanxiety-desc
   category: SpeechTraits
-  cost: 2
+  cost: 1
   components:
   - type: StutteringAccent
     matchRandomProb: 0.1
@@ -145,7 +204,16 @@
   - type: RussianAccent
 
 - type: trait
-  id: French
+  id: BasicRussian
+  name: trait-basicrussian-name
+  description: trait-basicrussian-desc
+  category: SpeechTraits
+  cost: 2
+  components:
+  - type: BasicRussianAccent
+
+- type: trait
+  id: FrenchAccent
   name: trait-french-name
   description: trait-french-desc
   category: SpeechTraits
@@ -154,10 +222,33 @@
   - type: FrenchAccent
 
 - type: trait
-  id: Spanish
-  name: trait-spanish-name
-  description: trait-spanish-desc
+  id: AccentImmune
+  name: trait-accentimmune-name
+  description: trait-accentimmune-desc
   category: SpeechTraits
   cost: 2
   components:
-  - type: SpanishAccent
+  - type: Accentless
+    removes:
+    - type: SouthernAccent
+    - type: PirateAccent
+    - type: GermanAccent
+    - type: SpanishAccent
+    - type: ScrambledAccent
+    - type: NoContractionsAccent
+    - type: SharpInflection
+    - type: Monotonous
+    - type: BasicFrenchAccent
+    - type: SnalienAccent
+    - type: StutteringAccent
+    - type: FrontalLisp
+    - type: RatvarianLanguage
+    - type: RussianAccent
+    - type: BasicRussianAccent
+    - type: FrenchAccent
+    - type: LizardAccent
+    - type: MothAccent
+    - type: GrayAccent
+    - type: ReplacementAccent
+      accent: dwarf
+      # Imp TODO: add cowboy, italian, liar, mobster, and slimes to this list one day since apparently you can only remove one ReplacementAccent at a time without pissing off the linter, maybe we can figure it out later. For now, adding the dwarf accent since that's an accent you can spawn with under current circumstances.

@@ -42,6 +42,7 @@
   - type: PhysicalComposition
     materialComposition:
       Steel: 50
+      Plastic: 50
   - type: SpaceGarbage
   - type: Item
     size: Tiny
@@ -66,6 +67,8 @@
     - cig5
     - cig6
   - type: Appearance
+  - type: StealTarget #imp
+    stealGroup: Cigarettes
 
 - type: entity
   id: CigPackMixedBase
@@ -111,6 +114,7 @@
   - type: PhysicalComposition
     materialComposition:
       Steel: 50
+      Plastic: 50
   - type: SpaceGarbage
   - type: Item
     size: Tiny
@@ -135,6 +139,8 @@
     - cig5
     - cig6
   - type: Appearance
+  - type: StealTarget #imp
+    stealGroup: Cigarettes
 
 - type: entity
   id: CigPackGreen
@@ -179,17 +185,6 @@
     sprite: Objects/Consumable/Smokeables/Cigarettes/Packs/black.rsi
   - type: Item
     sprite: Objects/Consumable/Smokeables/Cigarettes/Packs/black.rsi
-
-- type: entity
-  id: CigPackNewport
-  parent: CigPackBase
-  name: Newports
-  description: You're gonna be rich bitch!
-  components:
-  - type: Sprite
-    sprite: Objects/Consumable/Smokeables/Cigarettes/Packs/newport.rsi
-  - type: Item
-    sprite: Objects/Consumable/Smokeables/Cigarettes/Packs/newport.rsi
 
 - type: entity
   id: CigPackSyndicate

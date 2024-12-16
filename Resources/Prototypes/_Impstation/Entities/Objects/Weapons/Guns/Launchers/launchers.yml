@@ -1,0 +1,82 @@
+- type: entity
+  name: shining spring
+  parent: [BaseWeaponLauncher, BaseGunWieldable]
+  id: WeaponLauncherCleanerLake
+  description: A de-militarised piece of military surplus equipment, repurposed for the real troops.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Launchers/cleaner_lake.rsi
+    layers:
+      - state: icon
+        map: ["enum.GunVisualLayers.Base"]
+  - type: Clothing
+    sprite: Objects/Weapons/Guns/Launchers/cleaner_lake.rsi
+    slots:
+    - Back
+    - suitStorage
+  - type: AmmoCounter
+  - type: Gun
+    fireRate: 1
+    selectedMode: SemiAuto
+    availableModes:
+      - SemiAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/grenade_launcher.ogg
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+        - CleanerGrenade
+    capacity: 3
+    soundInsert:
+      path: /Audio/Weapons/Guns/MagIn/batrifle_magin.ogg
+  - type: Construction
+    graph: UpgradeWeaponCleanerLake
+    node: start
+  - type: StealTarget
+    stealGroup: ShiningSpring
+
+- type: entity
+  name: remilitarised shining spring
+  parent: [WeaponLauncherCleanerLake, BaseGunWieldable]
+  id: WeaponLauncherCleanerLakeRemilitarised
+  description: A re-militarised piece of military surplus equipment, go nuts.
+  components:
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+        - Grenade
+    capacity: 3
+    soundInsert:
+      path: /Audio/Weapons/Guns/MagIn/batrifle_magin.ogg
+
+- type: entity
+  name: Urist McMeteor launcher
+  parent: WeaponLauncherAdmemeMeteorLarge
+  id: WeaponLauncherAdmemeUrist
+  description: It fires Urist McMeteors.
+  components:
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+        - CartridgeRocket
+    proto: MeteorUrist
+
+- type: entity
+  name: micro grappling gun
+  parent: WeaponGrapplingGun
+  id: WeaponGrapplingGunTckTck
+  components:
+    - type: Sprite
+      sprite: _Impstation/Objects/Weapons/Guns/Launchers/micrograpple.rsi
+      layers:
+        - state: base
+        - state: base-unshaded
+          map: [ "unshaded" ]
+          visible: true
+    - type: Appearance
+    - type: GenericVisualizer
+      visuals:
+        enum.TetherVisualsStatus.Key:
+          unshaded:
+            True: { state: base-unshaded }
+            False: { state: base-unshaded-off }

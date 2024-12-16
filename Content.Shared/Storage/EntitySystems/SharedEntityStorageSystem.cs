@@ -26,6 +26,7 @@ using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Movement.Pulling.Components;
 
 namespace Content.Shared.Storage.EntitySystems;
 
@@ -344,6 +345,14 @@ public abstract class SharedEntityStorageSystem : EntitySystem
         return true;
     }
 
+    public bool IsOpen(EntityUid target, SharedEntityStorageComponent? component = null)
+    {
+        if (!ResolveStorage(target, ref component))
+            return false;
+
+        return component.Open;
+    }
+
     public bool CanOpen(EntityUid user, EntityUid target, bool silent = false, SharedEntityStorageComponent? component = null)
     {
         if (!ResolveStorage(target, ref component))
@@ -370,6 +379,15 @@ public abstract class SharedEntityStorageSystem : EntitySystem
                 return false;
             }
         }
+
+        // impstation edit: prevent opening containers being pulled by others
+        if (
+            TryComp<PullableComponent>(target, out var pullable) && // Can be pulled
+            pullable.BeingPulled && // Someone is pulling it
+            pullable.Puller != user && // It is not the user
+            !component.Contents.Contains(user) // The user is not inside of it
+        )
+            return false;
 
         //Checks to see if the opening position, if offset, is inside of a wall.
         if (component.EnteringOffset != new Vector2(0, 0) && !HasComp<WallMountComponent>(target)) //if the entering position is offset
@@ -486,9 +504,6 @@ public abstract class SharedEntityStorageSystem : EntitySystem
                 component.RemovedMasks = 0;
             }
         }
-
-        if (TryComp<PlaceableSurfaceComponent>(uid, out var surface))
-            _placeableSurface.SetPlaceable(uid, component.Open, surface);
 
         _appearance.SetData(uid, StorageVisuals.Open, component.Open);
         _appearance.SetData(uid, StorageVisuals.HasContents, component.Contents.ContainedEntities.Count > 0);

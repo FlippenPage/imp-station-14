@@ -5,6 +5,7 @@
   description: An impossible object. Should you be standing this close to it?
   components:
   - type: Anomaly
+    offset: 0, 0.15
     pulseSound:
       collection: RadiationPulse
       params:
@@ -803,6 +804,10 @@
     - Carpetium
     - JuiceThatMakesYouWeh
     - ForeverWeed
+    - Testosterone
+    - Estradiol
+    - Genderfluid
+    - JuiceThatMakesYouUngh
   - type: Drink
     solution: anomaly
   - type: DrainableSolution

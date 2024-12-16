@@ -70,6 +70,19 @@
     sprite: Objects/Tanks/oxygen.rsi
 
 - type: entity
+  parent: [GasTankRoundBase, BaseCommandContraband]
+  id: OxygenTankCommand
+  name: command oxygen tank
+  description: A fancy but otherwise normal cylindrical gas tank for oxygen. It can hold 5 L of gas.
+  components:
+  - type: Sprite
+    sprite: Objects/Tanks/oxygencommand.rsi
+  - type: Item
+    sprite: Objects/Tanks/oxygencommand.rsi
+  - type: Clothing
+    sprite: Objects/Tanks/oxygencommand.rsi
+
+- type: entity
   parent: GasTankRoundBase
   id: NitrogenTank
   name: nitrogen tank
@@ -81,6 +94,19 @@
     sprite: Objects/Tanks/red.rsi
   - type: Clothing
     sprite: Objects/Tanks/red.rsi
+
+- type: entity
+  parent: [GasTankRoundBase, BaseCommandContraband]
+  id: NitrogenTankCommand
+  name: command nitrogen tank
+  description: A fancy but otherwise normal cylindrical gas tank for nitrogen. It can hold 5 L of gas.
+  components:
+  - type: Sprite
+    sprite: Objects/Tanks/redcommand.rsi
+  - type: Item
+    sprite: Objects/Tanks/redcommand.rsi
+  - type: Clothing
+    sprite: Objects/Tanks/redcommand.rsi
 
 - type: entity
   parent: GasTankRoundBase
@@ -110,6 +136,9 @@
   - type: PhysicalComposition
     materialComposition:
       Steel: 100
+  - type: Tag # goob edit
+    tags:
+      - EmergencyOxygenTank
 
 - type: entity
   parent: EmergencyOxygenTank
@@ -123,6 +152,9 @@
     sprite: Objects/Tanks/emergency_red.rsi
   - type: Clothing
     sprite: Objects/Tanks/emergency_red.rsi
+  - type: Tag # goob edit
+    tags:
+      - EmergencyNitrogenTank
 
 - type: entity
   parent: EmergencyOxygenTank
@@ -140,6 +172,9 @@
       temperature: 293.15
   - type: Clothing
     sprite: Objects/Tanks/emergency_extended.rsi
+  - type: Tag # goob edit
+    tags:
+      - ExtendedEmergencyOxygenTank
 
 - type: entity
   parent: ExtendedEmergencyOxygenTank
@@ -153,7 +188,9 @@
     sprite: Objects/Tanks/emergency_extended_red.rsi
   - type: Clothing
     sprite: Objects/Tanks/emergency_extended_red.rsi
-
+  - type: Tag # goob edit
+    tags:
+      - EmergencyNitrogenTank
 - type: entity
   parent: ExtendedEmergencyOxygenTank
   id: DoubleEmergencyOxygenTank
@@ -188,6 +225,9 @@
     sprite: Objects/Tanks/emergency_double_red.rsi
   - type: Clothing
     sprite: Objects/Tanks/emergency_double_red.rsi
+  - type: Tag
+    tags:
+      - EmergencyNitrogenTank
 
 - type: entity
   parent: EmergencyOxygenTank
@@ -201,6 +241,9 @@
     sprite: Objects/Tanks/emergency_clown.rsi
   - type: Clothing
     sprite: Objects/Tanks/emergency_clown.rsi
+  - type: Tag # goob edit
+    tags:
+    - ClownEmergencyOxygenTank
 
 - type: entity
   parent: GasTankRoundBase

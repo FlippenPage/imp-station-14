@@ -5,12 +5,14 @@
   name: survival-title
   showInVote: false # secret
   description: survival-description
+  cooldown: 2
   rules:
     - MeteorSwarmScheduler
     - RampingStationEventScheduler
     - SpaceTrafficControlEventScheduler
     - SpaceTrafficControlFriendlyEventScheduler
     - BasicRoundstartVariation
+    - MidpopLimiter
 
 - type: gamePreset
   id: KesslerSyndrome
@@ -21,11 +23,13 @@
   name: kessler-syndrome-title
   showInVote: false # secret
   description: kessler-syndrome-description
+  cooldown: 1
   rules:
     - KesslerSyndromeScheduler
     - RampingStationEventScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - MidpopLimiter
 
 - type: gamePreset
   id: AllAtOnce
@@ -53,7 +57,7 @@
   - badidea
   - punishment
   name: aller-at-once-title
-  description: all-at-once-description
+  description: aller-at-once-description
   showInVote: false #Please god dont do this
   rules:
     - Nukeops
@@ -157,6 +161,7 @@
     - MeteorSwarmScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - MidpopLimiter
 
 - type: gamePreset
   id: SpyVsSpy
@@ -166,18 +171,21 @@
   name: spy-vs-spy-title
   description: spy-vs-spy-description
   showInVote: false
+  cooldown: 2
   rules:
     - SpyVsSpy
     - SleeperlessStationEventScheduler
     - MeteorSwarmScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - MidpopLimiter
 
 - type: gamePreset
   id: SpyVsSpy3TC
   name: spy-vs-spy-title
   description: spy-vs-spy-description
   showInVote: false
+  cooldown: 2
   rules:
     - SpyVsSpy3TC
     - SleeperlessStationEventScheduler
@@ -233,6 +241,7 @@
   name: nukeops-title
   description: nukeops-description
   showInVote: false
+  cooldown: 1
   rules:
     - Nukeops
     - SubGamemodesRule
@@ -240,6 +249,7 @@
     - MeteorSwarmScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - MidpopLimiter
 
 - type: gamePreset
   id: Revolutionary
@@ -257,6 +267,7 @@
     - MeteorSwarmScheduler
     - SpaceTrafficControlEventScheduler
     - BasicRoundstartVariation
+    - MidpopLimiter
 
 - type: gamePreset
   id: Zombie
@@ -269,12 +280,14 @@
   name: zombie-title
   description: zombie-description
   showInVote: false
+  cooldown: 1
   rules:
   - Zombie
   - BasicStationEventScheduler
   - MeteorSwarmScheduler
   - SpaceTrafficControlEventScheduler
   - BasicRoundstartVariation
+  - MidpopLimiter
 
 - type: gamePreset
   id: Zombieteors
@@ -285,60 +298,11 @@
   name: zombieteors-title
   description: zombieteors-description
   showInVote: false
+  cooldown: 1
   rules:
   - Zombie
   - BasicStationEventScheduler
   - KesslerSyndromeScheduler
   - SpaceTrafficControlEventScheduler
   - BasicRoundstartVariation
-
-- type: gamePreset
-  id: Changeling
-  alias:
-    - ling
-    - lings
-    - changeling
-  name: changeling-gamemode-title
-  description: changeling-gamemode-description
-  showInVote: false
-  rules:
-    - Changeling
-    - SubGamemodesRule
-    - BasicStationEventScheduler
-    - MeteorSwarmScheduler
-    - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
-
-- type: gamePreset
-  id: Secretling
-  alias:
-    - sling
-    - slings
-    - secretling
-  name: secret-title
-  description: secret-description
-  showInVote: false
-  rules:
-    - Changeling
-    - SubGamemodesRule
-    - BasicStationEventScheduler
-    - MeteorSwarmScheduler
-    - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
-
-- type: gamePreset
-  id: Traitorling
-  alias:
-    - lingtraitor
-    - traitorling
-  name: secret-title
-  description: secret-description
-  showInVote: false
-  rules:
-    - Changeling
-    - Traitor
-    - SubGamemodesRule
-    - BasicStationEventScheduler
-    - MeteorSwarmScheduler
-    - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
+  - MidpopLimiter

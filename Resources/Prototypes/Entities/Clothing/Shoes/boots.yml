@@ -71,6 +71,9 @@
     sprite: Clothing/Shoes/Boots/highheelboots.rsi
   - type: Clothing
     sprite: Clothing/Shoes/Boots/highheelboots.rsi
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepHighheels
 
 - type: entity
   parent: [ ClothingShoesMilitaryBase, BaseRestrictedContraband ]
@@ -103,6 +106,16 @@
     sprite: Clothing/Shoes/Boots/winterboots.rsi
   - type: Clothing
     sprite: Clothing/Shoes/Boots/winterboots.rsi
+
+- type: entity
+  parent: ClothingShoesBaseWinterBoots
+  id: ClothingShoesBootsWinterBrigmedic
+  name: brigmedic winter boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/Boots/winterbootsbrigmedic.rsi
+  - type: Clothing
+    sprite: Clothing/Shoes/Boots/winterbootsbrigmedic.rsi
 
 - type: entity
   parent: ClothingShoesBaseWinterBoots
@@ -143,6 +156,16 @@
     sprite: Clothing/Shoes/Boots/winterbootssci.rsi
   - type: Clothing
     sprite: Clothing/Shoes/Boots/winterbootssci.rsi
+
+- type: entity
+  parent: ClothingShoesBaseWinterBoots
+  id: ClothingShoesBootsWinterRobo
+  name: robotics winter boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/Boots/winterbootsrobo.rsi
+  - type: Clothing
+    sprite: Clothing/Shoes/Boots/winterbootsrobo.rsi
 
 - type: entity
   parent: [ClothingShoesBaseWinterBoots, ClothingShoesMilitaryBase, BaseRestrictedContraband]
@@ -187,6 +210,10 @@
         reagents:
         - ReagentId: Fiber
           Quantity: 10
+  - type: Butcherable
+    spawned:
+    - id: MaterialWebSilk1
+      amount: 2
   - type: Construction
     graph: WebObjects
     node: boots
@@ -204,6 +231,8 @@
   - type: FootstepModifier
     footstepSoundCollection:
       collection: FootstepSpurs
+      params:
+        variation: 0.09 #making a note so this is in the commit if we want to change this later - ruddygreat
 
 - type: entity
   parent: ClothingShoesBootsCowboyBrown

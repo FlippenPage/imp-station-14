@@ -1,4 +1,4 @@
-﻿- type: stack
+- type: stack
   id: FloorTileDark
   name: dark tile
   spawn: FloorTileItemDark
@@ -188,6 +188,12 @@
   id: FloorTileTechmaint
   name: techmaint floor
   spawn: FloorTileItemTechmaint
+  maxCount: 30
+
+- type: stack
+  id: FloorTileTechmaintDark
+  name: dark techmaint floor
+  spawn: FloorTileItemTechmaintDark
   maxCount: 30
 
 - type: stack
@@ -539,6 +545,12 @@
   maxCount: 30
 
 - type: stack
+  id: FloorTileRCircuit
+  name: red-circuit floor
+  spawn: FloorTileItemRCircuit
+  maxCount: 30
+
+- type: stack
   id: FloorTileGrass
   name: grass floor tile
   spawn: FloorTileItemGrass
@@ -621,4 +633,10 @@
   id: FloorTileWoodLarge
   name: large wood floor
   spawn: FloorTileItemWoodLarge
+  maxCount: 30
+
+- type: stack
+  id: FloorTileXeno
+  name: xeno floor
+  spawn: FloorTileItemXeno
   maxCount: 30

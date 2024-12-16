@@ -243,6 +243,31 @@
     - snapped fingers
 
 - type: emote
+  id: Thump
+  name: chat-emote-name-thump
+  category: Hands
+  available: false
+  icon: Interface/Emotes/tailslap.png
+  whitelist:
+    components:
+    - Hands
+  blacklist:
+    components:
+    - BorgChassis
+  chatMessages: ["chat-emote-msg-thump"]
+  chatTriggers:
+    - thump
+    - thumps
+    - thumping
+    - thumped
+    - thump tail
+    - thumps tail
+    - thumps their tail
+    - thumps her tail
+    - thumps his tail
+    - thumps its tail
+
+- type: emote
   id: Salute
   name: chat-emote-name-salute
   category: Hands
@@ -257,6 +282,28 @@
   chatTriggers:
     - salute
     - salutes
+
+- type: emote
+  id: Crack
+  name: chat-emote-name-crack
+  category: Hands
+  icon: _Impstation/Interface/Emotes/crack.png
+  whitelist:
+    components:
+    - Hands
+  blacklist:
+    components:
+    - BorgChassis
+  chatMessages: ["chat-emote-msg-crack"]
+  chatTriggers:
+    - crack knuckles
+    - cracks knuckles
+    - cracking knuckles
+    - cracked knuckles
+    - cracks their knuckles
+    - cracks her knuckles
+    - cracks his knuckles
+    - cracks its knuckles
 
 - type: emote
   id: Gasp
@@ -312,14 +359,24 @@
   chatMessages: [Wehs!]
 
 - type: emote
+  id: Ungh
+  name: chat-emote-name-weh
+  category: Vocal
+  chatMessages: [UNGHs!]
+
+- type: emote
   id: Chirp
   name: chat-emote-name-chirp
   category: Vocal
+  available: false
   icon: Interface/Emotes/chirp.png
   whitelist:
-    requireAll: true
     components:
     - Nymph
+    - Vocal
+  blacklist:
+    components:
+    - BorgChassis
   chatMessages: ["chat-emote-msg-chirp"]
   chatTriggers:
     - chirp

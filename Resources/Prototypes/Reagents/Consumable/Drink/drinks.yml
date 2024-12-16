@@ -447,6 +447,29 @@
       effects:
       - !type:SatiateThirst
         factor: 4
+    Gas: # imp special.
+      effects:
+      - !type:Oxygenate
+        conditions:
+        - !type:OrganType
+          type: Decapoid
+      - !type:ModifyLungGas
+        conditions:
+        - !type:OrganType
+          type: Decapoid
+        ratios:
+          Ammonia: 1.0
+          WaterVapor: -1.0
+      - !type:HealthChange # for slimes
+        scaleByQuantity: true
+        ignoreResistances: true
+        conditions:
+        - !type:OrganType
+          type: Slime 
+          shouldHave: true
+        damage:
+          types:
+            Caustic: 8
 
 - type: reagent
   id: Ice
@@ -506,7 +529,10 @@
   color: "#d8cc5d"
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/arnoldpalmer.rsi
-    state: icon
+    state: icon_empty
+  metamorphicMaxFillLevels: 5
+  metamorphicFillBaseName: fill-
+  metamorphicChangeColor: false
   metabolisms:
     Drink:
       effects:
@@ -598,23 +624,3 @@
       effects:
       - !type:SatiateThirst
         factor: 0.6
-
-- type: reagent
-  id: AppleMartiniCrystalLite
-  name: reagent-name-apple-martini-crystal-lite
-  parent: BaseDrink
-  desc: reagent-desc-apple-martini-crystal-lite
-  physicalDesc: reagent-physical-desc-appletini
-  flavor: apple-martini-crystal-lite
-  color: "#CAD655"
-  metamorphicSprite:
-    sprite: Objects/Consumable/Drinks/martiniglassnoolive.rsi
-    state: icon_empty
-  metamorphicMaxFillLevels: 3
-  metamorphicFillBaseName: fill-
-  metamorphicChangeColor: true
-  metabolisms:
-    Drink:
-      effects:
-      - !type:SatiateThirst
-        factor: 0.2

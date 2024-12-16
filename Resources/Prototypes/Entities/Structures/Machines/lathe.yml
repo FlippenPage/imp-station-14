@@ -148,8 +148,10 @@
       - LedLightTube
       - SodiumLightTube
       - ExteriorLightTube
+      - UvLightTube
       - LightBulb
       - LedLightBulb
+      - DimLightBulb
       - Bucket
       - DrinkMug
       - DrinkMugMetal
@@ -163,6 +165,7 @@
       - FoodPlateSmallPlastic
       - FoodBowlBig
       - FoodPlateTin
+      - FoodPlateMuffinTin
       - FoodKebabSkewer
       - SprayBottle
       - MopItem
@@ -199,11 +202,14 @@
       - ClothingHeadHatWelding
       - WetFloorSign
       - ClothingHeadHatCone
+      - FreezerElectronics
+      - Flare
+    dynamicRecipes:
+      - Fulton
 
   - type: EmagLatheRecipes
     emagStaticRecipes:
       - BoxLethalshot
-      - BoxShotgunFlare
       - BoxShotgunSlug
       - CombatKnife
       - MagazineBoxLightRifle
@@ -286,10 +292,12 @@
     - LargeBeaker
     - Dropper
     - ClothingEyesGlassesChemical
+    - SGDRecipe #imp special
     dynamicRecipes:
       - PowerDrill
       - MiningDrill
       - MiningDrillDiamond
+      - FultonBeacon
       - AnomalyScanner
       - AnomalyLocator
       - AnomalyLocatorWide
@@ -308,6 +316,7 @@
       - PillCanister
       - ChemistryEmptyBottle01
       - BaseChemistryEmptyVial
+      - Drone
       - AdvMopItem
       - WeaponSprayNozzle
       - ClothingBackpackWaterTank
@@ -352,6 +361,7 @@
       - FauxTileAstroSnow
       - OreBagOfHolding
       - DeviceQuantumSpinInverter
+      - CleanerGrenade #imp addition
   - type: EmagLatheRecipes
     emagDynamicRecipes:
       - BoxBeanbag
@@ -359,10 +369,12 @@
       - BoxShotgunUranium
       - BoxShellTranquilizer
       - ExplosivePayload
+      - FullAutoConversionKit
       - GrenadeBlast
       - GrenadeEMP
       - GrenadeFlash
       - HoloprojectorSecurity
+      - HyperBurstConversionKit
       - MagazineBoxLightRifleIncendiary
       - MagazineBoxLightRifleUranium
       - MagazineBoxMagnumIncendiary
@@ -371,7 +383,11 @@
       - MagazineBoxPistolUranium
       - MagazineBoxRifleIncendiary
       - MagazineBoxRifleUranium
+      - MagazineDMRIncendiary
+      - MagazineDMRUranium
       - MagazineGrenadeEmpty
+      - MagazineLPistolIncendiary
+      - MagazineLPistolUranium
       - MagazineLightRifleIncendiary
       - MagazineLightRifleUranium
       - MagazinePistolIncendiary
@@ -443,6 +459,7 @@
     - UniformPrinterMachineCircuitboard
     - FloorGreenCircuit
     - FloorBlueCircuit
+    - FloorRedCircuit
     - MicrowaveMachineCircuitboard
     - ReagentGrinderMachineCircuitboard
     - ElectricGrillMachineCircuitboard
@@ -452,6 +469,8 @@
     - CutterMachineCircuitboard
     - StationAnchorCircuitboard
     - SalvageMagnetMachineCircuitboard
+    - ShipyardComputerCircuitboard
+    - ServiceTechFabCircuitboard #imp addition
     dynamicRecipes:
       - ThermomachineFreezerMachineCircuitBoard
       - HellfireFreezerMachineCircuitBoard
@@ -504,6 +523,7 @@
       - EmitterCircuitboard
       - ThrusterMachineCircuitboard
       - GyroscopeMachineCircuitboard
+      - MiniGyroscopeMachineCircuitboard
       - MiniGravityGeneratorCircuitboard
       - ShuttleGunKineticCircuitboard
       - GasRecyclerMachineCircuitboard
@@ -573,12 +593,8 @@
     - BorgModuleFireExtinguisher
     - BorgModuleRadiationDetection
     - BorgModuleTool
-    - BorgModuleAppraisal
     - BorgModuleBartender
-    - BorgModuleConstruction
     - BorgModulePaper
-    - BorgModuleTreatment
-    - BorgModuleCleaning
     - CyborgEndoskeleton
     - LeftArmBorg
     - RightArmBorg
@@ -586,56 +602,15 @@
     - RightLegBorg
     - LightHeadBorg
     - TorsoBorg
-    - LeftArmBorgEngineer
-    - RightArmBorgEngineer
-    - LeftLegBorgEngineer
-    - RightLegBorgEngineer
-    - HeadBorgEngineer
-    - TorsoBorgEngineer
-    - LeftLegBorgJanitor
-    - RightLegBorgJanitor
-    - HeadBorgJanitor
-    - TorsoBorgJanitor
-    - LeftArmBorgMedical
-    - RightArmBorgMedical
-    - LeftLegBorgMedical
-    - RightLegBorgMedical
-    - HeadBorgMedical
-    - TorsoBorgMedical
-    - LeftArmBorgMining
-    - RightArmBorgMining
-    - LeftLegBorgMining
-    - RightLegBorgMining
-    - HeadBorgMining
-    - TorsoBorgMining
-    - LeftArmBorgCargo
-    - RightArmBorgCargo
-    - LeftLegBorgCargo
-    - RightLegBorgCargo
-    - HeadBorgCargo
-    - TorsoBorgCargo
-    - LeftArmBorgService
-    - RightArmBorgService
-    - LeftLegBorgService
-    - RightLegBorgService
-    - HeadBorgService
-    - TorsoBorgService
     dynamicRecipes:
     - ProximitySensor
-    - BorgModuleLightReplacer
     - BorgModuleAdvancedCleaning
-    - BorgModuleMining
-    - BorgModuleGrapplingGun
     - BorgModuleAdvancedTool
     - BorgModuleGPS
-    - BorgModuleRCD
     - BorgModuleArtifact
     - BorgModuleAnomaly
     - BorgModuleGardening
     - BorgModuleHarvesting
-    - BorgModuleMusique
-    - BorgModuleClowning
-    - BorgModuleDiagnosis
     - BorgModuleDefibrillator
     - BorgModuleAdvancedTreatment
     - RipleyHarness
@@ -738,9 +713,10 @@
   - type: Lathe
     idleState: icon
     runningState: icon
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
     staticRecipes:
       - BoxLethalshot
-      - BoxShotgunFlare
       - BoxShotgunPractice
       - BoxShotgunSlug
       - ClothingEyesHudSecurity
@@ -756,6 +732,8 @@
       - MagazineBoxPistolPractice
       - MagazineBoxRifle
       - MagazineBoxRiflePractice
+      - MagazineDMR
+      - MagazineDMREmpty
       - MagazineLightRifle
       - MagazineLightRifleEmpty
       - MagazinePistol
@@ -777,6 +755,7 @@
       - TargetHuman
       - TargetSyndicate
       - WeaponDisablerPractice
+      - WeaponFlareGunSecurity
       - WeaponLaserCarbinePractice
       - Zipties
     dynamicRecipes:
@@ -787,21 +766,34 @@
       - ClothingBackpackElectropack
       - ExplosivePayload
       - FlashPayload
+      - FullAutoConversionKit
       - GrenadeBlast
       - GrenadeEMP
       - GrenadeFlash
       - HoloprojectorSecurity
+      - HyperBurstConversionKit
       - MagazineBoxLightRifleIncendiary
       - MagazineBoxLightRifleUranium
+      - MagazineBoxLPistol
+      - MagazineBoxLPistolIncendiary
+      - MagazineBoxLPistolPractice
+      - MagazineBoxLPistolUranium
       - MagazineBoxMagnumIncendiary
       - MagazineBoxMagnumUranium
       - MagazineBoxPistolIncendiary
       - MagazineBoxPistolUranium
       - MagazineBoxRifleIncendiary
       - MagazineBoxRifleUranium
+      - MagazineDMRIncendiary
+      - MagazineDMRUranium
       - MagazineGrenadeEmpty
       - MagazineLightRifleIncendiary
       - MagazineLightRifleUranium
+      - MagazineLPistol
+      - MagazineLPistolEmpty
+      - MagazineLPistolIncendiary
+      - MagazineLPistolPractice
+      - MagazineLPistolUranium
       - MagazinePistolIncendiary
       - MagazinePistolUranium
       - MagazineRifleIncendiary
@@ -827,6 +819,8 @@
       - WeaponAdvancedLaser
       - WeaponDisabler
       - WeaponDisablerSMG
+      - WeaponShotgunKammererBeanbag
+      - WeaponShotgunEnforcerBeanbag
       - WeaponLaserCannon
       - WeaponLaserCarbine
       - WeaponXrayCannon
@@ -861,17 +855,22 @@
     - type: Lathe
       idleState: icon
       runningState: icon
+      unlitIdleState: unlit
+      unlitRunningState: unlit-building
       staticRecipes:
         - BoxLethalshot
-        - BoxShotgunFlare
         - BoxShotgunSlug
         - BoxShellTranquilizer
         - MagazineBoxLightRifle
         - MagazineBoxMagnum
         - MagazineBoxPistol
         - MagazineBoxRifle
+        - MagazineDMR
+        - MagazineDMREmpty
         - MagazineLightRifle
         - MagazineLightRifleEmpty
+        - MagazineLPistol
+        - MagazineLPistolEmpty
         - MagazinePistol
         - MagazinePistolEmpty
         - MagazineRifle
@@ -910,6 +909,8 @@
   - type: Lathe
     idleState: icon
     runningState: icon
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
     staticRecipes:
       - Brutepack
       - Ointment
@@ -950,6 +951,8 @@
       - Hemostat
       - ClothingEyesGlassesChemical
       - WhiteCane
+      - PrescriptionLens
+      - PrescriptionLensStrong
     dynamicRecipes:
       - ChemicalPayload
       - CryostasisBeaker
@@ -1108,6 +1111,7 @@
       - ClothingOuterWinterSci
       - ClothingOuterWinterRobo
       - ClothingOuterWinterSec
+      - ClothingOuterWinterBrigmedic
       # Ties
       - ClothingNeckTieRed
       - ClothingNeckTieDet
@@ -1166,6 +1170,7 @@
       - ClothingOuterWinterCentcom
       - ClothingOuterWinterSyndie
       - ClothingOuterWinterSyndieCap
+      - ClothingNeckCloakStraight
   - type: MaterialStorage
     whitelist:
       tags:
@@ -1195,8 +1200,6 @@
   - type: Machine
     board: BiogeneratorMachineCircuitboard
   - type: MaterialStorage
-    insertOnInteract: false
-    canEjectStoredMaterials: false
   - type: ProduceMaterialExtractor
   - type: ItemSlots
     slots:
@@ -1397,6 +1400,7 @@
       - FloorTileItemGratingMaint
       - FloorTileItemTechmaint
       - FloorTileItemSteelMaint
+      - FloorTileItemTechmaintDark
       - FloorTileItemWood
       - FloorTileItemWoodLarge
       - FloorTileItemWoodPattern

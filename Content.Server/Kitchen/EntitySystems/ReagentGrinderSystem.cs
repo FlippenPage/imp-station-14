@@ -5,6 +5,7 @@ using Content.Server.Stack;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Destructible;
 using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
 using Content.Shared.Kitchen;
@@ -85,11 +86,14 @@ namespace Content.Server.Kitchen.EntitySystems
                 if (outputContainer is null || !_solutionContainersSystem.TryGetFitsInDispenser(outputContainer.Value, out var containerSoln, out var containerSolution))
                     continue;
 
+                List<EntityUid> toDelete = new();
+                List<(EntityUid, int)> toSet = new();
+
                 foreach (var item in inputContainer.ContainedEntities.ToList())
                 {
                     var solution = active.Program switch
                     {
-                        GrinderProgram.Grind => GetGrindSolution(item),
+                        GrinderProgram.Grind => TryGrindSolution(item, (uid, reagentGrinder), inputContainer.ContainedEntities),
                         GrinderProgram.Juice => CompOrNull<ExtractableComponent>(item)?.JuiceSolution,
                         _ => null,
                     };
@@ -115,18 +119,26 @@ namespace Content.Server.Kitchen.EntitySystems
                         scaledSolution.ScaleSolution(fitsCount);
                         solution = scaledSolution;
 
-                        _stackSystem.SetCount(item, stack.Count - fitsCount); // Setting to 0 will QueueDel
+                        toSet.Add((item, stack.Count - fitsCount));
                     }
                     else
                     {
                         if (solution.Volume > containerSolution.AvailableVolume)
                             continue;
 
+                        var dev = new DestructionEventArgs();
+                        RaiseLocalEvent(item, dev);
+
                         QueueDel(item);
                     }
 
                     _solutionContainersSystem.TryAddSolution(containerSoln.Value, solution);
                 }
+
+                foreach (var item in toDelete)
+                    Del(item);
+                foreach (var (item, amount) in toSet)
+                    _stackSystem.SetCount(item, amount); // Setting to 0 will QueueDel
 
                 _userInterfaceSystem.ServerSendUiMessage(uid, ReagentGrinderUiKey.Key,
                     new ReagentGrinderWorkCompleteMessage());
@@ -305,7 +317,7 @@ namespace Content.Server.Kitchen.EntitySystems
             active.Program = program;
 
             reagentGrinder.AudioStream = _audioSystem.PlayPvs(sound, uid,
-                AudioParams.Default.WithPitchScale(1 / reagentGrinder.WorkTimeMultiplier)).Value.Entity; //slightly higher pitched
+                AudioParams.Default.WithPitchScale(1 / reagentGrinder.WorkTimeMultiplier))?.Entity; //slightly higher pitched
             _userInterfaceSystem.ServerSendUiMessage(uid, ReagentGrinderUiKey.Key,
                 new ReagentGrinderWorkStartedMessage(program));
         }
@@ -315,12 +327,18 @@ namespace Content.Server.Kitchen.EntitySystems
             _audioSystem.PlayPvs(reagentGrinder.Comp.ClickSound, reagentGrinder.Owner, AudioParams.Default.WithVolume(-2f));
         }
 
-        private Solution? GetGrindSolution(EntityUid uid)
+        private Solution? TryGrindSolution(EntityUid uid, Entity<ReagentGrinderComponent> grinder, IReadOnlyList<EntityUid> contents)
         {
             if (TryComp<ExtractableComponent>(uid, out var extractable)
                 && extractable.GrindableSolution is not null
                 && _solutionContainersSystem.TryGetSolution(uid, extractable.GrindableSolution, out _, out var solution))
             {
+                var ev = new GrindAttemptEvent(grinder, contents);
+                RaiseLocalEvent(uid, ev);
+
+                if (ev.Cancelled)
+                    return null;
+
                 return solution;
             }
             else
@@ -337,6 +355,18 @@ namespace Content.Server.Kitchen.EntitySystems
         private bool CanJuice(EntityUid uid)
         {
             return CompOrNull<ExtractableComponent>(uid)?.JuiceSolution is not null;
+        }
+    }
+
+    public sealed partial class GrindAttemptEvent : CancellableEntityEventArgs
+    {
+        public Entity<ReagentGrinderComponent> Grinder;
+        public IReadOnlyList<EntityUid> Reagents;
+
+        public GrindAttemptEvent(Entity<ReagentGrinderComponent> grinder, IReadOnlyList<EntityUid> reagents)
+        {
+            Grinder = grinder;
+            Reagents = reagents;
         }
     }
 }

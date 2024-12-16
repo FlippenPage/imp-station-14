@@ -58,6 +58,9 @@
         reagents:
         - ReagentId: TableSalt
           Quantity: 5
+  - type: FoodSequenceElement
+    entries:
+      Burger: SpaceFriesBurger
 # Tastes like fries, salt.
 
 - type: entity
@@ -80,6 +83,9 @@
         reagents:
         - ReagentId: TableSalt
           Quantity: 5
+  - type: FoodSequenceElement
+    entries:
+      Burger: CheesyFriesBurger
 # Tastes like fries, cheese.
 
 - type: entity
@@ -106,6 +112,9 @@
           Quantity: 15
         - ReagentId: TableSalt
           Quantity: 5
+  - type: FoodSequenceElement
+    entries:
+      Burger: CarrotFriesBurger
 # Tastes like carrots, salt.
 
 - type: entity
@@ -114,11 +123,25 @@
   id: FoodMealNachos
   description: Chips from Space Mexico.
   components:
+  - type: Food
+    trash:
+    - FoodPlateSmall
   - type: FlavorProfile
     flavors:
       - nachos
   - type: Sprite
     state: nachos
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 11
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 4
+        - ReagentId: Vitamin
+          Quantity: 1
+        - ReagentId: TableSalt
+          Quantity: 1
 # Tastes like nachos.
 
 - type: entity
@@ -127,6 +150,9 @@
   id: FoodMealNachosCheesy
   description: The delicious combination of nachos and melting cheese.
   components:
+  - type: Food
+    trash:
+    - FoodPlateSmall
   - type: FlavorProfile
     flavors:
       - nachos
@@ -152,24 +178,27 @@
   id: FoodMealNachosCuban
   description: That's some dangerously spicy nachos.
   components:
+  - type: Food
+    trash:
+    - FoodPlateSmall
   - type: FlavorProfile
     flavors:
       - nachos
-      - cheesy
+      - tomato
       - spicy
   - type: Sprite
     state: nachos-cuban
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 15
+        maxVol: 25
         reagents:
         - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: CapsaicinOil
           Quantity: 8
+        - ReagentId: CapsaicinOil
+          Quantity: 7
         - ReagentId: Vitamin
-          Quantity: 4
+          Quantity: 5
 # Tastes like nachos, hot pepper.
 
 - type: entity
@@ -370,6 +399,9 @@
   - type: Tag
     tags:
     - Meat
+  - type: FoodSequenceElement
+    entries:
+      Burger: RibsBurger
 # Tastes like meat, smokey sauce.
 
 - type: entity
@@ -450,6 +482,9 @@
   - type: Tag
     tags:
     - Meat
+  - type: FoodSequenceElement
+    entries:
+      Burger: FriedEggBurger
 # Tastes like egg, salt, pepper.
 
 - type: entity
@@ -520,6 +555,9 @@
         - cheesy
     - type: Sprite
       state: queso
+    - type: FoodSequenceElement
+      entries:
+        Burger: QuesoBurger
 # Its queso! Everyone loves queso... Right?.
 
 - type: entity
@@ -571,6 +609,9 @@
   - type: Tag
     tags:
     - Meat
+  - type: FoodSequenceElement
+    entries:
+      Burger: FinfinSashimiBurger
 
 - type: entity
   name: enchiladas
@@ -652,3 +693,4 @@
           Quantity: 4
         - ReagentId: Vitamin
           Quantity: 4
+

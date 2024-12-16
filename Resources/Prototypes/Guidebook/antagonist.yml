@@ -1,10 +1,11 @@
 - type: guideEntry
   id: Antagonists
   name: guide-entry-antagonists
-  text: "/ServerInfo/Guidebook/Antagonist/Antagonists.xml"
+  text: "/ServerInfo/_Impstation/Guidebook/Antagonist/Antagonists.xml"
   children:
   - Traitors
-  - Changelings
+  - Changelings # goobstation - changelings
+  - Heretics # goob - heretics
   - NuclearOperatives
   - Zombies
   - Revolutionaries
@@ -16,11 +17,6 @@
   id: Traitors
   name: guide-entry-traitors
   text: "/ServerInfo/Guidebook/Antagonist/Traitors.xml"
-
-- type: guideEntry
-  id: Changelings
-  name: guide-entry-changelings
-  text: "/ServerInfo/Guidebook/Antagonist/Changelings.xml"
 
 - type: guideEntry
   id: NuclearOperatives

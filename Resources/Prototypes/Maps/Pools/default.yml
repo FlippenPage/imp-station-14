@@ -1,18 +1,26 @@
 - type: gameMapPool
   id: DefaultMapPool
   maps:
+  - Amber
   - Atlas
   - Bagel
+  - Banana
+  - Barratry
+  - Boat
   - Box
   - Cog
   - Cluster
   - Core
   - Fland
+  - Hummingbird
   - Marathon
   - Meta
   - Oasis
   - Omega
-  - Saltern
+  - Origin
   - Packed
   - Reach
+  - Saltern
   - Train
+  - Union
+  - Xeno

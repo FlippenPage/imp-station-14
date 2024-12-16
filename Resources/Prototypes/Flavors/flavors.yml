@@ -60,6 +60,11 @@
   description: flavor-base-funny
 
 - type: flavor
+  id: strange
+  flavorType: Base
+  description: flavor-base-strange
+
+- type: flavor
   id: tingly
   flavorType: Base
   description: flavor-base-tingly
@@ -113,6 +118,11 @@
   id: fiber
   flavorType: Base
   description: flavor-base-fiber
+
+- type: flavor
+  id: trash
+  flavorType: Base
+  description: flavor-base-trash
 
 - type: flavor
   id: cold
@@ -1094,6 +1104,7 @@
   flavorType: Complex
   description: flavor-complex-blue-pumpkin
 
+
 - type: flavor
   id: violets
   flavorType: Complex
@@ -1115,6 +1126,21 @@
   description: flavor-complex-paint-thinner
 
 - type: flavor
+  id: numbingtranquility
+  flavorType: Complex
+  description: flavor-complex-numbing-tranquility
+
+- type: flavor
+  id: truenature
+  flavorType: Complex
+  description: flavor-complex-true-nature
+
+- type: flavor
+  id: falsemeat
+  flavorType: Complex
+  description: flavor-complex-false-meat
+
+- type: flavor
   id: cherry
   flavorType: Complex
   description: flavor-complex-cherry
@@ -1128,53 +1154,3 @@
   id: compressed-meat
   flavorType: Complex
   description: flavor-complex-compressed-meat
-
-- type: flavor
-  id: cigarettes
-  flavorType: Complex
-  description: flavor-complex-cigarettes
-
-- type: flavor
-  id: finfin
-  flavorType: Complex
-  description: flavor-complex-finfin
-
-- type: flavor
-  id: radiation
-  flavorType: Complex
-  description: flavor-complex-radiation
-
-- type: flavor
-  id: apple-martini-crystal-lite
-  flavorType: Complex
-  description: flavor-complex-apple-martini-crystal-lite
-
-- type: flavor
-  id: horsepussy
-  flavorType: Complex
-  description: flavor-complex-horsepussy
-
-- type: flavor
-  id: drinkdrink
-  flavorType: Base
-  description: flavor-base-drinkdrink
-
-- type: flavor
-  id: kingsoda
-  flavorType: Base
-  description: flavor-base-kingsoda
-
-- type: flavor
-  id: crud
-  flavorType: Complex
-  description: flavor-complex-crud
-
-- type: flavor
-  id: snotty
-  flavorType: Complex
-  description: flavor-complex-snotty
-
-- type: flavor
-  id: speed
-  flavorType: Complex
-  description: flavor-complex-speed

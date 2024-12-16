@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server.Actions;
 using Content.Server.Administration.Logs;
+using Content.Server.Heretic.EntitySystems;
 using Content.Server.PDA.Ringer;
 using Content.Server.Stack;
 using Content.Server.Store.Components;
@@ -8,6 +9,8 @@ using Content.Shared.Actions;
 using Content.Shared.Database;
 using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Heretic;
+using Content.Shared.Heretic.Prototypes;
 using Content.Shared.Mind;
 using Content.Shared.Store;
 using Content.Shared.Store.Components;
@@ -30,7 +33,9 @@ public sealed partial class StoreSystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly StackSystem _stack = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+
+    // goobstation - heretics
+    [Dependency] private readonly HereticKnowledgeSystem _heretic = default!;
 
     private void InitializeUi()
     {
@@ -177,6 +182,16 @@ public sealed partial class StoreSystem
             component.BalanceSpent[currency] += amount;
         }
 
+        // goobstation - heretics
+        // i am too tired of making separate systems for knowledge adding
+        // and all that shit. i've had like 4 failed attempts
+        // so i'm just gonna shitcode my way out of my misery
+        if (listing.ProductHereticKnowledge != null)
+        {
+            if (TryComp<HereticComponent>(buyer, out var heretic))
+                _heretic.AddKnowledge(buyer, heretic, (ProtoId<HereticKnowledgePrototype>) listing.ProductHereticKnowledge);
+        }
+
         //spawn entity
         if (listing.ProductEntity != null)
         {
@@ -257,10 +272,15 @@ public sealed partial class StoreSystem
                 RaiseLocalEvent(buyer, listing.ProductEvent);
         }
 
+        if (listing.DisableRefund)
+        {
+            component.RefundAllowed = false;
+        }
+
         //log dat shit.
         _admin.Add(LogType.StorePurchase,
             LogImpact.Low,
-            $"{ToPrettyString(buyer):player} purchased listing \"{ListingLocalisationHelpers.GetLocalisedNameOrEntityName(listing, _prototypeManager)}\" from {ToPrettyString(uid)}");
+            $"{ToPrettyString(buyer):player} purchased listing \"{ListingLocalisationHelpers.GetLocalisedNameOrEntityName(listing, _proto)}\" from {ToPrettyString(uid)}");
 
         listing.PurchaseAmount++; //track how many times something has been purchased
         _audio.PlayEntity(component.BuySuccessSound, msg.Actor, uid); //cha-ching!
@@ -284,6 +304,9 @@ public sealed partial class StoreSystem
     /// </remarks>
     private void OnRequestWithdraw(EntityUid uid, StoreComponent component, StoreRequestWithdrawMessage msg)
     {
+        if (msg.Amount <= 0)
+            return;
+
         //make sure we have enough cash in the bank and we actually support this currency
         if (!component.Balance.TryGetValue(msg.Currency, out var currentAmount) || currentAmount < msg.Amount)
             return;
@@ -307,7 +330,8 @@ public sealed partial class StoreSystem
             var cashId = proto.Cash[value];
             var amountToSpawn = (int) MathF.Floor((float) (amountRemaining / value));
             var ents = _stack.SpawnMultiple(cashId, amountToSpawn, coordinates);
-            _hands.PickupOrDrop(buyer, ents.First());
+            if (ents.FirstOrDefault() is {} ent)
+                _hands.PickupOrDrop(buyer, ent);
             amountRemaining -= value * amountToSpawn;
         }
 
@@ -361,6 +385,9 @@ public sealed partial class StoreSystem
         RefreshAllListings(component);
         component.BalanceSpent = new();
         UpdateUserInterface(buyer, uid, component);
+
+        var ev = new StoreRefundedEvent();
+        RaiseLocalEvent(uid, ref ev, true);
     }
 
     private void HandleRefundComp(EntityUid uid, StoreComponent component, EntityUid purchase)
@@ -377,14 +404,29 @@ public sealed partial class StoreSystem
     }
 
     /// <summary>
+    ///     Enables refunds for this store
+    /// </summary>
+    public void EnableRefund(EntityUid buyer, EntityUid store, StoreComponent? component = null)
+    {
+        if (!Resolve(store, ref component))
+            return;
+
+        component.RefundAllowed = true;
+
+        UpdateUserInterface(buyer, store, component);
+    }
+
+    /// <summary>
     ///     Disables refunds for this store
     /// </summary>
-    public void DisableRefund(EntityUid store, StoreComponent? component = null)
+    public void DisableRefund(EntityUid buyer, EntityUid store, StoreComponent? component = null)
     {
         if (!Resolve(store, ref component))
             return;
 
         component.RefundAllowed = false;
+
+        UpdateUserInterface(buyer, store, component);
     }
 }
 

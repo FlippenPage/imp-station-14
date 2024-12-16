@@ -1,50 +1,33 @@
 # also used in MakeGhostRuleWindow and MakeGhostRoleCommand
 ghost-role-component-default-rules = All normal rules apply unless an administrator tells you otherwise.
+
                                      You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                     You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                     You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
 ghost-role-information-nonantagonist-rules = You are a [color=green][bold]Non-antagonist[/bold][/color]. You should generally not seek to harm the station and its crew.
+
                                              You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                             You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                             You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
 ghost-role-information-freeagent-rules = You are a [color=yellow][bold]Free Agent[/bold][/color]. You are free to act as either an antagonist or a non-antagonist.
+                                         You are still required to follow rules against excessive destruction. [color=red]Do not seek to sabotage critical infrastructure without proper escalation.[/color]
+
                                          You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                         You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                         You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
-ghost-role-information-freeagent-rat-king-rules = You are a [color=yellow][bold]Free Agent[/bold][/color]. You are free to act as either an antagonist or a non-antagonist.
-                                         You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                         You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                         You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
-                                         Your primary goal is getting food. Killing should be used as a last resort. You are still subject to Mass Chaos RDM rules unless declared an enemy of the ship.
 ghost-role-information-antagonist-rules = You are a [color=red][bold]Solo Antagonist[/bold][/color]. Your intentions are clear, and harmful to the station and its crew.
+
                                           You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                          You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                          You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
 ghost-role-information-rules-team-antagonist = You are a [color=red][bold]Team Antagonist[/bold][/color]. Your intentions are clear, and harmful to the station and its crew.
                                                You must [bold]work with your team[/bold] or follow reasonable directions from your team leaders.
+
                                                You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                               You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                               You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
 ghost-role-information-familiar-rules = You are a [color=#6495ed][bold]Familiar[/bold][/color]. Serve the interests of your master, whatever those may be.
+
                                         You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                        You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                        You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
 ghost-role-information-silicon-rules = You are a [color=#6495ed][bold]Silicon[/bold][/color]. Obey your laws. You are a Free Agent if you are not currently bound by any laws.
+
                                        You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                       You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                       You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
 
 ghost-role-information-mouse-name = Mouse
 ghost-role-information-mouse-description = A hungry and mischievous mouse.
 
 ghost-role-information-mothroach-name = Mothroach
 ghost-role-information-mothroach-description = A cute but mischievous mothroach.
-
-ghost-role-information-raccoon-name = Raccoon
-ghost-role-information-raccoon-description = A run of the mill trash panda.
-
-ghost-role-information-possum-name = Possum
-ghost-role-information-possum-description = Screams, eats trash, screams some more.
 
 ghost-role-information-snail-name = Snail
 ghost-role-information-snail-description = A little snail who doesn't mind a bit of space. Just stay on grid!
@@ -58,6 +41,8 @@ ghost-role-information-snoth-description = A little snoth who doesn't mind a bit
 ghost-role-information-giant-spider-name = Giant spider
 ghost-role-information-giant-spider-description = This station's inhabitants look mighty tasty, and your sticky web is perfect to catch them!
 ghost-role-information-giant-spider-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with all other giant spiders.
+
+                                            You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 
 ghost-role-information-cognizine-description = Made conscious with the magic of cognizine.
 
@@ -74,6 +59,8 @@ ghost-role-information-angry-slimes-name = Slime
 ghost-role-information-angry-slimes-description = Everyone around you irritates your instincts, destroy them!
 ghost-role-information-angry-slimes-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with all other angry slimes.
 
+                                            You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
+
 ghost-role-information-smile-name = Smile the Slime
 ghost-role-information-smile-description = The sweetest creature in the world. Smile Slime!
 
@@ -83,6 +70,8 @@ ghost-role-information-punpun-description = An honorable member of the monkey so
 ghost-role-information-xeno-name = Xeno
 ghost-role-information-xeno-description = You are a xeno, co-operate with your hive to kill all crewmembers!
 ghost-role-information-xeno-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with all other xenos.
+
+                                    You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 
 ghost-role-information-revenant-name = Revenant
 ghost-role-information-revenant-description = You are a Revenant. Use your powers to harvest souls and unleash chaos upon the crew. Unlock new abilities with the essence you harvest.
@@ -98,7 +87,7 @@ ghost-role-information-kobold-description = Be the little gremlin you are, yell 
 
 ghost-role-information-rat-king-name = Rat King
 
-ghost-role-information-rat-king-description = You are the Rat King, your interests are food, food, and more food. Cooperate with or fight against the station for food. Did I say food interests you?
+ghost-role-information-rat-king-description = You are the Rat King, your interests are food, food, and more food. Did I say food interests you?
 
 ghost-role-information-rat-servant-name = Rat Servant
 ghost-role-information-rat-servant-description = You are a Rat Servant. You must follow your king's orders.
@@ -146,10 +135,16 @@ ghost-role-information-ifrit-description = Listen to your owner. Don't tank dama
 ghost-role-information-space-dragon-name = Space dragon
 ghost-role-information-space-dragon-description = Call in 3 carp rifts and take over this quadrant! You have only 5 minutes in between each rift before you will disappear.
 ghost-role-information-space-dragon-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with all your summoned carp.
+
+                                            You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 ghost-role-information-space-dragon-summoned-carp-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with your dragon and its allies.
+
+                                                          You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 
 ghost-role-information-space-dragon-dungeon-description = Defend the expedition dungeon with your fishy comrades!
 ghost-role-information-space-dragon-dungeon-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with all dungeon mobs.
+
+                                                    You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 
 ghost-role-information-cluwne-name = Cluwne
 ghost-role-information-cluwne-description = Become a pitiful cluwne, your only goal in life is to find a sweet release from your suffering (usually by being beaten to death). A cluwne is not an antagonist but may defend itself. Crewmembers may murder cluwnes freely.
@@ -197,7 +192,9 @@ ghost-role-information-nukeop-rules = You are a [color=red][bold]Team Antagonist
 
 ghost-role-information-loneop-name = Lone Operative
 ghost-role-information-loneop-description = You are a lone nuclear operative. Destroy the station!
-ghost-role-information-loneop-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with all other nuclear operatives. Covert syndicate agents are not guaranteed to help you.
+ghost-role-information-loneop-rules = You are a [color=red][bold]Solo Antagonist[/bold][/color]. Covert syndicate agents are not guaranteed to help you.
+
+                                      You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 
 ghost-role-information-behonker-name = Behonker
 ghost-role-information-behonker-description = You are an antagonist, bring death and honks to those who do not follow the honkmother.
@@ -209,9 +206,13 @@ ghost-role-information-Death-Squad-name = Death Squad Operative
 ghost-role-information-Death-Squad-description = One of Nanotrasen's top internal affairs agents. Await orders from CentComm or an official.
 ghost-role-information-Death-Squad-rules = You are required to obey orders given by your superior, you are effectively their [color=#6495ed][bold]Familiar[/bold][/color].
 
+                                           You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
+
 ghost-role-information-SyndiCat-name = SyndiCat
 ghost-role-information-SyndiCat-description = You're the faithful trained pet of nuclear operatives with a microbomb. Serve your master to the death!
 ghost-role-information-SyndiCat-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the agent who summoned you.
+
+                                        You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 
 ghost-role-information-Cak-name = Cak
 ghost-role-information-Cak-description = You are the chef's favorite child. You're a living cake cat.
@@ -226,6 +227,8 @@ ghost-role-information-syndicate-reinforcement-name = Syndicate Agent
 ghost-role-information-syndicate-reinforcement-description = Someone needs reinforcements. You, the first person the syndicate could find, will help them.
 ghost-role-information-syndicate-reinforcement-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the agent who summoned you.
 
+                                                       You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
+
 ghost-role-information-syndicate-reinforcement-medic-name = Syndicate Medic
 ghost-role-information-syndicate-reinforcement-medic-description = Someone needs reinforcements. Your task is to keep the agent who called you alive.
 
@@ -239,17 +242,24 @@ ghost-role-information-nukeop-reinforcement-name = Nuclear Operative
 ghost-role-information-nukeop-reinforcement-description = The nuclear operatives need reinforcements. You, a reserve agent, will help them.
 ghost-role-information-nukeop-reinforcement-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the nuclear operatives who summoned you.
 
+                                                    You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
+
 ghost-role-information-syndicate-monkey-reinforcement-name = Syndicate Monkey Agent
 ghost-role-information-syndicate-monkey-reinforcement-description = Someone needs reinforcements. You, a trained monkey, will help them.
-ghost-role-information-syndicate-monkey-reinforcement-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the agent who summoned you.
+
+                                                              You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 
 ghost-role-information-syndicate-kobold-reinforcement-name = Syndicate Kobold Agent
 ghost-role-information-syndicate-kobold-reinforcement-description = Someone needs reinforcements. You, a trained kobold, will help them.
-ghost-role-information-syndicate-kobold-reinforcement-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the agent who summoned you.
+
+                                                              You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
 
 ghost-role-information-syndicate-cyborg-assault-name = Syndicate Assault Cyborg
 ghost-role-information-syndicate-cyborg-saboteur-name = Syndicate Saboteur Cyborg
 ghost-role-information-syndicate-cyborg-description = The Syndicate needs reinforcements. You, a cold silicon killing machine, will help them.
+
+ghost-role-information-derelict-cyborg-name = Derelict Cyborg
+ghost-role-information-derelict-cyborg-description = You are a regular cyborg that got lost in space. After years of exposure to ion storms you find yourself near a space station.
 
 ghost-role-information-security-name = Security
 ghost-role-information-security-description = You are part of a security task force, but seem to have found yourself in a strange situation...
@@ -280,16 +290,14 @@ ghost-role-information-command-description = You are a member of command, but se
 ghost-role-information-lost-challenge-commander-name = Commander on Shore Leave
 ghost-role-information-lost-challenge-commander-description = You are a command member from another starship who was granted shore leave with one of your cargo technicians.
 ghost-role-information-lost-challenge-commander-rules = You are not hostile to the station, do what you must to ensure your own survival.
+
                                      You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                     You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                     You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
 
 ghost-role-information-lost-challenge-cargo-technican-name = Cargo Chauffeur
 ghost-role-information-lost-challenge-cargo-technican-description = You are a cargo technician who was granted shore leave with one of your commanding officers.
 ghost-role-information-lost-challenge-cargo-technican-rules = You are not hostile to the station, do what you must to ensure your own survival.
+
                                      You don't remember any of your previous life, and you don't remember anything you learned as a ghost.
-                                     You are allowed to remember knowledge about the game in general, such as how to cook, how to use objects, etc.
-                                     You are absolutely [color=red]NOT[/color] allowed to remember, say, the name, appearance, etc. of your previous character.
 
 ghost-role-information-disaster-victim-name = Disaster Victim
 ghost-role-information-disaster-victim-description = You were rescued in an escape pod from another station that suffered a terrible fate. Perhaps you will be found and rescued.
@@ -318,8 +326,14 @@ ghost-role-information-pirate-captain-description = Argh matey! You are in charg
 ghost-role-information-artifact-name = Sentient Artifact
 ghost-role-information-artifact-description = Enact your eldritch whims. Forcibly activate your nodes for good or for evil.
 
-ghost-role-information-syndie-assaultborg-name = Syndicate Assault Borg
-ghost-role-information-syndie-assaultborg-description = Nuclear operatives needs reinforcements. You, a cold silicon killing machine, will help them. More dakka!
+ghost-role-information-tomatokiller-name = Tomato killer
+ghost-role-information-tomatokiller-description = This little tomato will serve the botanist for the rest of his life... that is, a couple of minutes
 
-ghost-role-information-finfin-name = Fin Fin
-ghost-role-information-finfin-description = Taken from your home planet of Teo by Salvage, you're so adorable that you were adopted by the station instead of sent to Centcomm. It's in your best interest to stay that way.
+ghost-role-information-gingerbread-name = Gingerbread Man
+ghost-role-information-gingerbread-description = A being of pure holiday spirit.
+                                     Spread molassesy goodness and to all good cheer.
+
+ghost-role-information-onestar-mecha-name = OneStar Mecha
+ghost-role-information-onestar-mecha-description = You are this station's end.
+
+

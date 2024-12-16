@@ -15,12 +15,9 @@
       time: 324000 # 90 hrs
     - !type:OverallPlaytimeRequirement
       time: 144000 #40 hrs
-    - !type:AgeRequirement
-      requiredAge: 21
   weight: 10
   startingGear: HoSGear
   icon: "JobIconHeadOfSecurity"
-  requireAdminNotify: true
   supervisors: job-supervisors-captain
   canBeAntag: false
   access:
@@ -47,7 +44,6 @@
     eyes: ClothingEyesGlassesSecurity
     id: HoSPDA
     gloves: ClothingHandsGlovesCombat
-    ears: ClothingHeadsetAltSecurity
     pocket1: WeaponPistolMk58
   storage:
     back:

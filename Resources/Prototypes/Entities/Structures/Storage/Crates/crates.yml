@@ -42,6 +42,11 @@
   - type: AntiRottingContainer
   - type: ExplosionResistance
     damageCoefficient: 0.50
+  - type: Construction
+    graph: CrateFreezer
+    node: done
+    containers:
+    - entity_storage
 
 - type: entity
   parent: CratePlastic
@@ -285,6 +290,8 @@
     sprite: Structures/Storage/Crates/weapon.rsi
   - type: AccessReader
     access: [["Armory"]]
+  - type: AntiTamper # impstation edit
+    containers: [ entity_storage ]
 
 - type: entity
   parent: [ CrateBaseSecure, BaseRestrictedContraband ]

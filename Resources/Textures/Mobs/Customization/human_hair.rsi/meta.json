@@ -790,6 +790,18 @@
       {
         "name": "classiclong3",
         "directions": 4
+      },
+      {
+        "name": "shaped",
+        "directions": 4
+      },
+      {
+        "name": "longbow",
+        "directions": 4
+      },
+      {
+        "name": "frenchbraid",
+        "directions": 4
       }
     ]
   }

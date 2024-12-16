@@ -237,10 +237,13 @@
       coefficients:
         Blunt: 0.8
         Slash: 0.8
-        Piercing: 0.7
+        Piercing: 0.75
+        Heat: 0.9
+        Radiation: 0.3
+        Caustic: 0.2
   - type: ClothingSpeedModifier
-    walkModifier: 0.65
-    sprintModifier: 0.65
+    walkModifier: 0.8
+    sprintModifier: 0.85
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitBrigmedic
@@ -349,9 +352,9 @@
   description: A special suit that protects against hazardous, low pressure environments. Built with lightweight materials for easier movement.
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/Hardsuits/medical.rsi
+    sprite: _Impstation/Clothing/OuterClothing/Hardsuits/impcmo.rsi
   - type: Clothing
-    sprite: Clothing/OuterClothing/Hardsuits/medical.rsi
+    sprite: _Impstation/Clothing/OuterClothing/Hardsuits/impcmo.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.3
     lowPressureMultiplier: 1000
@@ -760,6 +763,53 @@
   - type: StaticPrice
     price: 0
 
+#Makeshift Hardsuit
+- type: entity
+  parent: [ BaseMajorContraband, ClothingOuterHardsuitBase]
+  id: ClothingOuterProspector
+  name: makeshift hardsuit
+  description: A heap of plating and insulation thrown together that just barely constitutes a hardsuit - but if it's good enough for space, it's good enough for you.
+  components:
+  - type: Sprite
+    sprite: _Impstation/Prospectors/prospector-hardsuit.rsi
+  - type: Item
+    size: Huge
+  - type: Clothing
+    sprite: _Impstation/Prospectors/prospector-hardsuit.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.7
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.8
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.95
+        Slash: 0.95
+        Piercing: 0.95
+        Radiation: 0.8
+        Caustic: 0.9
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetProspector
+
+#Desperado Hardsuit
+- type: entity
+  parent: [ BaseMajorContraband, ClothingOuterHardsuitSyndieCommander ]
+  id: ClothingOuterDesperado
+  name: desperado hardsuit
+  description: An incredibly tough hardsuit woven together with Goliath plating and some helpfully reclaimed NT equipment. Makes you respectable, both as a person and as a threat.
+  components:
+  - type: Sprite
+    sprite: _Impstation/Prospectors/desperado-hardsuit.rsi
+  - type: Clothing
+    sprite: _Impstation/Prospectors/desperado-hardsuit.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetDesperado
+
 #CENTCOMM / ERT HARDSUITS
 #ERT Leader Hardsuit
 - type: entity
@@ -961,7 +1011,7 @@
 - type: entity
   parent: ClothingOuterHardsuitClown
   id: ClothingOuterHardsuitMime
-  name: mime hardsuit
+  name: red mime hardsuit # Imp
   description: A custom-made mime hardsuit.
   components:
   - type: Sprite
@@ -1003,35 +1053,3 @@
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitSanta
-
-- type: entity
-  parent: ClothingOuterBaseLarge
-  id: ChangelingClothingOuterHardsuit
-  name: organic space suit
-  description: A spaceworthy biomass of pressure and temperature resistant tissue.
-  suffix: Unremoveable
-  components:
-  - type: Sprite
-    sprite: Changeling/ling_spacesuit.rsi
-  - type: Clothing
-    sprite: Changeling/ling_spacesuit.rsi
-  - type: PressureProtection
-    highPressureMultiplier: 0.225
-    lowPressureMultiplier: 1000
-  - type: TemperatureProtection
-    heatingCoefficient: 0.01
-    coolingCoefficient: 0.01
-  - type: ExplosionResistance
-    damageCoefficient: 0.2
-  - type: Armor
-    modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 1
-        Heat: 0.5
-  - type: ClothingSpeedModifier
-    walkModifier: 0.9
-    sprintModifier: 0.9
-  - type: HeldSpeedModifier
-  - type: Unremoveable

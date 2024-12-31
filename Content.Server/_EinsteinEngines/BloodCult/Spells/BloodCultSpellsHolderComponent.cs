@@ -1,5 +1,5 @@
 ﻿using Content.Shared.DoAfter;
-using Content.Shared.Psionics;
+using Content.Shared._EinsteinEngines.BloodCult;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._EinsteinEngines.BloodCult.Spells;
@@ -12,17 +12,9 @@ public sealed partial class BloodCultSpellsHolderComponent : Component
 
     [DataField]
     public TimeSpan SpellCreationTime = TimeSpan.FromSeconds(2);
-    public readonly List<ProtoId<EntityPrototype>> BloodCultPowers = new()
-    {
-        "ActionBloodCultStun",
-        "ActionBloodCultTeleport",
-        "ActionBloodCultEmp",
-        "ActionBloodCultShadowShackles",
-        "ActionBloodCultTwistedConstruction",
-        "ActionBloodCultSummonCombatEquipment",
-        "ActionBloodCultSummonRitualDagger",
-        "ActionBloodCultBloodRites",
-    };
+
+    [DataField]
+    public ProtoId<PowerPoolPrototype> PoolPrototype = "BloodCultPowers";
 
     [ViewVariables(VVAccess.ReadOnly)]
     public List<EntityUid> SelectedSpells = new();

@@ -73,14 +73,15 @@
           Quantity: 0.5
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - Grille
-    - Table
+    entries:
+    - prototype: Grille
+    - prototype: Table
 
 - type: entity
   parent: PartRodMetal

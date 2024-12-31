@@ -54,7 +54,7 @@ public sealed class RadialSelectorMenuBUI : BoundUserInterface
         if (_openCentered)
             _menu.OpenCentered();
         else
-            _menu.OpenCenteredAt(_inputManager.MouseScreenPosition.Position / _displayManager.ScreenSize);
+            _menu.OpenCenteredAt(new Vector2(0.5f, 0.5f));
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

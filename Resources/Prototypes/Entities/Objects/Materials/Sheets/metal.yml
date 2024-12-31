@@ -72,18 +72,19 @@
           Quantity: 1
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - Girder
-    - MetalRod
-    - MachineFrame
-    - TileSteel
-    - TileWhite
-    - TileDark
+    entries:
+    - prototype: Girder
+    - prototype: MetalRod
+    - prototype: MachineFrame
+    - prototype: TileSteel
+    - prototype: TileWhite
+    - prototype: TileDark
 
 - type: entity
   parent: SheetSteel
@@ -159,15 +160,16 @@
           Quantity: 6.7
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - ClockworkGirder
-    - TileBrassFilled
-    - TileBrassReebe
+    entries:
+    - prototype: ClockworkGirder
+    - prototype: TileBrassFilled
+    - prototype: TileBrassReebe
 
 - type: entity
   parent: SheetBrass

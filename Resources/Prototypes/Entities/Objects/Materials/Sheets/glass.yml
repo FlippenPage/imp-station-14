@@ -88,14 +88,15 @@
           Quantity: 10
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - Window
-    - WindowDirectional
+    entries:
+    - prototype: Window
+    - prototype: WindowDirectional
 
 - type: entity
   parent: SheetGlass
@@ -184,14 +185,15 @@
         acts: [ "Destruction" ]
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - ReinforcedWindow
-    - WindowReinforcedDirectional
+    entries:
+    - prototype: ReinforcedWindow
+    - prototype: WindowReinforcedDirectional
 
 - type: entity
   parent: SheetRGlass
@@ -271,14 +273,15 @@
         acts: [ "Destruction" ]
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - PlasmaWindow
-    - PlasmaWindowDirectional
+    entries:
+    - prototype: PlasmaWindow
+    - prototype: PlasmaWindowDirectional
 
 - type: entity
   parent: SheetPGlass
@@ -347,14 +350,15 @@
         canReact: false
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - ReinforcedPlasmaWindow
-    - PlasmaReinforcedWindowDirectional
+    entries:
+    - prototype: ReinforcedPlasmaWindow
+    - prototype: PlasmaReinforcedWindowDirectional
 
 - type: entity
   parent: SheetRPGlass
@@ -432,14 +436,15 @@
         canReact: false
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - UraniumWindow
-    - UraniumWindowDirectional
+    entries:
+    - prototype: UraniumWindow
+    - prototype: UraniumWindowDirectional
 
 - type: entity
   parent: SheetUGlass
@@ -496,14 +501,15 @@
         canReact: false
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - ReinforcedUraniumWindow
-    - UraniumReinforcedWindowDirectional
+    entries:
+    - prototype: ReinforcedUraniumWindow
+    - prototype: UraniumReinforcedWindowDirectional
 
 - type: entity
   parent: SheetRUGlass
@@ -583,14 +589,15 @@
         canReact: false
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - ClockworkWindow
-    - WindowClockworkDirectional
+    entries:
+    - prototype: ClockworkWindow
+    - prototype: WindowClockworkDirectional
 
 - type: entity
   parent: SheetClockworkGlass

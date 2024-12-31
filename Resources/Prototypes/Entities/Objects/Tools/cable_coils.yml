@@ -199,13 +199,14 @@
           Quantity: 2
   - type: UserInterface
     interfaces:
-      enum.ShortConstructionUiKey.Key:
-        type: ShortConstructionMenuBUI
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
   - type: ActivatableUI
-    key: enum.ShortConstructionUiKey.Key
+    inHandsOnly: true
+    key: enum.RadialSelectorUiKey.Key
   - type: ShortConstruction
-    prototypes:
-    - CableTerminal
+    entries:
+    - prototype: CableTerminal
 
 - type: entity
   parent: CableApcStack

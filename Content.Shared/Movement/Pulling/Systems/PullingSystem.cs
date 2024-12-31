@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Alert;
@@ -231,7 +232,7 @@ public sealed class PullingSystem : EntitySystem
 		// skip this if ApplySpeedModifier is false
 		if (!component.ApplySpeedModifier)
 			return;
-		
+
         if (TryComp<HeldSpeedModifierComponent>(component.Pulling, out var heldMoveSpeed) && component.Pulling.HasValue)
         {
             var (walkMod, sprintMod) =
@@ -339,6 +340,18 @@ public sealed class PullingSystem : EntitySystem
     {
         return Resolve(uid, ref component, false) && component.BeingPulled;
     }
+
+// The TryGetPulledEntity IS AN EE/BLOOD CULT DEPENDANCY.
+    public bool TryGetPulledEntity(EntityUid puller, [NotNullWhen(true)] out EntityUid? pulling, PullerComponent? component = null)
+    {
+        pulling = null;
+        if (!Resolve(puller, ref component, false) || !component.Pulling.HasValue)
+            return false;
+
+        pulling = component.Pulling;
+        return true;
+    }
+// The TryGetPulledEntity IS AN EE/BLOOD CULT DEPENDANCY.
 
     public bool IsPulling(EntityUid puller, PullerComponent? component = null)
     {
@@ -528,15 +541,16 @@ public sealed class PullingSystem : EntitySystem
         return true;
     }
 
-    public bool TryStopPull(EntityUid pullableUid, PullableComponent pullable, EntityUid? user = null)
+// The TryStopPull code has been tweaked as part of an EE/BLOOD CULT Dependancy.
+    public bool TryStopPull(EntityUid pullableUid, PullableComponent? pullable = null, EntityUid? user = null)
     {
+        if (!Resolve(pullableUid, ref pullable, false))
+            return false;
+
         var pullerUidNull = pullable.Puller;
 
         if (pullerUidNull == null)
             return true;
-
-        if (user != null && !_blocker.CanInteract(user.Value, pullableUid))
-            return false;
 
         var msg = new AttemptStopPullingEvent(user);
         RaiseLocalEvent(pullableUid, msg, true);

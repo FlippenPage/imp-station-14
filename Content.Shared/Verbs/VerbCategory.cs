@@ -85,5 +85,8 @@ namespace Content.Shared.Verbs
         public static readonly VerbCategory SelectType = new("verb-categories-select-type", null);
 
         public static readonly VerbCategory PowerLevel = new("verb-categories-power-level", null);
+
+// This verb is a Blood Cult/EE DEPENDANCY.
+        public static readonly VerbCategory BloodSpells = new("verb-categories-blood-cult", "/Textures/_EinsteinEngines/BloodCult/actions.rsi/blood_spells.png");
     }
 }

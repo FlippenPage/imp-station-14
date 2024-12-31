@@ -1,0 +1,121 @@
+- type: entity
+  parent: BaseItem
+  id: WhetstoneCult
+  name: eldritch whetstone
+  description: A block, empowered by dark magic. Sharp weapons will be enhanced when used on the stone.
+  components:
+  - type: Sprite
+    sprite: _EinsteinEngines/BloodCult/Entities/Items/whetstone_cult.rsi
+    layers:
+    - state: icon
+      map: [ "enum.GenericCultVisuals.Layer" ]
+  - type: CultItem
+  - type: Whetstone
+    whitelist:
+      components:
+      - Sharp
+    blacklist:
+      components:
+      - EnergySword
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.GenericCultVisuals.State:
+        enum.GenericCultVisuals.Layer:
+          True: { state: icon }
+          False: { state: icon_off }
+
+- type: entity
+  parent: BaseItem
+  id: VeilShifter
+  name: veil shifter
+  description: This relic instantly teleports you, and anything you're pulling, forward by a moderate distance.
+  components:
+  - type: Sprite
+    sprite: _EinsteinEngines/BloodCult/Entities/Items/veil_shifter.rsi
+    layers:
+    - state: icon
+      map: [ "enum.GenericCultVisuals.Layer" ]
+  - type: CultItem
+  - type: VeilShifter
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.GenericCultVisuals.State:
+        enum.GenericCultVisuals.Layer:
+          True: { state: icon }
+          False: { state: icon_off }
+
+- type: entity
+  parent: BaseItem
+  id: ShadowShackles
+  name: shadow shackles
+  description: Shackles that bind the wrists with sinister magic.
+  components:
+  - type: Item
+    size: Small
+    storedRotation: 90
+  - type: Handcuff
+    breakoutTime: 5
+    breakOnRemove: true
+    cuffedRSI: Objects/Misc/cablecuffs.rsi
+    bodyIconState: body-overlay
+    color: black
+  - type: Sprite
+    sprite: _EinsteinEngines/BloodCult/actions.rsi
+    state: cuff
+
+- type: entity
+  parent: BaseItem
+  id: MirrorShieldCult
+  name: mirror shield
+  description: An infamous shield used by Nar'Sien sects to confuse and disorient their enemies. Its edges are weighted for use as a throwing weapon - capable of disabling multiple foes with preternatural accuracy.
+  components:
+  - type: Sprite
+    sprite: _EinsteinEngines/BloodCult/Entities/Items/mirror_shield.rsi
+    state: icon
+  - type: Item
+    size: Ginormous
+  - type: CultItem
+  - type: StunOnCollide
+    blacklist:
+      components:
+      - BloodCultist
+  - type: Reflect
+    reflectProb: 0.75
+    innate: true
+    reflects:
+    - Energy
+  - type: Blocking
+    passiveBlockModifier:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.8
+    activeBlockModifier:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.8
+      flatReductions:
+        Blunt: 1
+        Slash: 1
+        Piercing: 1
+        Heat: 1
+    blockSound: !type:SoundPathSpecifier
+      path: /Audio/Effects/glass_step.ogg
+  - type: Damageable
+    damageContainer: Shield
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak

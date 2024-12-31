@@ -25,3 +25,15 @@ public sealed partial class StatusIconComponent : Component
 /// <param name="StatusIcons"></param>
 [ByRefEvent]
 public record struct GetStatusIconsEvent(List<StatusIconData> StatusIcons);
+
+/// <summary>
+/// Event raised on the Client-side to determine whether to display a status icon on an entity. | THIS IS AN EE DEPENDANCY.
+/// </summary>
+/// <param name="User">The player that will see the icons | THIS IS AN EE DEPENDANCY </param>
+[ByRefEvent]
+public record struct CanDisplayStatusIconsEvent(EntityUid? User = null)
+{
+    public EntityUid? User = User;
+
+    public bool Cancelled = false;
+}

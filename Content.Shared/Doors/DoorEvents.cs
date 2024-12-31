@@ -50,6 +50,7 @@ namespace Content.Shared.Doors
     public sealed class BeforeDoorClosedEvent : CancellableEntityEventArgs
     {
         public bool PerformCollisionCheck;
+        public EntityUid? User = null; // This is an EE dependancy for Blood CUlt.
 
         public BeforeDoorClosedEvent(bool performCollisionCheck)
         {

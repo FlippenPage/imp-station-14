@@ -228,8 +228,8 @@ public sealed class BloodCultSpellsSystem : EntitySystem
 
     private void SelectBloodSpells(Entity<BloodCultSpellsHolderComponent> cultist)
     {
-        if (!_proto.TryIndex(cultist.Comp.PowersPoolPrototype, out var pool))
-            return;
+        // if (!_proto.TryIndex(cultist.Comp.PowersPoolPrototype, out var pool))
+        //     return;
 
         if (cultist.Comp.SelectedSpells.Count >= cultist.Comp.MaxSpells)
         {
@@ -239,16 +239,16 @@ public sealed class BloodCultSpellsSystem : EntitySystem
 
         cultist.Comp.AddSpellsMode = true;
 
-        var radialList = new List<RadialSelectorEntry>();
-        foreach (var spellId in pool.Powers)
-        {
-            var entry = new RadialSelectorEntry
-            {
-                Prototype = spellId
-            };
+        // var radialList = new List<RadialSelectorEntry>();
+        // foreach (var actionId in cultist.Comp.BloodCultPowers)
+        // {
+        //     var entry = new RadialSelectorEntry
+        //     {
+        //         Prototype = actionId
+        //     };
 
-            radialList.Add(entry);
-        }
+        //     radialList.Add(entry);
+        // }
 
         var state = new RadialSelectorState(radialList, true);
 

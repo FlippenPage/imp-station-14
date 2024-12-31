@@ -12,9 +12,17 @@ public sealed partial class BloodCultSpellsHolderComponent : Component
 
     [DataField]
     public TimeSpan SpellCreationTime = TimeSpan.FromSeconds(2);
-
-    [DataField]
-    public ProtoId<PsionicPowerPoolPrototype> PowersPoolPrototype = "BloodCultPowers"; // TODO: REPLACE THIS DEPENDANCY ENTIRELY. WHAT DO YOU MEAN PSYIONICS? ARE YOU -HIGH-?
+    public readonly List<ProtoId<EntityPrototype>> BloodCultPowers = new()
+    {
+        "ActionBloodCultStun",
+        "ActionBloodCultTeleport",
+        "ActionBloodCultEmp",
+        "ActionBloodCultShadowShackles",
+        "ActionBloodCultTwistedConstruction",
+        "ActionBloodCultSummonCombatEquipment",
+        "ActionBloodCultSummonRitualDagger",
+        "ActionBloodCultBloodRites",
+    };
 
     [ViewVariables(VVAccess.ReadOnly)]
     public List<EntityUid> SelectedSpells = new();

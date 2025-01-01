@@ -26,7 +26,6 @@ namespace Content.Server._EinsteinEngines.BloodCult.Spells;
 public sealed class BloodCultSpellsSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;
-
     [Dependency] private readonly ActionsSystem _actions = default!;
     [Dependency] private readonly DoAfterSystem _doAfter = default!;
     [Dependency] private readonly CuffableSystem _cuffable = default!;

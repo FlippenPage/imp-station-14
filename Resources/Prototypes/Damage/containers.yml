@@ -72,3 +72,10 @@
   - Airloss
   - Genetic
   - Metaphysical
+
+- type: damageContainer #imp edit
+  id: CorporealSpirit
+  supportedGroups:
+    - Burn
+    - Brute
+    - Immaterial

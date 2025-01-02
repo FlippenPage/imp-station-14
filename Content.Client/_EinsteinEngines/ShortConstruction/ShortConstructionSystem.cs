@@ -1,7 +1,7 @@
 ﻿using Content.Client.Construction;
 using Content.Client._EinsteinEngines.BloodCult.UI;
 using Content.Shared.Construction.Prototypes;
-using Content.Shared.RadialSelector;
+using Content.Shared._EinsteinEngines.RadialSelector;
 using Content.Shared.ShortConstruction;
 using Robust.Client.Placement;
 using Robust.Shared.Enums;

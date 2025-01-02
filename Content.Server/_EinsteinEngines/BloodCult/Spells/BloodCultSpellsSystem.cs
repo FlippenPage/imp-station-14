@@ -12,7 +12,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Inventory;
 using Content.Shared.Mindshield.Components;
 using Content.Shared.Popups;
-using Content.Shared.RadialSelector;
+using Content.Shared._EinsteinEngines.RadialSelector;
 using Content.Shared.Speech.Muting;
 using Content.Shared.StatusEffect;
 using Content.Shared.Verbs;

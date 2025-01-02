@@ -23,7 +23,8 @@
     slots:
     - back
   - type: DisarmMalus
-  - type: CultItem
+# CultItem crashes the server when used on melee weapons
+#  - type: CultItem   
   - type: RuneDrawer
   - type: ActivatableUI
     key: enum.RuneDrawerBuiKey.Key
@@ -68,7 +69,8 @@
     slots:
     - back
   - type: DisarmMalus
-  - type: CultItem
+# CultItem crashes the server when used on melee weapons
+#  - type: CultItem
   - type: PointLight
     color: Red
     radius: 2
@@ -136,7 +138,8 @@
         Piercing: 10
   - type: UseDelay
   - type: DisarmMalus
-  - type: CultItem
+# CultItem crashes the server when used on melee weapons
+#  - type: CultItem
   - type: BloodSpear
 
 - type: entity

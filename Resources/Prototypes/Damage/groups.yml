@@ -48,3 +48,9 @@
   name: damage-group-metaphysical
   damageTypes:
   - Holy
+
+- type: damageGroup
+  id: Immaterial
+  name: damage-group-immaterial
+  damageTypes:
+  - Holy

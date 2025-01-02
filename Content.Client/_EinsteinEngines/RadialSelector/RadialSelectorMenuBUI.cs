@@ -2,7 +2,7 @@
 using System.Numerics;
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Construction.Prototypes;
-using Content.Shared.RadialSelector;
+using Content.Shared._EinsteinEngines.RadialSelector;
 using JetBrains.Annotations;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
@@ -14,7 +14,7 @@ using Robust.Shared.Prototypes;
 
 // ReSharper disable InconsistentNaming
 
-namespace Content.Client.RadialSelector;
+namespace Content.Client._EinsteinEngines.RadialSelector;
 
 [UsedImplicitly]
 public sealed class RadialSelectorMenuBUI : BoundUserInterface

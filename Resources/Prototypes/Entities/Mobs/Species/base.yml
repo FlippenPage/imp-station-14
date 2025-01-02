@@ -196,6 +196,10 @@
       enum.SpelfMoodsUiKey.Key: # impstation edit
         type: SpelfMoodsBoundUserInterface
         requireInputValidation: false
+      enum.RadialSelectorUiKey.Key:
+        type: RadialSelectorMenuBUI
+      enum.ListViewSelectorUiKey.Key:
+        type: ListViewSelectorBUI
   - type: Puller
   - type: Speech
     speechSounds: Alto

@@ -3,7 +3,7 @@ using Content.Server.Popups;
 using Content.Server._EinsteinEngines.BloodCult.Constructs.SoulShard;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Mind.Components;
-using Content.Shared.RadialSelector;
+using Content.Shared._EinsteinEngines.RadialSelector;
 using Content.Shared.Verbs;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;

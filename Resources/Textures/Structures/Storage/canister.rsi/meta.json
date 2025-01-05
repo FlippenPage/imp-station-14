@@ -14,10 +14,22 @@
       "name": "black-1"
     },
     {
+      "name": "retro_black"
+    },
+    {
+      "name": "retro_black-1"
+    },
+    {
       "name": "blue"
     },
     {
       "name": "blue-1"
+    },
+    {
+      "name": "retro_blue"
+    },
+    {
+      "name": "retro_blue-1"
     },
     {
       "name": "can-connector"
@@ -49,6 +61,26 @@
       "name": "can-o3"
     },
     {
+      "name": "retro_can-o0",
+      "delays": [
+        [
+          0.25,
+          0.25,
+          0.25,
+          0.25
+        ]
+      ]
+    },
+    {
+      "name": "retro_can-o1"
+    },
+    {
+      "name": "retro_can-o2"
+    },
+    {
+      "name": "retro_can-o3"
+    },
+    {
       "name": "can-oa1"
     },
     {
@@ -71,6 +103,12 @@
     },
     {
       "name": "red-1"
+    },
+    {
+      "name": "retro_red"
+    },
+    {
+      "name": "retro_red-1"
     },
     {
       "name": "redws"

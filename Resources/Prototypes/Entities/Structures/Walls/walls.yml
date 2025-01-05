@@ -980,6 +980,68 @@
     reflectProb: 1
 
 - type: entity
+  parent: WallShuttleDiagonal
+  id: RetroWallShuttleDiagonal
+  name: retro diagonal shuttle wall
+  suffix: diagonal
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall
+  components:
+  - type: Sprite
+    drawdepth: Walls
+    sprite: Structures/Walls/retro_shuttle_diagonal.rsi
+    state: state0
+  - type: IconSmooth
+    mode: Diagonal
+    key: walls
+    base: state
+  - type: Icon
+    sprite: Structures/Walls/retro_shuttle_diagonal.rsi
+    state: state0
+
+- type: entity
+  parent: BaseWall
+  id: RetroWallShuttle
+  name: retro shuttle wall
+  components:
+  - type: Sprite
+    sprite: Structures/Walls/retro_shuttle.rsi
+    state: white
+  - type: Icon
+    sprite: Structures/Walls/retro_shuttle.rsi
+    state: white
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 500
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: BaseWall
+  id: RetroWallShuttleOrange
+  name: retro orange shuttle wall
+  components:
+  - type: Sprite
+    sprite: Structures/Walls/retro_shuttle.rsi
+    state: orange
+  - type: Icon
+    sprite: Structures/Walls/retro_shuttle.rsi
+    state: orange
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 500
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
   parent: BaseWall
   id: WallSolid
   name: solid wall

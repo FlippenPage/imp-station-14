@@ -130,3 +130,9 @@
   license: "CC0-1.0"
   copyright: "Created by SlamBamActionman (github) for space-station-14."
   source: "https://github.com/space-wizards/space-station-14/"
+
+- files: ["retrosteel.png, retrolattice.png, retroplating.png, retroshinysteel.png, retrowhitesteel.png"]
+  license: "CC0-1.0"
+  copyright: "Created for OpenSS13"
+  source: "https://github.com/Tennessee116/OpenSS13"
+

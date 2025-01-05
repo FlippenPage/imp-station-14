@@ -434,6 +434,9 @@
             "directions": 4
         },
         {
+            "name": "retro_computer"
+        },
+        {
             "name": "screen_broken",
             "directions": 4
         },
@@ -1349,6 +1352,9 @@
         {
             "name": "recharge_comp",
             "directions": 4
+        },
+        {
+            "name": "retro_shuttle"
         },
         {
             "name": "recharge_comp_on",

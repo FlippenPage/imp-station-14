@@ -59,6 +59,54 @@
     stackType: FloorTileSteelCheckerDark
 
 - type: entity
+  name: retro steel tile
+  parent: FloorTileItemBase
+  id: FloorTileItemRetroSteel
+  components:
+  - type: Sprite
+    state: retrosteel
+  - type: Item
+    heldPrefix: retrosteel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorRetroSteel
+  - type: Stack
+    stackType: FloorTileRetroSteel
+
+- type: entity
+  name: retro white steel tile
+  parent: FloorTileItemBase
+  id: FloorTileItemRetroWhiteSteel
+  components:
+  - type: Sprite
+    state: retrowhitesteel
+  - type: Item
+    heldPrefix: retrowhitesteel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorRetroWhiteSteel
+  - type: Stack
+    stackType: FloorTileRetroWhiteSteel
+
+- type: entity
+  name: retro shiny steel tile
+  parent: FloorTileItemBase
+  id: FloorTileItemRetroShinySteel
+  components:
+  - type: Sprite
+    state: retroshinysteel
+  - type: Item
+    heldPrefix: retroshinysteel
+  - type: FloorTile
+    outputs:
+      - Plating
+      - FloorRetroShinySteel
+  - type: Stack
+    stackType: FloorTileRetroShinySteel
+
+- type: entity
   name: steel light checker tile
   parent: FloorTileItemSteel
   id: FloorTileItemSteelCheckerLight

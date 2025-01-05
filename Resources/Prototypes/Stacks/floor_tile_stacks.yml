@@ -59,6 +59,24 @@
   maxCount: 30
 
 - type: stack
+  id: FloorTileRetroSteel
+  name: retro steel tile
+  spawn: FloorTileItemRetroSteel
+  maxCount: 30
+
+- type: stack
+  id: FloorTileRetroShinySteel
+  name: shiny retro steel tile
+  spawn: FloorTileItemRetroShinySteel
+  maxCount: 30
+
+- type: stack
+  id: FloorTileRetroWhiteSteel
+  name: white retro steel tile
+  spawn: FloorTileItemRetroWhiteSteel
+  maxCount: 30
+
+- type: stack
   id: FloorTileSteelOffset
   name: offset steel tile
   spawn: FloorTileItemSteelOffset

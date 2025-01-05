@@ -123,6 +123,32 @@
     stateDoorOpen: generic_open
     stateDoorClosed: mixed_door
 
+# Retro
+
+- type: entity
+  id: RetroWardrobeBlue
+  parent: WardrobeBase
+  name: retro blue wardrobe
+  description: "A wardrobe packed with stylish blue clothing."
+  components:
+  - type: Appearance
+  - type: EntityStorageVisuals
+    stateBaseClosed: retro
+    stateDoorOpen: retro_open
+    stateDoorClosed: retro_blue_door
+
+- type: entity
+  id: RetroWardrobeMixed
+  parent: WardrobeBase
+  name: retro mixed wardrobe
+  description: "A wardrobe packed with a mix of colorful clothing."
+  components:
+  - type: Appearance
+  - type: EntityStorageVisuals
+    stateBaseClosed: retro
+    stateDoorOpen: retro_open
+    stateDoorClosed: retro_mixed_door
+
 # Jobs
 
 - type: entity

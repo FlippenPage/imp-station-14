@@ -118,6 +118,14 @@
     state: chair-greyscale
 
 - type: entity
+  name: retro chair
+  id: ChairRetro
+  parent: Chair
+  components:
+  - type: Sprite
+    state: retro-chair
+
+- type: entity
   name: stool
   id: Stool
   parent: UnanchoredChairBase

@@ -2,7 +2,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Server.Spreader;
 
-[RegisterComponent, Access(typeof(KudzuSystem)), AutoGenerateComponentPause]
+[RegisterComponent, Access(typeof(KudzuSystem), typeof(CrystalMassSystem)), AutoGenerateComponentPause]
 public sealed partial class GrowingKudzuComponent : Component
 {
     /// <summary>

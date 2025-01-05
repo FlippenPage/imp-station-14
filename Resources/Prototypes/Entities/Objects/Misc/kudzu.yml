@@ -10,7 +10,6 @@
     - type: Transform
       anchored: true
     - type: Physics
-    - type: Kudzu
     - type: GrowingKudzu
     - type: ActiveEdgeSpreader
     - type: EdgeSpreader
@@ -304,3 +303,52 @@
   components:
     - type: Kudzu
       spreadChance: 0 #appears during pulsation. It shouldnt spreading.
+
+- type: entity
+  id: SupermatterKudzu
+  name: crystal mass
+  parent: BaseKudzu
+  description: You see this massive crystal mass looming towards you, cracking and screeching at every seemingly random movement.
+  components:
+    - type: Sprite
+      sprite: Objects/Misc/crystalmass.rsi
+      state: crystal_cascade_1
+      drawdepth: Overdoors
+    - type: Clickable
+    - type: Fixtures
+      fixtures:
+        fix1:
+          hard: false
+          density: 7
+          shape:
+            !type:PhysShapeAabb
+            bounds: "-0.5,-0.5,0.5,0.5"
+          layer:
+          - MidImpassable
+    - type: Temperature
+      heatDamage:
+        types:
+          Heat: 5
+      coldDamage: {}
+      coldDamageThreshold: 0
+    - type: AtmosExposed
+    - type: CrystalMass
+      growthTickChance: 0.3
+      spreadChance: 0.4
+    - type: SpeedModifierContacts
+      walkSpeedModifier: 0.2
+      sprintSpeedModifier: 0.2
+      ignoreWhitelist:
+        components:
+        - IgnoreKudzu
+    - type: PointLight
+      color: "#ffe302"
+      radius: 2.5
+      energy: 1.5
+      castShadows: false
+    - type: CrystalMassVisuals
+    - type: AmbientSound
+      range: 5
+      volume: 0
+      sound:
+        path: /Audio/_Impstation/Misc/cracking_crystal.ogg

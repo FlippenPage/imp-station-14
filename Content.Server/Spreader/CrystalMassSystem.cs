@@ -54,29 +54,14 @@ public sealed class CrystalMassSystem : EntitySystem
         if (component.GrowthLevel < 3)
             return;
 
-        if (args.NeighborFreeTiles.Count == 0)
-        {
-            RemCompDeferred<ActiveEdgeSpreaderComponent>(uid);
-            return;
-        }
-
         if (!_robustRandom.Prob(component.SpreadChance))
             return;
 
         var prototype = MetaData(uid).EntityPrototype?.ID;
 
-        if (prototype == null)
-        {
-            RemCompDeferred<ActiveEdgeSpreaderComponent>(uid);
-            return;
-        }
-
         foreach (var neighbor in args.NeighborFreeTiles)
         {
             var neighborUid = Spawn(prototype, _map.GridTileToLocal(neighbor.Tile.GridUid, neighbor.Grid, neighbor.Tile.GridIndices));
-            DebugTools.Assert(HasComp<EdgeSpreaderComponent>(neighborUid));
-            DebugTools.Assert(HasComp<ActiveEdgeSpreaderComponent>(neighborUid));
-            DebugTools.Assert(Comp<EdgeSpreaderComponent>(neighborUid).Id == KudzuGroup);
             args.Updates--;
             if (args.Updates <= 0)
                 return;

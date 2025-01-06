@@ -212,11 +212,13 @@ public sealed class SpreaderSystem : EntitySystem
             }
 
             // If we're on a blocked tile work out which directions we can go.
-            if (!airtightQuery.TryGetComponent(ent, out var airtight) || !airtight.AirBlocked ||
-                _tag.HasTag(ent.Value, IgnoredTag))
+            if ((!airtightQuery.TryGetComponent(ent, out var airtight) || !airtight.AirBlocked ||
+                _tag.HasTag(ent.Value, IgnoredTag)) ||
+                _prototype.Index(prototype).ignoreSpreadBlocks)
             {
                 continue;
             }
+
 
             foreach (var value in new[] { AtmosDirection.North, AtmosDirection.East, AtmosDirection.South, AtmosDirection.West })
             {
@@ -259,7 +261,8 @@ public sealed class SpreaderSystem : EntitySystem
                     continue;
                 }
 
-                if ((airtight.AirBlockedDirection & otherAtmosDir) == 0x0)
+                if ((airtight.AirBlockedDirection & otherAtmosDir) == 0x0 ||
+                    _prototype.Index(prototype).ignoreSpreadBlocks)
                     continue;
 
                 occupied = true;

@@ -3,6 +3,12 @@
   updatesPerSecond: 1
 
 - type: edgeSpreader
+  id: SupermatterKudzu
+  updatesPerSecond: 1
+  ignoreSpreadBlocks: true
+  preventSpreadOnSpaced: false
+
+- type: edgeSpreader
   id: Puddle
   updatesPerSecond: 16
 

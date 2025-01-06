@@ -16,6 +16,23 @@
       id: Kudzu
 
 - type: entity
+  id: BaseSupermatterKudzu
+  abstract: true
+  placement:
+    mode: SnapgridCenter
+    snap:
+      - Wall
+  components:
+    - type: Appearance
+    - type: Transform
+      anchored: true
+    - type: Physics
+    - type: GrowingKudzu
+    - type: ActiveEdgeSpreader
+    - type: EdgeSpreader
+      id: SupermatterKudzu
+
+- type: entity
   id: Kudzu
   name: kudzu
   parent: BaseKudzu
@@ -307,7 +324,7 @@
 - type: entity
   id: SupermatterKudzu
   name: crystal mass
-  parent: BaseKudzu
+  parent: BaseSupermatterKudzu
   description: You see this massive crystal mass looming towards you, cracking and screeching at every seemingly random movement.
   components:
     - type: Sprite

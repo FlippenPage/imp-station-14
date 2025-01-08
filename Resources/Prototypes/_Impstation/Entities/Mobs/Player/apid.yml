@@ -1,0 +1,98 @@
+- type: entity
+  name: apid
+  suffix: Ghostrole
+  id: MobApidBaseGhostrole
+  parent: BaseMobApid
+  description: Enthusiastic workers, these cute little balls of fuzz are distant relatives to moth people.
+  components:
+  - type: GhostRole
+    makeSentient: true
+    name: ghost-role-information-apid-name
+    description: ghost-role-information-apid-description
+    rules: ghost-role-information-nonantagonist-rules
+  - type: RandomMetadata
+    nameSegments:
+    - apid_worker
+    - names_apid
+  - type: RandomHumanoidAppearance
+    randomizeName: false
+
+- type: entity
+  name: apid botanist
+  id: MobApidBotanist
+  parent: MobApidBaseGhostrole
+  description: Enthusiastic workers, these cute little balls of fuzz are distant relatives to moth people.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-apid-botanist-name
+    description: ghost-role-information-apid-botanist-description
+    rules: ghost-role-information-crewmember-rules
+    raffle:
+      settings: default
+  - type: Loadout
+    prototypes:
+      - StartingGearApidBotanist
+  - type: RandomMetadata
+    nameSegments:
+    - apid_botanist
+    - names_apid
+
+- type: entity
+  name: apid doctor
+  id: MobApidDoctor
+  parent: MobApidBaseGhostrole
+  description: Enthusiastic workers, these cute little balls of fuzz are distant relatives to moth people.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-apid-doctor-name
+    description: ghost-role-information-apid-doctor-description
+    rules: ghost-role-information-crewmember-rules
+    raffle:
+      settings: default
+  - type: Loadout
+    prototypes:
+      - StartingGearApidDoctor
+  - type: RandomMetadata
+    nameSegments:
+    - apid_doctor
+    - names_apid
+
+- type: entity
+  name: apid engineer
+  id: MobApidEngineer
+  parent: MobApidBaseGhostrole
+  description: Enthusiastic workers, these cute little balls of fuzz are distant relatives to moth people.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-apid-engineer-name
+    description: ghost-role-information-apid-engineer-description
+    rules: ghost-role-information-crewmember-rules
+    raffle:
+      settings: default
+  - type: Loadout
+    prototypes:
+      - StartingGearApidEngineer
+  - type: RandomMetadata
+    nameSegments:
+    - apid_engineer
+    - names_apid
+
+- type: entity
+  name: apid emergency responder
+  id: MobApidEmergency
+  parent: MobApidBaseGhostrole
+  description: Enthusiastic workers, these cute little balls of fuzz are distant relatives to moth people.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-apid-beert-name
+    description: ghost-role-information-apid-beert-description
+    rules: ghost-role-information-crewmember-rules
+    raffle:
+      settings: default
+  - type: Loadout
+    prototypes:
+      - StartingGearApidEmergency
+  - type: RandomMetadata
+    nameSegments:
+    - apid_emergency
+    - names_apid

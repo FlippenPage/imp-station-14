@@ -1,6 +1,15 @@
 
 cosmic-monument-ui-title = The Monument
 cosmic-monument-progress-display = Progress:
+cosmic-monument-entropy = Entropy
+cosmic-monument-influences = Influences
+cosmic-monument-infused = Infused:
+cosmic-monument-available = Available for use:
+cosmic-monument-estimate = Est. Entropy till next Stage:
+cosmic-monument-to-convert = Crew to Convert till next Stage:
+cosmic-monument-upgrade = Upgrade The Monument
+cosmic-monument-glyphs = Glyphs
+cosmic-monument-scribe = Scribe Glyph
 cosmic-monument-cooldown = Cooldown: [color=gray]{$time}[/color]
 cosmic-monument-no-cooldown = Cooldown: [color=gray]Complete[/color]
 cosmic-monument-yes-fire = Status: [color=forestgreen]Ready[/color]

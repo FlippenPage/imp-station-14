@@ -1,8 +1,122 @@
 <ui:FancyWindow xmlns="https://spacestation14.io" 
                 xmlns:ui="clr-namespace:Content.Client.UserInterface.Controls"
-                MinSize="625 400"
-                SetSize="700 550"
+                xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+                xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+                SetSize="690 800"
                 Title="{Loc 'cosmic-monument-ui-title'}">
-    <BoxContainer Margin="4 0" Orientation="Vertical">
+    <BoxContainer Orientation="Vertical"> 
+                <!--HANDLES PROGRESS BAR-->
+        <BoxContainer Orientation="Horizontal"
+                      Margin="0 10 0 0">
+            <Label Name="MonumentProgressLabel"
+                   Text="{Loc 'cosmic-monument-progress-display'}"
+                   SetWidth="64"
+                   Margin="10 0 0 0"/>
+            <ProgressBar Name="MonumentProgressBar"
+                         HorizontalExpand="True"
+                         MinValue="0"
+                         MaxValue="1"
+                         SetHeight="40"
+                         SetWidth="550"/>
+            <Label Name="MonumentProgressText" Text="0.00%"
+                   Margin="-330 0 0 0"/>
+        </BoxContainer>
+                <!--HANDLES LABEL SHIT-->
+        <BoxContainer Orientation="Vertical"
+                VerticalExpand="True"
+                HorizontalExpand="True">
+                <!--HANDLES ENTROPY CONTAINER-->
+            <BoxContainer Orientation="Vertical"
+                VerticalExpand="False"
+                HorizontalExpand="False"
+                Margin="10 25 400 0">
+            <Label Text="{Loc 'cosmic-monument-entropy'}" HorizontalAlignment="Center" Margin= "0 0 0 0"/>
+            <customControls:HSeparator StyleClasses="LowDivider"/>
+            <TextureRect TexturePath="/Textures/_Impstation/CosmicCult/Objects/entropymote.rsi/mote_3.png"
+                     HorizontalAlignment="Center"
+                     SetSize = "96 96"
+                     TextureScale="3 3"
+                     Margin = "0 10 0 15"
+                     Name="MixTexture"
+                     Access="Public"/>
+            <Label Text="{Loc 'cosmic-monument-infused'}" HorizontalAlignment="Center" Margin= "0 0 0 0"/>
+            <Label Text="{Loc 'cosmic-monument-available'}" HorizontalAlignment="Center" Margin= "0 0 0 0"/>
+            <Label Text="{Loc 'cosmic-monument-estimate'}" HorizontalAlignment="Center" Margin= "0 8 0 0"/>
+            <Label Text="{Loc 'cosmic-monument-to-convert'}" HorizontalAlignment="Center" Margin= "0 0 0 10"/>
+                <PanelContainer VerticalExpand="False">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+                    </PanelContainer.PanelOverride>
+                    <BoxContainer Orientation="Horizontal" 
+                    Margin="30 10 0 10" 
+                    HorizontalExpand="False"
+                    VerticalExpand="False"
+                    SizeFlagsStretchRatio="2">
+                    <Button Name="UpgradeButton" 
+                    Text="{Loc 'cosmic-monument-upgrade'}"
+                    StyleClasses="ButtonSquare"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
+                    </BoxContainer>
+                </PanelContainer>
+            </BoxContainer>
+                <!--HANDLES GLYPHS CONTAINER-->
+            <BoxContainer Orientation="Vertical"
+                VerticalExpand="False"
+                HorizontalExpand="False"
+                Margin="10 25 400 0">
+            <Label Text="{Loc 'cosmic-monument-glyphs'}" HorizontalAlignment="Center" Margin= "0 0 0 0"/>
+            <customControls:HSeparator StyleClasses="LowDivider"/>
+                <PanelContainer VerticalExpand="False">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+                </PanelContainer.PanelOverride>
+                    <BoxContainer Orientation="Horizontal" 
+                    Margin="82 150 0 10" 
+                    HorizontalExpand="False"
+                    VerticalExpand="False"
+                    SizeFlagsStretchRatio="2">
+                    <Button Name="GlyphButton" 
+                    Text="{Loc 'cosmic-monument-scribe'}"
+                    StyleClasses="ButtonSquare"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
+                    </BoxContainer>
+                </PanelContainer>
+            </BoxContainer>
+                <!--HANDLES INFLUENCES CONTAINER-->
+            <BoxContainer Orientation="Vertical"
+                VerticalExpand="True"
+                HorizontalExpand="False"
+                Margin="300 -544 0 0">
+            <Label Text="{Loc 'cosmic-monument-influences'}" HorizontalAlignment="Center" Margin= "0 0 0 0"/>
+                <customControls:HSeparator StyleClasses="LowDivider"/>
+            <BoxContainer Orientation="Vertical"
+                          VerticalExpand="True"
+                          HorizontalExpand="True"
+                          SizeFlagsStretchRatio="3"
+                          Margin="0 10 10 10">
+                <PanelContainer VerticalExpand="True" MinSize="0 200">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+                    </PanelContainer.PanelOverride>
+                    <ScrollContainer
+                        VScrollEnabled="True"
+                        HScrollEnabled="False"
+                        HorizontalExpand="True"
+                        SizeFlagsStretchRatio="2"
+                        VerticalExpand="True">
+                        <BoxContainer
+                            Name="InfluencesCardsContainer"
+                            MinSize="100 256"
+                            Orientation="Vertical"
+                            SizeFlagsStretchRatio="2"
+                            VerticalExpand="True">
+                        </BoxContainer>
+                    </ScrollContainer>
+                </PanelContainer>
+            </BoxContainer>
+            </BoxContainer>
+        </BoxContainer>
     </BoxContainer>
 </ui:FancyWindow>

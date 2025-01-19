@@ -64,12 +64,12 @@
         - EntropyMote
     materialWhiteList:
     - EntropyMoteMaterial
-  # - type: ActivatableUI  # TODO: HEY! THIS THING NEEDS A UI! LIKE. REALLY. HELP.
-  #   key: enum.CosmicMonumentUiKey.Key
-  # - type: UserInterface
-  #   interfaces:
-  #       enum.CosmicMonumentUiKey.Key:
-  #         type: CosmicMonumentBoundUserInterface
+  - type: ActivatableUI  # TODO: HEY! THIS THING NEEDS A UI! LIKE. REALLY. HELP.
+    key: enum.CosmicMonumentUiKey.Key
+  - type: UserInterface
+    interfaces:
+        enum.CosmicMonumentUiKey.Key:
+          type: CosmicMonumentBoundUserInterface
   - type: EmitSoundOnUIOpen
     sound:
       collection: Keyboard

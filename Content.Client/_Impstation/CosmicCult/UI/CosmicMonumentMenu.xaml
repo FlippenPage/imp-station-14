@@ -1,0 +1,8 @@
+<ui:FancyWindow xmlns="https://spacestation14.io" 
+                xmlns:ui="clr-namespace:Content.Client.UserInterface.Controls"
+                MinSize="625 400"
+                SetSize="700 550"
+                Title="{Loc 'cosmic-monument-ui-title'}">
+    <BoxContainer Margin="4 0" Orientation="Vertical">
+    </BoxContainer>
+</ui:FancyWindow>

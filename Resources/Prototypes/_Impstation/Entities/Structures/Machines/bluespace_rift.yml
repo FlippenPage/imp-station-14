@@ -1,0 +1,19 @@
+- type: entity
+  id: BluespaceRift
+  name: bluespace rift
+  parent: BasePortal
+  description: Your mind begins to spin as it tries to comprehend what it sees.
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: _Impstation/Structures/Machines/bluespace_rift.rsi
+    layers:
+    - state: reality
+  - type: WarpPoint
+    follow: true
+    location: bluespace rift
+  - type: PointLight
+    color: Red
+    radius: 15
+    energy: 0.7
+    netsync: false

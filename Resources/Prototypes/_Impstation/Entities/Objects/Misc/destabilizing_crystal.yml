@@ -1,0 +1,18 @@
+- type: entity
+  parent: [BaseItem, BaseSyndicateContraband]
+  id: DestabilizingCrystal
+  name: destabilizing crystal
+  description: A crystal that can be used to destabilize the supermatter to cause a resonance cascade. Carefully apply this on a fully stable supermatter crystal and start the delamination. Prevent anyone from stopping you.
+  components:
+    - type: PointLight
+      enabled: true
+      radius: 3
+      energy: 2
+      color: "#bc00cd"
+    - type: Icon
+      sprite: _Impstation/Objects/Misc/destabilizing_crystal.rsi
+      state: icon
+    - type: Sprite
+      sprite: _Impstation/Objects/Misc/destabilizing_crystal.rsi
+      state: icon
+    - type: SupermatterImmune

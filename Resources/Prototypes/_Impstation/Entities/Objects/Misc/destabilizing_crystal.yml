@@ -16,3 +16,4 @@
       sprite: _Impstation/Objects/Misc/destabilizing_crystal.rsi
       state: icon
     - type: SupermatterImmune
+    - type: CascadeCrystal

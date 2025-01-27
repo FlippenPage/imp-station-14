@@ -414,6 +414,11 @@ public sealed partial class SupermatterSystem
             return DelamType.Tesla;
 
         //TODO: Add resonance cascade when there's crazy conditions or a destabilizing crystal
+        if (sm.CascadeCrystal == true)
+        {
+            if (_config.GetCVar(CCVars.SupermatterDoCascadeDelam))
+                return DelamType.Cascade;
+        }
 
         return DelamType.Explosion;
     }

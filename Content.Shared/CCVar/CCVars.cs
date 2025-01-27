@@ -32,7 +32,7 @@ public sealed partial class CCVars : CVars
         CVarDef.Create("supermatter.singuloose_moles_modifier", 1f, CVar.SERVER);
 
     /// <summary>
-    ///     Toggles whether or not Singuloose delaminations can occur. If both Singuloose and Tesloose are disabled, it will always delam into a Nuke.
+    ///     Toggles whether or not Singuloose delaminations can occur. If all delam types are disabled, it will always delam into a Nuke.
     /// </summary>
     public static readonly CVarDef<bool> SupermatterDoSingulooseDelam =
         CVarDef.Create("supermatter.do_singuloose", true, CVar.SERVER);
@@ -46,10 +46,17 @@ public sealed partial class CCVars : CVars
         CVarDef.Create("supermatter.tesloose_power_modifier", 1f, CVar.SERVER);
 
     /// <summary>
-    ///     Toggles whether or not Tesloose delaminations can occur. If both Singuloose and Tesloose are disabled, it will always delam into a Nuke.
+    ///     Toggles whether or not Tesloose delaminations can occur. If all delam types are disabled, it will always delam into a Nuke.
     /// </summary>
     public static readonly CVarDef<bool> SupermatterDoTeslooseDelam =
         CVarDef.Create("supermatter.do_tesloose", true, CVar.SERVER);
+
+    /// IMP SPECIAL
+    /// <summary>
+    ///     Toggles whether or not Resonance Cascade delaminations can occur. If all delam types are disabled, it will always delam into a Nuke.
+    /// </summary>
+    public static readonly CVarDef<bool> SupermatterDoCascadeDelam =
+        CVarDef.Create("supermatter.do_cascade", true, CVar.SERVER);
 
     /// <summary>
     ///     When true, bypass the normal checks to determine delam type, and instead use the type chosen by supermatter.forced_delam_type

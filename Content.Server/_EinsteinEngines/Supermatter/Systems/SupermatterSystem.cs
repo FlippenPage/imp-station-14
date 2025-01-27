@@ -22,6 +22,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
+using Content.Shared._Impstation.Supermatter.CascadeCrystal.Components;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
@@ -66,7 +67,8 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterComponent, InteractHandEvent>(OnHandInteract);
         SubscribeLocalEvent<SupermatterComponent, InteractUsingEvent>(OnItemInteract);
         SubscribeLocalEvent<SupermatterComponent, ExaminedEvent>(OnExamine);
-        SubscribeLocalEvent<SupermatterComponent, SupermatterDoAfterEvent>(OnGetSliver);
+        SubscribeLocalEvent<SupermatterComponent, SMSliverDoAfterEvent>(OnGetSliver);
+        SubscribeLocalEvent<SupermatterComponent, SMCascadeDoAfterEvent>(OnGetCascade);
     }
 
     public override void Update(float frameTime)
@@ -181,7 +183,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         if (!HasComp<SharpComponent>(args.Used))
             return;
 
-        var dae = new DoAfterArgs(EntityManager, args.User, 30f, new SupermatterDoAfterEvent(), args.Target)
+        var sdae = new DoAfterArgs(EntityManager, args.User, 30f, new SMSliverDoAfterEvent(), args.Target)
         {
             BreakOnDamage = true,
             BreakOnHandChange = false,
@@ -190,11 +192,26 @@ public sealed partial class SupermatterSystem : EntitySystem
             RequireCanInteract = true,
         };
 
-        _doAfter.TryStartDoAfter(dae);
+        _doAfter.TryStartDoAfter(sdae);
         _popup.PopupClient(Loc.GetString("supermatter-tamper-begin"), uid, args.User);
+
+        if (!HasComp<CascadeCrystalComponent>(args.Used))
+            return;
+
+        var cdae = new DoAfterArgs(EntityManager, args.User, 30f, new SMCascadeDoAfterEvent(), args.Target)
+        {
+            BreakOnDamage = true,
+            BreakOnHandChange = false,
+            BreakOnWeightlessMove = false,
+            NeedHand = true,
+            RequireCanInteract = true,
+        };
+        
+        _doAfter.TryStartDoAfter(cdae);
+
     }
 
-    private void OnGetSliver(EntityUid uid, SupermatterComponent sm, ref SupermatterDoAfterEvent args)
+    private void OnGetSliver(EntityUid uid, SupermatterComponent sm, ref SMSliverDoAfterEvent args)
     {
         if (args.Cancelled)
             return;
@@ -210,6 +227,21 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         sm.DelamTimer /= 2;
     }
+
+    private void OnGetCascade(EntityUid uid, SupermatterComponent sm, ref SMCascadeDoAfterEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        sm.Damage += sm.DamageDelaminationPoint / 900;
+
+        var integrity = GetIntegrity(sm).ToString("0.00");
+        SendSupermatterAnnouncement(uid, sm, Loc.GetString("supermatter-announcement-cc-tamper", ("integrity", integrity)));
+
+        sm.DelamTimer /= 15;
+        sm.CascadeCrystal = true;
+    }
+
 
     private void OnExamine(EntityUid uid, SupermatterComponent sm, ref ExaminedEvent args)
     {

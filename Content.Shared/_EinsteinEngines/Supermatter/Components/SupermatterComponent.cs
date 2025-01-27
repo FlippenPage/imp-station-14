@@ -29,6 +29,9 @@ public sealed partial class SupermatterComponent : Component
     [DataField]
     public bool SliverRemoved = false;
 
+    [DataField]
+    public bool CascadeCrystal = true;
+
     public string[] LightningPrototypes =
     {
         "SupermatterLightning",
@@ -420,7 +423,13 @@ public sealed partial class GasFact
 }
 
 [Serializable, NetSerializable]
-public sealed partial class SupermatterDoAfterEvent : SimpleDoAfterEvent
+public sealed partial class SMSliverDoAfterEvent : SimpleDoAfterEvent
+{
+
+}
+
+[Serializable, NetSerializable]
+public sealed partial class SMCascadeDoAfterEvent : SimpleDoAfterEvent
 {
 
 }

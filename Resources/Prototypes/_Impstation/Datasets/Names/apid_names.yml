@@ -23,6 +23,24 @@
   - Mason
   - Leafcutter
 
+- type: dataset
+  id: apid_emergency
+  values:
+  - Watcher
+  - Guardian
+
+- type: dataset
+  id: apid_chef
+  values:
+  - Baker
+  - Butcher
+
+- type: dataset
+  id: apid_courier
+  values:
+  - Messenger
+  - Carrier
+
 - type: dataset #ANGRY BEE NOISES
   id: names_apid
   values:

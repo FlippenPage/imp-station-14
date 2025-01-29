@@ -6,6 +6,7 @@ using Content.Shared.Interaction.Events;
 using Content.Shared.Mind.Components;
 using Content.Shared.PAI;
 using Content.Shared.Popups;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Random;
 using System.Text;
 using Robust.Shared.Player;
@@ -15,6 +16,7 @@ namespace Content.Server.PAI;
 public sealed class PAISystem : SharedPAISystem
 {
     [Dependency] private readonly InstrumentSystem _instrumentSystem = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
@@ -55,6 +57,13 @@ public sealed class PAISystem : SharedPAISystem
         // Cause then you could remotely figure out information about the owner's equipped items.
 
         _metaData.SetEntityName(uid, val);
+        BootSound(uid, component);
+    }
+
+    private void BootSound(EntityUid uid, PAIComponent component)
+    {
+        if (component.BootSound != null)
+            _audio.PlayPvs(component.BootSound, uid);
     }
 
     private void OnMindRemoved(EntityUid uid, PAIComponent component, MindRemovedMessage args)

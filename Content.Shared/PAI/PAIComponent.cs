@@ -1,5 +1,6 @@
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Audio;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Shared.PAI;
@@ -23,6 +24,9 @@ public sealed partial class PAIComponent : Component
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public EntityUid? LastUser;
+
+    [ViewVariables(VVAccess.ReadWrite), DataField("bootSound")]
+    public SoundSpecifier? BootSound = new SoundPathSpecifier("/Audio/_Impstation/Misc/pai_boot.ogg");
 
     [DataField(serverOnly: true)]
     public EntProtoId? MidiActionId = "ActionPAIPlayMidi";

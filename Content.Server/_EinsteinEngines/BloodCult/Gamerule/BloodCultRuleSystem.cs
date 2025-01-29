@@ -227,7 +227,7 @@ public sealed class BloodCultRuleSystem : GameRuleSystem<BloodCultRuleComponent>
             if (!_antagSelection.TryGetNextAvailableDefinition(antagSelectionEnt, out var def))
                 def = antagSelection.Definitions.Last();
 
-            _antagSelection.MakeAntag(antagSelectionEnt, actor.PlayerSession, def.Value, null);
+            _antagSelection.MakeAntag(antagSelectionEnt, actor.PlayerSession, def.Value, true);
         }
     }
 

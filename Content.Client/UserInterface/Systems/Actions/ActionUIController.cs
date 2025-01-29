@@ -57,8 +57,6 @@ public sealed class ActionUIController : UIController, IOnStateChanged<GameplayS
     private ActionsWindow? _window;
 
     private ActionsBar? ActionsBar => UIManager.GetActiveUIWidgetOrNull<ActionsBar>();
-
-    private CultActionsBar? CultActionsBar => UIManager.GetActiveUIWidgetOrNull<CultActionsBar>();
     private MenuButton? ActionButton => UIManager.GetActiveUIWidgetOrNull<MenuBar.Widgets.GameTopMenuBar>()?.ActionButton;
 
     public bool IsDragging => _menuDragHelper.IsDragging;
@@ -757,12 +755,6 @@ public sealed class ActionUIController : UIController, IOnStateChanged<GameplayS
             return;
         }
 
-        if (CultActionsBar == null)
-        {
-            return;
-        }
-
-
         if (_window != null)
         {
             _window.OnOpen -= OnWindowOpened;
@@ -794,14 +786,6 @@ public sealed class ActionUIController : UIController, IOnStateChanged<GameplayS
         }
 
         RegisterActionContainer(ActionsBar.ActionsContainer);
-
-        if (CultActionsBar == null)
-        {
-            return;
-        }
-
-        RegisterActionContainer(CultActionsBar.ActionsContainer);
-
         _actionsSystem?.LinkAllActions();
     }
 

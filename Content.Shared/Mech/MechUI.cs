@@ -82,6 +82,18 @@ public sealed class MechSoundboardPlayMessage : MechEquipmentUiMessage
     }
 }
 
+
+[Serializable, NetSerializable]
+public sealed class MechSetNameBuiMessage : BoundUserInterfaceMessage
+{
+    public string Name;
+
+    public MechSetNameBuiMessage(string name)
+    {
+        Name = name;
+    }
+}
+
 /// <summary>
 /// BUI state for mechs that also contains all equipment ui states.
 /// </summary>

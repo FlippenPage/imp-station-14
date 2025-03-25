@@ -28,6 +28,11 @@ public sealed class MechBoundUserInterface : BoundUserInterface
         {
             SendMessage(new MechEquipmentRemoveMessage(EntMan.GetNetEntity(uid)));
         };
+
+        _menu.NameChanged += name =>
+        {
+            SendMessage(new MechSetNameBuiMessage(name));
+        };
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

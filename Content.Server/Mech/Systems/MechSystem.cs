@@ -1,10 +1,12 @@
 using System.Linq;
 using Content.Server.Atmos.EntitySystems;
+using Content.Server.Administration.Logs;
 using Content.Server.Mech.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Damage;
+using Content.Shared.Database;
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
@@ -12,6 +14,8 @@ using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.EntitySystems;
 using Content.Shared.Movement.Events;
+using Content.Shared.NameIdentifier;
+using Content.Shared.Preferences;
 using Content.Shared.Popups;
 using Content.Shared.Tools.Components;
 using Content.Shared.Verbs;
@@ -39,6 +43,8 @@ public sealed partial class MechSystem : SharedMechSystem
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly SharedToolSystem _toolSystem = default!;
+    [Dependency] private readonly IAdminLogManager _adminLog = default!;
+    [Dependency] private readonly MetaDataSystem _metaData = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -70,6 +76,7 @@ public sealed partial class MechSystem : SharedMechSystem
         #region Equipment UI message relays
         SubscribeLocalEvent<MechComponent, MechGrabberEjectMessage>(ReceiveEquipmentUiMesssages);
         SubscribeLocalEvent<MechComponent, MechSoundboardPlayMessage>(ReceiveEquipmentUiMesssages);
+        SubscribeLocalEvent<MechComponent, MechSetNameBuiMessage>(OnSetNameBuiMessage);
         #endregion
     }
 
@@ -285,7 +292,29 @@ public sealed partial class MechSystem : SharedMechSystem
                 RaiseLocalEvent(equipment, ev);
         }
     }
+    private void OnSetNameBuiMessage(EntityUid uid, MechComponent component, MechSetNameBuiMessage args)
+    {
+        if (args.Name.Length > HumanoidCharacterProfile.MaxNameLength ||
+            args.Name.Length == 0 ||
+            string.IsNullOrWhiteSpace(args.Name) ||
+            string.IsNullOrEmpty(args.Name))
+        {
+            return;
+        }
 
+        var name = args.Name.Trim();
+        if (TryComp<NameIdentifierComponent>(uid, out var identifier))
+            name = $"{name} {identifier.FullIdentifier}";
+
+        var metaData = MetaData(uid);
+
+        // don't change the name if the value doesn't actually change
+        if (metaData.EntityName.Equals(name, StringComparison.InvariantCulture))
+            return;
+
+        _adminLog.Add(LogType.Action, LogImpact.High, $"{ToPrettyString(args.Actor):player} set mech \"{ToPrettyString(uid)}\"'s name to: {name}");
+        _metaData.SetEntityName(uid, name, metaData);
+    }
     public override void UpdateUserInterface(EntityUid uid, MechComponent? component = null)
     {
         if (!Resolve(uid, ref component))

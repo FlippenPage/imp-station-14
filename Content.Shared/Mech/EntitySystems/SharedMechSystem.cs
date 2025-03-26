@@ -135,6 +135,7 @@ public abstract class SharedMechSystem : EntitySystem
         if (_net.IsClient)
             return;
 
+        _actions.AddAction(pilot, ref component.MechLightActionEntity, component.MechLightAction, mech);
         _actions.AddAction(pilot, ref component.MechCycleActionEntity, component.MechCycleAction, mech);
         _actions.AddAction(pilot, ref component.MechUiActionEntity, component.MechUiAction, mech);
         _actions.AddAction(pilot, ref component.MechEjectActionEntity, component.MechEjectAction, mech);

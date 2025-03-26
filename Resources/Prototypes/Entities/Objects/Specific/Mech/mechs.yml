@@ -48,6 +48,7 @@
       types:
         Blunt: 25 #thwack
         Structural: 20
+    range: 2
     soundHit:
       collection: MetalThud
     canWideSwing: false
@@ -106,6 +107,45 @@
         node: start
       - !type:DoActsBehavior
         acts: ["Destruction"]
+  - type: PowerCellSlot
+    cellSlotId: mech-battery-slot
+  - type: ItemSlots
+    slots:
+      mech-battery-slot:
+        name: power-cell-slot-component-slot-name-default
+        disableEject: true
+        swap: false
+        insertOnInteract: false
+  - type: HandheldLight
+    toggleOnInteract: false
+    wattage: 0.2
+    blinkingBehaviourId: blinking
+    radiatingBehaviourId: radiating
+    turnOnSound: /Audio/_Impstation/Mecha/brass_skewer.ogg
+    turnOffSound: /Audio/_Impstation/Mecha/brass_skewer.ogg
+  - type: LightBehaviour
+    behaviours:
+    - !type:FadeBehaviour
+      id: radiating
+      maxDuration: 2.0
+      startValue: 3.0
+      endValue: 2.0
+      isLooped: true
+      reverseWhenFinished: true
+    - !type:PulseBehaviour
+      id: blinking
+      interpolate: Nearest
+      maxDuration: 1.0
+      minValue: 0.1
+      maxValue: 2.0
+      isLooped: true
+  - type: ToggleableLightVisuals
+  - type: PointLight
+    enabled: false
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
+    radius: 7
+    netsync: false
 
 - type: entity
   id: MechRipley

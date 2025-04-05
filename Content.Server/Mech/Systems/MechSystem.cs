@@ -22,11 +22,13 @@ using Content.Shared.Verbs;
 using Content.Shared.Wires;
 using Content.Server.Body.Systems;
 using Content.Shared.Tools.Systems;
+using Content.Shared.Zombies;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Content.Shared.Whitelist;
+using Content.Shared.Zombies;
 
 namespace Content.Server.Mech.Systems;
 
@@ -234,6 +236,12 @@ public sealed partial class MechSystem : SharedMechSystem
             _popup.PopupEntity(Loc.GetString("mech-no-enter", ("item", uid)), args.User);
             return;
         }
+
+        if (HasComp<ZombieComponent>(args.User))
+        {
+            _popup.PopupEntity(Loc.GetString("mech-no-enter", ("item", uid)), args.User);
+            return;
+        } 
 
         TryInsert(uid, args.Args.User, component);
         _actionBlocker.UpdateCanMove(uid);

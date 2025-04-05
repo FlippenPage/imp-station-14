@@ -146,6 +146,7 @@
     autoRot: true
     radius: 7
     netsync: false
+  - type: NoRotateOnInteract
 
 - type: entity
   id: MechRipley

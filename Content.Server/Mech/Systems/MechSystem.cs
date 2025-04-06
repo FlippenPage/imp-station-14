@@ -146,7 +146,7 @@ public sealed partial class MechSystem : SharedMechSystem
         }
 
         // TODO: this should just be damage and battery
-        component.Integrity = component.MaxIntegrity;
+//        component.Integrity = component.MaxIntegrity; //imp
         component.Energy = component.MaxEnergy;
 
         _actionBlocker.UpdateCanMove(uid);

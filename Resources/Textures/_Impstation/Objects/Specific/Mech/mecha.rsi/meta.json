@@ -46,6 +46,20 @@
       "name": "ripleymkii-broken"
     },
     {
+      "name": "hauler",
+      "directions": 4
+    },
+    {
+      "name": "hauler-empty",
+      "directions": 4
+    },
+    {
+      "name": "hauler-open"
+    },
+    {
+      "name": "hauler-broken"
+    },
+    {
       "name": "vim",
       "directions": 4
     },

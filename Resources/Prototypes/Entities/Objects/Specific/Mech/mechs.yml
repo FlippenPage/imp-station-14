@@ -90,7 +90,7 @@
     damageModifierSet: Metallic
   - type: FootstepModifier
     footstepSoundCollection:
-      path: /Audio/Mecha/mechmove03.ogg
+      path: /Audio/_Impstation/Mecha/mechstep.ogg #imp
   - type: GuideHelp
     guides:
     - Robotics
@@ -146,13 +146,21 @@
     autoRot: true
     radius: 7
     netsync: false
-  - type: NoRotateOnInteract
+  - type: NoRotateOnInteract #imp
+  - type: HealthExaminable #imp
+    examinableTypes:
+      - Blunt
+      - Slash
+      - Piercing
+      - Heat
+      - Shock
+    locPrefix: silicon
 
 - type: entity
   id: MechRipley
   parent: BaseMech
-  name: Ripley APLU
-  description: Versatile and lightly armored, the Ripley is useful for almost any heavy work scenario. The "APLU" stands for Autonomous Power Loading Unit.
+  name: APLU MK-I "Ripley" #imp
+  description: Autonomous Power Loader Unit MK-I. Designed primarily around heavy lifting, the Ripley can be outfitted with utility equipment to fill a number of roles. #imp
   components:
   - type: Sprite
     drawdepth: Mobs
@@ -168,10 +176,12 @@
     baseState: ripley
     openState: ripley-open
     brokenState: ripley-broken
-    mechToPilotDamageMultiplier: 0.75
+#    mechToPilotDamageMultiplier: 0.75 #imp
     pilotWhitelist:
       components:
         - HumanoidAppearance
+    entryDelay: 1 #imp
+    exitDelay: 1 #imp
   - type: MeleeWeapon
     hidden: true
     attackRate: 0.7 #imp change
@@ -184,6 +194,16 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 2.25
     baseSprintSpeed: 3.6
+  - type: Armor #imp
+    modifiers:
+      coefficients:
+        Blunt: 0.60
+        Slash: 0.60
+        Piercing: 0.80
+        Heat: 0.85
+        Caustic: 0
+  - type: ExplosionResistance #imp
+    damageCoefficient: 0.60
 
 - type: entity
   id: MechRipleyBattery
@@ -218,10 +238,20 @@
     baseState: honker
     openState: honker-open
     brokenState: honker-broken
-    mechToPilotDamageMultiplier: 0.5
+#    mechToPilotDamageMultiplier: 0.5 #imp
     pilotWhitelist:
       components:
       - HumanoidAppearance
+    entryDelay: 4
+    exitDelay: 4
+    maxIntegrity: 140
+    integrity: 140
+  - type: Armor #imp
+    modifiers:
+      coefficients:
+        Blunt: -0.80
+        Slash: -0.80
+        Caustic: 0
 
 - type: entity
   parent: MechHonker
@@ -253,7 +283,7 @@
     baseState: hamtr
     openState: hamtr-open
     brokenState: hamtr-broken
-    mechToPilotDamageMultiplier: 0.2
+#    mechToPilotDamageMultiplier: 0.2 #imp
     maxEquipmentAmount: 2
     airtight: true
     equipmentWhitelist:
@@ -323,7 +353,7 @@
     brokenState: vim-broken
     maxEquipmentAmount: 0
     # keep mouse safe
-    mechToPilotDamageMultiplier: 0.1
+#    mechToPilotDamageMultiplier: 0.1 #imp
     airtight: true
     pilotWhitelist:
       tags:

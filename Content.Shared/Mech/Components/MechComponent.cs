@@ -17,14 +17,14 @@ public sealed partial class MechComponent : Component
     /// <summary>
     /// How much "health" the mech has left.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
-    public FixedPoint2 Integrity;
+    [DataField, AutoNetworkedField, ViewVariables(VVAccess.ReadWrite),]
+    public FixedPoint2 Integrity = 200;
 
     /// <summary>
     /// The maximum amount of damage the mech can take.
     /// </summary>
     [DataField, AutoNetworkedField, ViewVariables(VVAccess.ReadWrite)]
-    public FixedPoint2 MaxIntegrity = 250;
+    public FixedPoint2 MaxIntegrity = 200; //250-200 imp
 
     /// <summary>
     /// How much energy the mech has.
@@ -106,7 +106,7 @@ public sealed partial class MechComponent : Component
     /// How long it takes to enter the mech.
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public float EntryDelay = 3;
+    public float EntryDelay = 3; 
 
     /// <summary>
     /// How long it takes to exit the mech, or be pulled out.

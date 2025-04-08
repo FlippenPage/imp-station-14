@@ -67,3 +67,6 @@ trait-transatlantic-desc = You sound like a hardboiled detective, or a peppy new
 
 trait-positivity-name = Relentless positivity
 trait-positivity-desc = You're always making speeches about the power of friendship. Enjoy your shift!
+
+trait-paralyzed-name = Paraplegia
+trait-paralyzed-desc = Your legs are paralyzed. You can only stand up with the assistance of a walking device.

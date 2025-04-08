@@ -6,9 +6,12 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Standing;
 using Content.Shared.Stunnable;
+using Content.Shared.Traits.Assorted;
+using Content.Shared.Hands.EntitySystems;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using Content.Shared._Impstation.WalkingAid;
 
 namespace Content.Shared._Goobstation.Standing;
 
@@ -17,10 +20,12 @@ public abstract class SharedLayingDownSystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly StandingStateSystem _standing = default!;
     [Dependency] private readonly SharedGravitySystem _gravity = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-
+    [Dependency] private readonly IEntityManager _entManager = default!;
+    
     public override void Initialize()
     {
         CommandBinds.Builder
@@ -70,12 +75,29 @@ public abstract class SharedLayingDownSystem : EntitySystem
             return;
         }
 
+        var isDown = _standing.IsDown(uid, standing);
+
         RaiseNetworkEvent(new CheckAutoGetUpEvent(GetNetEntity(uid)));
 
         if (HasComp<KnockedDownComponent>(uid) || !_mobState.IsAlive(uid))
             return;
 
-        var isDown = _standing.IsDown(uid, standing);
+        if (HasComp<LegsParalyzedComponent>(uid) || !_mobState.IsAlive(uid))
+        {
+            foreach (var item in _hands.EnumerateHeld(uid))
+            {
+                if (HasComp<WalkingAidComponent>(item))
+                {
+                    if (isDown)
+                        TryStandUp(uid, layingDown, standing);
+                    else
+                        TryLieDown(uid, layingDown, standing, isIntentional: ev.Intentional);
+                }
+            }
+
+            return;
+        }
+
         if (_timing.CurTime < layingDown.NextLayDown && isDown)
         {
             var timeRemaining = layingDown.NextLayDown - _timing.CurTime;

@@ -3,7 +3,7 @@
 namespace Content.Shared.Traits.Assorted;
 
 /// <summary>
-/// Set player speed to zero and standing state to down, simulating leg paralysis.
+/// Set player to fall over and be unable to get back up without a walking aid, simulating leg paralysis.
 /// </summary>
 [RegisterComponent, NetworkedComponent, Access(typeof(LegsParalyzedSystem))]
 public sealed partial class LegsParalyzedComponent : Component

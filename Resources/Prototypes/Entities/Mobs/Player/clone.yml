@@ -13,7 +13,7 @@
   - Fingerprint
   - NpcFactionMember
   # traits
-  # - LegsParalyzed (you get healed)
+  - LegsParalyzed # (you get healed)
   - LightweightDrunk
   - Narcolepsy
   - Pacified

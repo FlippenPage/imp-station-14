@@ -21,6 +21,7 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Containers;
 using Content.Shared._Goobstation.Standing;
+using Content.Shared.Traits.Assorted;
 
 namespace Content.Shared.Stunnable;
 
@@ -152,6 +153,13 @@ public abstract class SharedStunSystem : EntitySystem
 
         if (TryComp(uid, out LayingDownComponent? layingDown))
         {
+            // IMP EDIT START HIII WD
+            if (HasComp<LegsParalyzedComponent>(uid))
+            {
+                _layingDown.TryLieDown(uid, layingDown);
+                return;
+            }
+            // IMP EDIT END BYEEE WD
             if (layingDown.AutoGetUp && !_container.IsEntityInContainer(uid))
                 _layingDown.TryStandUp(uid, layingDown);
             return;

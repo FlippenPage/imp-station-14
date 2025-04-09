@@ -1,22 +1,14 @@
 ﻿using Content.Client.GameObjects.EntitySystems;
-using Content.Client.Interfaces;
-using Content.Client.UserInterface.Stylesheets;
+using Content.Client.Photography.UI;
 using Content.Shared.GameObjects.Components.Photography;
-using Robust.Client.Graphics.ClientEye;
-using Robust.Client.Interfaces.Graphics;
-using Robust.Client.Interfaces.Graphics.ClientEye;
 using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.GameObjects;
-using Robust.Shared.GameObjects.Systems;
-using Robust.Shared.Interfaces.Network;
-using Robust.Shared.Interfaces.Resources;
 using Robust.Shared.IoC;
 using Robust.Shared.Localization;
 using Robust.Shared.Log;
 using Robust.Shared.Maths;
-using Robust.Shared.Players;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Robust.Shared.ViewVariables;
@@ -26,10 +18,10 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Content.Client.GameObjects.Components.Photography
+namespace Content.Client.Photography
 {
     [RegisterComponent]
-    public sealed partial class PhotoCameraComponent : SharedPhotoCameraComponent, IItemStatus
+    public sealed partial class PhotoCameraComponent : SharedPhotoCameraComponent
     {
 
 #pragma warning disable 649
@@ -42,7 +34,7 @@ namespace Content.Client.GameObjects.Components.Photography
 
         private PhotoSystem _photoSystem;
 
-        [ViewVariables(VVAccess.ReadWrite)] private bool _uiUpdateNeeded;
+        [ViewVariables(VVAccess.ReadWrite)] public bool _uiUpdateNeeded;
         [ViewVariables] public bool CameraOn { get; private set; } = false;
         [ViewVariables] public int Radius { get; private set; } = 0;
         [ViewVariables] public int Film { get; private set; } = 0;
@@ -67,65 +59,7 @@ namespace Content.Client.GameObjects.Components.Photography
             _uiUpdateNeeded = true;
         }
 
-        public Control MakeControl() => new StatusControl(this);
-
-        private sealed class StatusControl : Control
-        {
-            private readonly PhotoCameraComponent _parent;
-            private readonly RichTextLabel _label;
-
-            public StatusControl(PhotoCameraComponent parent)
-            {
-                _parent = parent;
-                _label = new RichTextLabel { StyleClasses = { StyleNano.StyleClassItemStatus } };
-                AddChild(_label);
-
-                parent._uiUpdateNeeded = true;
-            }
-
-            protected override void Update(FrameEventArgs args)
-            {
-                base.Update(args);
-
-                if (!_parent._uiUpdateNeeded)
-                {
-                    return;
-                }
-
-                _parent._uiUpdateNeeded = false;
-
-                var message = new FormattedMessage();
-
-                if (_parent.CameraOn)
-                {
-                    message.AddMarkup(Loc.GetString("[color=green]On[/color]\n"));
-                }
-                else
-                {
-                    message.AddMarkup(Loc.GetString("[color=red]Off[/color]\n"));
-                }
-
-                message.AddMarkup(Loc.GetString("Film: [color={0}]{1}/{2}[/color], ",
-                    _parent.Film <= 0 ? "red" : "white", _parent.Film, _parent.FilmMax));
-                message.AddMarkup(Loc.GetString("Radius: [color=white]{0}x{0}[/color]", _parent.Radius * 2));
-
-                _label.SetMessage(message);
-            }
-        }
-
-        public override void HandleNetworkMessage(ComponentMessage message, INetChannel netChannel, ICommonSession session = null)
-        {
-            base.HandleNetworkMessage(message, netChannel, session);
-
-            switch (message)
-            {
-                case SuicideSelfieMessage selfie:
-                    var viewport = _eyeManager.GetWorldViewport();
-                    var center = _eyeManager.WorldToScreen(_playerManager.LocalPlayer.ControlledEntity.Transform.GridPosition);
-                    TryTakePhoto(selfie.Who, new Vector2(center.X, center.Y), true);
-                    break;
-            }
-        }
+        public Control MakeControl() => new PhotoCameraStatusControl(this);
 
         public async void TryTakePhoto(EntityUid author, Vector2 photoCenter, bool suicide = false)
         {

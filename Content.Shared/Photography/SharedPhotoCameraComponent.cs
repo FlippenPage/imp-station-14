@@ -17,9 +17,9 @@ namespace Content.Shared.GameObjects.Components.Photography
     /// And notify the user that they're just waiting for the camera to print their photo.
     /// </summary>
     [Serializable, NetSerializable]
-    public sealed partial class TakingPhotoMessage : BoundUserInterfaceMessage
+    public sealed partial class TakingPhotoEvent : InstantActionEvent
     {
-        public TakingPhotoMessage()
+        public TakingPhotoEvent()
         {
         }
     }
@@ -35,12 +35,10 @@ namespace Content.Shared.GameObjects.Components.Photography
     {
         public readonly EntityUid Author;
         public readonly byte[] Data;
-        public readonly bool Suicide;
-        public TookPhotoMessage(EntityUid author, byte[] data, bool suicide)
+        public TookPhotoMessage(EntityUid author, byte[] data)
         {
             Author = author;
             Data = data;
-            Suicide = suicide;
         }
     }
 

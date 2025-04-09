@@ -1,9 +1,12 @@
 ﻿using Content.Client.GameObjects.EntitySystems;
 using Content.Client.Photography.UI;
 using Content.Shared.GameObjects.Components.Photography;
+using Content.Shared.Popups;
+using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.ContentPack;
 using Robust.Shared.GameObjects;
 using Robust.Shared.IoC;
 using Robust.Shared.Localization;
@@ -15,6 +18,7 @@ using Robust.Shared.ViewVariables;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System;
+using System.Numerics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -23,31 +27,38 @@ namespace Content.Client.Photography
     [RegisterComponent]
     public sealed partial class PhotoCameraComponent : SharedPhotoCameraComponent
     {
-
-#pragma warning disable 649
-        [Dependency] private readonly IClientNotifyManager _notifyManager = default;
+        [Dependency] private readonly SharedPopupSystem _popup = default;
         [Dependency] private readonly IClyde _clyde = default;
         [Dependency] private readonly IEyeManager _eyeManager = default;
         [Dependency] private readonly IPlayerManager _playerManager = default;
         [Dependency] private readonly IResourceManager _resourceManager = default;
-#pragma warning restore 649
+        [Dependency] private readonly EntityManager _entityManager = default;
 
         private PhotoSystem _photoSystem;
 
-        [ViewVariables(VVAccess.ReadWrite)] public bool _uiUpdateNeeded;
-        [ViewVariables] public bool CameraOn { get; private set; } = false;
-        [ViewVariables] public int Radius { get; private set; } = 0;
-        [ViewVariables] public int Film { get; private set; } = 0;
-        [ViewVariables] public int FilmMax { get; private set; } = 0;
+        [ViewVariables(VVAccess.ReadWrite)]
+        public bool UiUpdateNeeded;
 
-        public override void Initialize()
+        [ViewVariables]
+        public bool CameraOn { get; private set; } = false;
+
+        [ViewVariables]
+        public int Radius { get; private set; } = 0;
+
+        [ViewVariables]
+        public int Film { get; private set; } = 0;
+
+        [ViewVariables]
+        public int FilmMax { get; private set; } = 0;
+
+        public void Initialize()
         {
             base.Initialize();
 
             _photoSystem = EntitySystem.Get<PhotoSystem>();
         }
 
-        public override void HandleComponentState(ComponentState curState, ComponentState nextState)
+        public void HandleComponentState(ComponentState curState, ComponentState nextState)
         {
             if (!(curState is PhotoCameraComponentState camera))
                 return;
@@ -56,27 +67,28 @@ namespace Content.Client.Photography
             Radius = camera.Radius;
             Film = camera.Film;
             FilmMax = camera.FilmMax;
-            _uiUpdateNeeded = true;
+            UiUpdateNeeded = true;
         }
 
         public Control MakeControl() => new PhotoCameraStatusControl(this);
 
-        public async void TryTakePhoto(EntityUid author, Vector2 photoCenter, bool suicide = false)
+        public async void TryTakePhoto(EntityUid author, Vector2 photoCenter)
         {
             if (!CameraOn)
             {
-                _notifyManager.PopupMessageCursor(_playerManager.LocalPlayer.ControlledEntity, Loc.GetString("Turn the {0} on first!", Owner.Name));
+                _popup.PopupCursor(_playerManager.LocalSession?.AttachedEntity, Loc.GetString("Turn the {0} on first!", Owner.Name));
                 return;
             }
 
             if(Film <= 0)
             {
-                _notifyManager.PopupMessageCursor(_playerManager.LocalPlayer.ControlledEntity, Loc.GetString("No film!"));
+                _popup.PopupCursor(_playerManager.LocalSession?.AttachedEntity, Loc.GetString("No film!"));
                 return;
             }
 
             //Play sounds
-            SendNetworkMessage(new TakingPhotoMessage());
+            var photoEv = new TakingPhotoEvent();
+            _entityManager.EventBus.RaiseLocalEvent(author, ref photoEv);
 
             //Take a screenshot before the UI, and then crop it to the photo radius
             var screenshot = await _clyde.ScreenshotAsync(ScreenshotType.BeforeUI);
@@ -86,7 +98,7 @@ namespace Content.Client.Photography
             var cropX = (int)Math.Clamp(Math.Floor(photoCenter.X - cropDimensions / 2), 0, screenshot.Width - cropDimensions);
             var cropY = (int)Math.Clamp(Math.Floor(photoCenter.Y - cropDimensions / 2), 0, screenshot.Height - cropDimensions);
 
-            Logger.InfoS("photo", $"cropX:{cropX}, cropY:{cropY}, w:{screenshot.Width}, h:{screenshot.Height}");
+            ISawmill.Info("photo", $"cropX:{cropX}, cropY:{cropY}, w:{screenshot.Width}, h:{screenshot.Height}");
 
             using (screenshot)
             {

@@ -17,17 +17,17 @@ namespace Content.Client.Photography.UI
             _label = new RichTextLabel { StyleClasses = { StyleNano.StyleClassItemStatus } };
             AddChild(_label);
 
-            parent._uiUpdateNeeded = true;
+            parent.UiUpdateNeeded = true;
         }
 
         public void Update(FrameEventArgs args)
         {
-            if (!_parent._uiUpdateNeeded)
+            if (!_parent.UiUpdateNeeded)
             {
                 return;
             }
 
-            _parent._uiUpdateNeeded = false;
+            _parent.UiUpdateNeeded = false;
 
             var message = new FormattedMessage();
 

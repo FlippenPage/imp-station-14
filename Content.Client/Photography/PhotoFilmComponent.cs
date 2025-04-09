@@ -3,14 +3,14 @@
 namespace Content.Client.Photography;
 
 [RegisterComponent]
-public sealed partial class PhotoFilmComponent : SharedPhotoFilmComponent
+public abstract partial class PhotoFilmComponent : SharedPhotoFilmComponent
 {
     [ViewVariables(VVAccess.ReadWrite)]
     public bool UiUpdateNeeded;
 
-    [ViewVariables]
+    [ViewVariables, DataField]
     public int Film { get; private set; } = 10;
 
-    [ViewVariables]
+    [ViewVariables, DataField]
     public int FilmMax { get; private set; } = 10;
 }

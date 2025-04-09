@@ -41,7 +41,7 @@ namespace Content.Client.Photography.UI
             }
 
             message.AddMarkupOrThrow(Loc.GetString("Film: [color={color}]{film}/{max}[/color], ",
-            ("color", _parent.Film <= 0 ? "red" : "white"), ("film", _parent.Film), ("max", _parent.FilmMax)));
+            ("{color}", _parent.Film <= 0 ? "red" : "white"), ("film", _parent.Film), ("max", _parent.FilmMax)));
             message.AddMarkupOrThrow(Loc.GetString("Radius: [color=white]{0}x{0}[/color]", ("0", _parent.Radius * 2)));
 
             _label.SetMessage(message);

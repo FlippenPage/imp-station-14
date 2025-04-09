@@ -3,7 +3,7 @@
 namespace Content.Server.Photography;
 
 [RegisterComponent, Access(typeof(PhotoFilmSystem))]
-public sealed partial class PhotoFilmComponent : SharedPhotoFilmComponent
+public abstract partial class PhotoFilmComponent : SharedPhotoFilmComponent
 {
 
     [DataField]
@@ -12,7 +12,7 @@ public sealed partial class PhotoFilmComponent : SharedPhotoFilmComponent
     [DataField]
     public int FilmMaxInt = 10;
 
-    [ViewVariables]
+    [ViewVariables, DataField]
     public int Film
     {
         get => FilmInt;
@@ -22,7 +22,7 @@ public sealed partial class PhotoFilmComponent : SharedPhotoFilmComponent
             Dirty();
         }
     }
-    [ViewVariables]
+    [ViewVariables, DataField]
     public int FilmMax
     {
         get => FilmMaxInt;

@@ -24,9 +24,7 @@ namespace Content.Shared.GameObjects.EntitySystems
         /// </summary>
         private Dictionary<string, ResPath> _photos = new Dictionary<string, ResPath>();
 
-#pragma warning disable 649
         [Dependency] private readonly IResourceManager _resourceManager = default;
-#pragma warning restore 649
 
         protected void EnsurePhotoDirExists()
         {

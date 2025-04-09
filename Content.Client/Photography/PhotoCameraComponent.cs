@@ -88,7 +88,7 @@ namespace Content.Client.Photography
 
             //Play sounds
             var photoEv = new TakingPhotoEvent();
-            _entityManager.EventBus.RaiseLocalEvent(author, ref photoEv);
+            _entityManager.EventBus.RaiseLocalEvent(author, photoEv);
 
             //Take a screenshot before the UI, and then crop it to the photo radius
             var screenshot = await _clyde.ScreenshotAsync(ScreenshotType.BeforeUI);
@@ -113,7 +113,7 @@ namespace Content.Client.Photography
                 await using var file =
                     _resourceManager.UserData.Open(path, FileMode.Open);
 
-                SendNetworkMessage(new TookPhotoMessage(author, file.CopyToArray(), suicide));
+                SendNetworkMessage(new TookPhotoMessage(author, file.CopyToArray()));
             }
         }
     }

@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Content.Shared.GameObjects.Components.Photography
+namespace Content.Shared.Photography
 {
-    public sealed partial class SharedPhotoFilmComponent : Component
+    public abstract partial class SharedPhotoFilmComponent : Component
     {
         public string Name => "PhotoFilm";
         public int NetID;
@@ -17,7 +17,7 @@ namespace Content.Shared.GameObjects.Components.Photography
     {
         public readonly int Film;
         public readonly int FilmMax;
-        public PhotoFilmComponentState(int film, int filmMax) : base(ContentNetIDs.PHOTO_FILM)
+        public PhotoFilmComponentState(int film, int filmMax)
         {
             Film = film;
             FilmMax = filmMax;

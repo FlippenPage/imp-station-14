@@ -1,26 +1,7 @@
-﻿using Robust.Shared.GameObjects;
-using Robust.Shared.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Content.Shared.Photography;
 
-namespace Content.Shared.Photography
+public sealed partial class SharedPhotoFilmComponent : Component
 {
-    public abstract partial class SharedPhotoFilmComponent : Component
-    {
-        public string Name => "PhotoFilm";
-        public int NetID;
-    }
-
-    [NetSerializable, Serializable]
-    public class PhotoFilmComponentState : ComponentState
-    {
-        public readonly int Film;
-        public readonly int FilmMax;
-        public PhotoFilmComponentState(int film, int filmMax)
-        {
-            Film = film;
-            FilmMax = filmMax;
-        }
-    }
+    public string Name => "PhotoFilm";
+    public int NetID;
 }

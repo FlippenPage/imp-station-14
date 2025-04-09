@@ -19,20 +19,26 @@ namespace Content.Server.GameObjects.Components.Photography
     [RegisterComponent]
     public sealed partial class PhotoCameraComponent : SharedPhotoCameraComponent, IExamine, IUse, IInteractUsing, ISuicideAct
     {
-#pragma warning disable 649
         [Dependency] private readonly IEntityManager _entityManager;
         [Dependency] private readonly IPrototypeManager _prototypeManager = default;
         [Dependency] private readonly IRobustRandom _robustRandom = default;
-#pragma warning restore 649
 
         private AudioSystem _audioSystem;
         private PhotoSystem _photoSystem;
 
-        private int _radius = 1;
-        private int _film = 10;
-        private int _filmMax = 10;
-        private bool _cameraOn = false;
         private SpriteComponent _spriteComponent;
+
+        [DataField]
+        private int _radius = 1;
+
+        [DataField]
+        private int _film = 10;
+
+        [DataField]
+        private int _filmMax = 10;
+
+        [DataField]
+        private bool _cameraOn = false;
 
         [ViewVariables(VVAccess.ReadWrite)]
         public int Radius
@@ -81,27 +87,7 @@ namespace Content.Server.GameObjects.Components.Photography
             }
         }
 
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            Owner.TryGetComponent(out _spriteComponent);
-            _audioSystem = EntitySystem.Get<AudioSystem>();
-            _photoSystem = EntitySystem.Get<PhotoSystem>();
-
-            Dirty();
-        }
-
-        public override void ExposeData(ObjectSerializer serializer)
-        {
-            base.ExposeData(serializer);
-
-            serializer.DataField(ref _film, "film", 10);
-            serializer.DataField(ref _filmMax, "maxfilm", 10);
-            serializer.DataField(ref _radius, "radius", 1);
-        }
-
-        public override ComponentState GetComponentState()
+        public ComponentState GetComponentState()
         {
             return new PhotoCameraComponentState(CameraOn, Radius, Film, FilmMax);
         }
@@ -127,10 +113,6 @@ namespace Content.Server.GameObjects.Components.Photography
                     var photo = photoEnt.GetComponent<PhotoComponent>();
 
                     Logger.InfoS("photo", $"{author.Name} took a photo at {author.Transform.GridPosition}");
-
-                    if (photoTaken.Suicide)
-                    {
-                        photoEnt.Description = Loc.GetString("The last photo {0} ever took before they went missing...", author.Name);
 
                         //Drop their items
                         if (author.TryGetComponent(out IHandsComponent hands))
@@ -230,20 +212,6 @@ namespace Content.Server.GameObjects.Components.Photography
                 _audioSystem.PlayFromEntity("/Audio/machines/machine_switch.ogg", Owner, AudioHelpers.WithVariation(0.15f).WithVolume(-5));
             }
             return true;
-        }
-
-        public SuicideKind Suicide(IEntity victim, IChatManager chat)
-        {
-            if (HasFilm && CameraOn) 
-            {
-                //You could say it was a... Fatal Frame™
-                PlaySoundCollection("TakePhoto", -5);
-                chat.EntityMe(victim, Loc.GetString("takes {0:their} last photo! It looks like {0:theyre} trying to commit suicide!", victim));
-                SendNetworkMessage(new SuicideSelfieMessage(victim.Uid)); //will eventually delete the victim
-                return SuicideKind.Special;
-            }
-            chat.EntityMe(victim, Loc.GetString("beats {0:themselves} to death with the {1}!", victim, Owner.Name));
-            return SuicideKind.Brute;
         }
 
         [Verb]

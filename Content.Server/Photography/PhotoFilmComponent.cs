@@ -6,30 +6,30 @@ using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 using Robust.Shared.ViewVariables;
 
-namespace Content.Server.GameObjects.Components.Photography
+namespace Content.Server.Photography
 {
     [RegisterComponent]
-    public sealed partial class PhotoFilmComponent : SharedPhotoFilmComponent, IExamine
+    public sealed partial class PhotoFilmComponent : SharedPhotoFilmComponent
     {
-        private int _film = 10;
-        private int _filmMax = 10;
+        public int FilmInt = 10;
+        public int FilmMaxInt = 10;
 
         [ViewVariables]
         public int Film
         {
-            get => _film;
+            get => FilmInt;
             set
             {
-                _film = value;
+                FilmInt = value;
                 Dirty();
             }
         }
         [ViewVariables] public int FilmMax
         {
-            get => _filmMax;
+            get => FilmMaxInt;
             set
             {
-                _filmMax = value;
+                FilmMaxInt = value;
                 Dirty();
             }
         }
@@ -45,8 +45,8 @@ namespace Content.Server.GameObjects.Components.Photography
         {
             base.ExposeData(serializer);
 
-            serializer.DataField(ref _film, "film", 10);
-            serializer.DataField(ref _filmMax, "maxfilm", 10);
+            serializer.DataField(ref FilmInt, "film", 10);
+            serializer.DataField(ref FilmMaxInt, "maxfilm", 10);
         }
 
         public override ComponentState GetComponentState()
@@ -62,25 +62,17 @@ namespace Content.Server.GameObjects.Components.Photography
                 return false;
             }
 
-            if(_film >= take)
+            if(FilmInt >= take)
             {
                 took = take;
                 Film -= take;
             } else
             {
-                took = _film;
+                took = FilmInt;
                 Film = 0;
             }
 
-            return _film == 0;
-        }
-
-        public void Examine(FormattedMessage message, bool inDetailsRange)
-        {
-            if (inDetailsRange)
-            {
-                message.AddMarkup(Loc.GetString("Photos: [color=white]{0}/{1}[/color]", _film, _filmMax));
-            }
+            return FilmInt == 0;
         }
     }
 }

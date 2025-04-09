@@ -3,7 +3,7 @@ using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Audio;
+using Robust.Shared.Audio; //imp
 
 namespace Content.Shared.Mech.Components;
 
@@ -137,12 +137,8 @@ public sealed partial class MechComponent : Component
     [DataField]
     public List<EntProtoId> StartingEquipment = new();
 
-
-    [DataField]
-    public SoundSpecifier? SoundNominal = new SoundPathSpecifier("/Audio/_Impstation/Mecha/nominal.ogg");
-
+    [DataField] //imp
     #region Action Prototypes
-    [DataField]
     public EntProtoId MechCycleAction = "ActionMechCycleEquipment";
     [DataField]
     public EntProtoId MechUiAction = "ActionMechOpenUI";

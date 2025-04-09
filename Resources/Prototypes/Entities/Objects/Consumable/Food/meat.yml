@@ -532,6 +532,10 @@
           Quantity: 10
         - ReagentId: Fat
           Quantity: 3
+  - type: Tag # imp - why tf isnt this in FoodMeatBase
+    tags:
+    - Raw
+    - Meat
 
 - type: entity
   name: meatwheat clump
@@ -739,6 +743,9 @@
           Quantity: 5
         - ReagentId: Egg
           Quantity: 6
+  - type: Construction
+    graph: MeatMeatballCooked
+    node: start
 
 - type: entity
   name: slimeball
@@ -1278,6 +1285,9 @@
     entries:
       Burger: MeatBall
       Taco: MeatBall
+  - type: Construction
+    graph: MeatMeatballCooked
+    node: meatball cooked
 
 - type: entity
   name: boiled snail

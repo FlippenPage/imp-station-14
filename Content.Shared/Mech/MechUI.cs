@@ -82,7 +82,9 @@ public sealed class MechSoundboardPlayMessage : MechEquipmentUiMessage
     }
 }
 
-
+/// <summary>
+/// Event raised to set the mech's name from the BUI. #imp
+/// </summary>
 [Serializable, NetSerializable]
 public sealed class MechSetNameBuiMessage : BoundUserInterfaceMessage
 {

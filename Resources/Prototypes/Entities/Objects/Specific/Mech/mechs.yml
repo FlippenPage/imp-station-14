@@ -107,23 +107,23 @@
         node: start
       - !type:DoActsBehavior
         acts: ["Destruction"]
-  - type: PowerCellSlot
+  - type: PowerCellSlot #imp
     cellSlotId: mech-battery-slot
-  - type: ItemSlots
+  - type: ItemSlots #imp
     slots:
       mech-battery-slot:
         name: power-cell-slot-component-slot-name-default
         disableEject: true
         swap: false
         insertOnInteract: false
-  - type: HandheldLight
+  - type: HandheldLight #imp
     toggleOnInteract: false
     wattage: 0.2
     blinkingBehaviourId: blinking
     radiatingBehaviourId: radiating
     turnOnSound: /Audio/_Impstation/Mecha/brass_skewer.ogg
     turnOffSound: /Audio/_Impstation/Mecha/brass_skewer.ogg
-  - type: LightBehaviour
+  - type: LightBehaviour #imp
     behaviours:
     - !type:FadeBehaviour
       id: radiating
@@ -139,14 +139,14 @@
       minValue: 0.1
       maxValue: 2.0
       isLooped: true
-  - type: ToggleableLightVisuals
-  - type: PointLight
+  - type: ToggleableLightVisuals #imp
+  - type: PointLight #imp
     enabled: false
     mask: /Textures/Effects/LightMasks/cone.png
     autoRot: true
     radius: 7
     netsync: false
-  - type: NoRotateOnInteract
+  - type: NoRotateOnInteract #imp
 
 - type: entity
   id: MechRipley

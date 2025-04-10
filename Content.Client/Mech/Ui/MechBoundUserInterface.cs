@@ -1,5 +1,4 @@
 using Content.Client.UserInterface.Fragments;
-using Content.Client._Impstation.Mech.Ui;
 using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using JetBrains.Annotations;

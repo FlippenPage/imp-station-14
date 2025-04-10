@@ -1,0 +1,1 @@
+mech-equipment-label = Equipment 

@@ -1,12 +1,12 @@
 using System.Linq;
 using Content.Server.Atmos.EntitySystems;
-using Content.Server.Administration.Logs;
+using Content.Server.Administration.Logs; //imp
 using Content.Server.Mech.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Damage;
-using Content.Shared.Database;
+using Content.Shared.Database; //imp
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
@@ -14,8 +14,8 @@ using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.EntitySystems;
 using Content.Shared.Movement.Events;
-using Content.Shared.NameIdentifier;
-using Content.Shared.Preferences;
+using Content.Shared.NameIdentifier; //imp
+using Content.Shared.Preferences; //imp
 using Content.Shared.Popups;
 using Content.Shared.Tools.Components;
 using Content.Shared.Verbs;
@@ -43,8 +43,8 @@ public sealed partial class MechSystem : SharedMechSystem
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly SharedToolSystem _toolSystem = default!;
-    [Dependency] private readonly IAdminLogManager _adminLog = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
+    [Dependency] private readonly IAdminLogManager _adminLog = default!; //imp
+    [Dependency] private readonly MetaDataSystem _metaData = default!; //imp
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -76,7 +76,7 @@ public sealed partial class MechSystem : SharedMechSystem
         #region Equipment UI message relays
         SubscribeLocalEvent<MechComponent, MechGrabberEjectMessage>(ReceiveEquipmentUiMesssages);
         SubscribeLocalEvent<MechComponent, MechSoundboardPlayMessage>(ReceiveEquipmentUiMesssages);
-        SubscribeLocalEvent<MechComponent, MechSetNameBuiMessage>(OnSetNameBuiMessage);
+        SubscribeLocalEvent<MechComponent, MechSetNameBuiMessage>(OnSetNameBuiMessage); //imp
         #endregion
     }
 
@@ -217,6 +217,8 @@ public sealed partial class MechSystem : SharedMechSystem
                         BreakOnMove = true,
                     };
 
+                    _popup.PopupEntity(Loc.GetString("mech-eject-pilot-alert", ("item", uid), ("user", args.User)), uid, PopupType.Large);                    
+
                     _doAfter.TryStartDoAfter(doAfterEventArgs);
                 }
             };
@@ -292,6 +294,8 @@ public sealed partial class MechSystem : SharedMechSystem
                 RaiseLocalEvent(equipment, ev);
         }
     }
+    
+    //imp 
     private void OnSetNameBuiMessage(EntityUid uid, MechComponent component, MechSetNameBuiMessage args)
     {
         if (args.Name.Length > HumanoidCharacterProfile.MaxNameLength ||

@@ -109,7 +109,7 @@ public sealed partial class MechComponent : Component
     public float EntryDelay = 3;
 
     /// <summary>
-    /// How long it takes to exit the mech, or be pulled out.
+    /// How long it takes to exit the mech, or be pulled out. #imp
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public float ExitDelay = 3;
@@ -148,6 +148,8 @@ public sealed partial class MechComponent : Component
     public EntProtoId MechUiAction = "ActionMechOpenUI";
     [DataField]
     public EntProtoId MechEjectAction = "ActionMechEject";
+
+    //imp
     [DataField]
     public EntProtoId MechLightAction = "ActionMechLights";
     #endregion
@@ -164,5 +166,5 @@ public sealed partial class MechComponent : Component
     [DataField] public EntityUid? MechCycleActionEntity;
     [DataField] public EntityUid? MechUiActionEntity;
     [DataField] public EntityUid? MechEjectActionEntity;
-    [DataField] public EntityUid? MechLightActionEntity;
+    [DataField] public EntityUid? MechLightActionEntity; //imp
 }

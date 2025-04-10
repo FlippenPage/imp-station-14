@@ -35,19 +35,3 @@
       sprite: Interface/Actions/actions_mecha.rsi
       state: mech_eject
     event: !type:MechEjectPilotEvent
-
-- type: entity
-  id: ActionMechLights
-  name: Toggle Lights
-  description: Turns the mech's lights on or off
-  components:
-  - type: InstantAction
-    useDelay: 1
-    itemIconStyle: NoItem
-    icon: 
-      sprite: Interface/Actions/actions_mecha.rsi
-      state: mech_lights_off
-    iconOn: 
-      sprite: Interface/Actions/actions_mecha.rsi
-      state: mech_lights_on
-    event: !type:ToggleActionEvent

@@ -137,8 +137,12 @@ public sealed partial class MechComponent : Component
     [DataField]
     public List<EntProtoId> StartingEquipment = new();
 
+
     [DataField] //imp
+    public SoundSpecifier? SoundNominal = new SoundPathSpecifier("/Audio/_Impstation/Mecha/nominal.ogg");
+
     #region Action Prototypes
+    [DataField]
     public EntProtoId MechCycleAction = "ActionMechCycleEquipment";
     [DataField]
     public EntProtoId MechUiAction = "ActionMechOpenUI";

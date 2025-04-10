@@ -9,12 +9,12 @@ using Robust.Client.UserInterface;
 namespace Content.Client.Mech.Ui;
 
 [UsedImplicitly]
-public sealed class MechBoundUserInterface : BoundUserInterface
+public sealed class ImpMechBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
-    private MechMenu? _menu;
+    private ImpMechMenu? _menu;
 
-    public MechBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    public ImpMechBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
 
@@ -22,12 +22,19 @@ public sealed class MechBoundUserInterface : BoundUserInterface
     {
         base.Open();
 
-        _menu = this.CreateWindowCenteredLeft<MechMenu>();
+        //imp edit
+        _menu = this.CreateWindowCenteredLeft<ImpMechMenu>();
         _menu.SetEntity(Owner);
 
         _menu.OnRemoveButtonPressed += uid =>
         {
             SendMessage(new MechEquipmentRemoveMessage(EntMan.GetNetEntity(uid)));
+        };
+
+        // imp
+        _menu.NameChanged += name => 
+        {
+            SendMessage(new MechSetNameBuiMessage(name));
         };
     }
 

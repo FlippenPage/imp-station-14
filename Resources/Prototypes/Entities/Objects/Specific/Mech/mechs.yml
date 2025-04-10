@@ -40,7 +40,7 @@
   - type: UserInterface
     interfaces:
       enum.MechUiKey.Key:
-        type: MechBoundUserInterface
+        type: ImpMechBoundUserInterface #imp
   - type: MeleeWeapon
     hidden: true
     attackRate: 0.75

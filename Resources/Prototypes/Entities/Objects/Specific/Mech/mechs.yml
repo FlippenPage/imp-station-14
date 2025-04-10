@@ -48,7 +48,7 @@
       types:
         Blunt: 25 #thwack
         Structural: 20
-    range: 2
+    range: 2 #imp # up to 2 from default 1.5. mech combat is fuckin abysmal at shorter range
     soundHit:
       collection: MetalThud
     canWideSwing: false #imp
@@ -146,7 +146,7 @@
     autoRot: true
     radius: 7
     netsync: false
-  - type: NoRotateOnInteract #imp
+  - type: NoRotateOnInteract #imp # mech interact rotations have strange behaviour.
 
 - type: entity
   id: MechRipley

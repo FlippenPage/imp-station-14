@@ -86,7 +86,7 @@
       mech-equipment-container: !type:Container
       mech-battery-slot: !type:ContainerSlot
   - type: Damageable
-    damageContainer: Inorganic
+    damageContainer: Mech
     damageModifierSet: Metallic
   - type: FootstepModifier
     footstepSoundCollection:
@@ -147,6 +147,17 @@
     radius: 7
     netsync: false
   - type: NoRotateOnInteract
+  - type: MobState
+    allowedStates:
+    - Alive
+    - Critical
+    - Dead
+    allowRevives: true
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Critical
+      400: Dead
 
 - type: entity
   id: MechRipley

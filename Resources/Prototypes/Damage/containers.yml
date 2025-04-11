@@ -32,6 +32,15 @@
     - Heat
     - Shock
 
+- type: damageContainer #imp
+  id: Mech
+  supportedGroups:
+    - Brute
+    - Burn
+  supportedTypes:
+    - Heat
+    - Shock
+
 - type: damageContainer
   id: Shield
   supportedGroups:

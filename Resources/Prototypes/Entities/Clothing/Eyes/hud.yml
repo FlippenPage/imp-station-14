@@ -29,6 +29,7 @@
     damageContainers:
     - Inorganic
     - Silicon
+    - Mech
 
 - type: entity
   parent: [ClothingEyesBase, BaseLensSlot, ShowMedicalIcons] # BaseLensSlot from imp

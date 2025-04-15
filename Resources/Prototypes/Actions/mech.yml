@@ -36,7 +36,7 @@
       state: mech_eject
     event: !type:MechEjectPilotEvent
 
-- type: entity
+- type: entity #imp special
   id: ActionMechLights
   name: Toggle Lights
   description: Turns the mech's lights on or off
@@ -50,4 +50,36 @@
     iconOn: 
       sprite: Interface/Actions/actions_mecha.rsi
       state: mech_lights_on
+    event: !type:ToggleActionEvent
+
+- type: entity #imp special
+  id: ActionMechAirtight
+  name: Toggle Cabin Airtight
+  description: Airtight cabin preserves internal air and can be pressurized with a mounted air tank.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    itemIconStyle: NoItem
+    icon: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_internals_off
+    iconOn: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_internals_on
+    event: !type:ToggleActionEvent
+
+- type: entity #imp special
+  id: ActionMechPhazonPhase
+  name: Toggle Phasing
+  description: Allows the mech to travel through walls for a large power cost.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    itemIconStyle: NoItem
+    icon: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_phasing_off
+    iconOn: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_phasing_on
     event: !type:ToggleActionEvent

@@ -6,6 +6,9 @@
   id: BlasterCell
 
 - type: Tag
+  id: BluespaceCore
+
+- type: Tag
   id: BorgModuleTckTck
 
 - type: Tag
@@ -25,6 +28,9 @@
 
 - type: Tag
   id: ConversionKitPB
+
+- type: Tag
+  id: ConveyorBelt
 
 - type: Tag
   id: DecapoidClaw

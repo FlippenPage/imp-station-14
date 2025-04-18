@@ -2,6 +2,7 @@
   name: minigun EX-STAR
   id: MinigunEX
   parent: [ BaseWeaponHeavyMachineGun, BaseMajorContraband ]
+  categories: [ HideSpawnMenu ]
   description: An effort by Honk! Co. to harness clown hankerchief technology for warfare. It's also cherry scented.
   components:
   - type: Sprite
@@ -30,24 +31,28 @@
       ballistic-ammo: !type:Container
         ents: []
   - type: Unremoveable
+    deleteOnDrop: true
 
 
 - type: entity
   parent: HyperEutacticBlade
+  categories: [ HideSpawnMenu ]
   name: hypereutactic blade EX-STAR
   description: All the things the original was, but lighter!
   id: HEBladeEX
   suffix: Unremoveable
   components:
   - type: Unremoveable
+    deleteOnDrop: true
   - type: Wieldable
     freeHandsRequired: 0
 
 - type: entity
   name: RPG-8 EX-STAR
+  categories: [ HideSpawnMenu ]
   parent: BaseWeaponLauncher
   id: MultiRPGEX
-  description: An effort by Honk! co. to harness miniaturized Christmas Elves for on-the-fly rocket manufacturing.
+  description: An effort by Honk! Co. to harness miniaturized Christmas Elves for on-the-fly rocket manufacturing.
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Launchers/rocket.rsi
@@ -79,18 +84,24 @@
     steps: 2
     zeroVisible: true
   - type: Appearance
+  - type: Unremoveable
+    deleteOnDrop: true
 
 - type: entity
   name: x-ray cannon EX-STAR
+  categories: [ HideSpawnMenu ]
   description: Uses a miniaturized nuclear reactor to generate INFINITE unclean energy. Create your own environmental disaster today!
   parent: WeaponXrayCannon
   id: XrayEX
   suffix: Unremoveable
   components:
   - type: Unremoveable
+    deleteOnDrop: true
   - type: BatterySelfRecharger
     autoRecharge: true
     autoRechargeRate: 25
+  - type: Wieldable
+    freeHandsRequired: 0
 
 # StartingGear
 

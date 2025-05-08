@@ -34,6 +34,7 @@
 
 - type: entity
   name: HoP Corgi Spawner
+  suffix: HoP's pet, steal target #imp edit
   id: SpawnMobCorgi
   parent: MarkerBase
   components:
@@ -63,20 +64,8 @@
       - MobCorgiMouse
 
 - type: entity
-  name: Finfin Spawner
-  id: SpawnMobFinfin
-  parent: MarkerBase
-  components:
-  - type: Sprite
-    layers:
-      - state: green
-      - state: ai
-  - type: ConditionalSpawner
-    prototypes:
-      - MobFinfin
-
-- type: entity
   name: Possum Morty Spawner
+  suffix: Morgue pet, steal target #imp edit
   id: SpawnMobPossumMorty
   parent: MarkerBase
   components:
@@ -87,32 +76,6 @@
   - type: ConditionalSpawner
     prototypes:
       - MobPossumMortyOld
-
-- type: entity
-  name: Poppy Spawner
-  id: SpawnMobPoppy
-  parent: MarkerBase
-  components:
-  - type: Sprite
-    layers:
-      - state: green
-      - state: ai
-  - type: ConditionalSpawner
-    prototypes:
-      - MobPossumPoppy
-
-- type: entity
-  name: Goji Spawner
-  id: SpawnMobGoji
-  parent: MarkerBase
-  components:
-  - type: Sprite
-    layers:
-      - state: green
-      - state: ai
-  - type: ConditionalSpawner
-    prototypes:
-      - MobGoji
 
 - type: entity
   name: Raccoon Morticia Spawner
@@ -128,21 +91,8 @@
       - MobRaccoonMorticia
 
 - type: entity
-  name: Drone Spawner
-  id: SpawnMobDrone
-  parent: MarkerBase
-  components:
-  - type: Sprite
-    layers:
-      - state: green
-      - sprite: Mobs/Silicon/drone.rsi
-        state: shell
-  - type: ConditionalSpawner
-    prototypes:
-      - Drone
-
-- type: entity
   name: Fox Renault Spawner
+  suffix: Captain's pet, steal target #imp edit
   id: SpawnMobFoxRenault
   parent: MarkerBase
   components:
@@ -157,7 +107,7 @@
 - type: entity
   name: Runtime Spawner
   id: SpawnMobCatRuntime
-  suffix: CMO's pet, steal target
+  suffix: CMO's pet, steal target #imp edit
   parent: MarkerBase
   components:
   - type: Sprite
@@ -171,7 +121,7 @@
 - type: entity
   name: Exception Spawner
   id: SpawnMobCatException
-  suffix: CMO's pet, steal target
+  suffix: CMO's pet, steal target #imp edit
   parent: MarkerBase
   components:
   - type: Sprite
@@ -198,7 +148,7 @@
 - type: entity
   name: Floppa Spawner
   id: SpawnMobCatFloppa
-  suffix: CMO's pet, steal target
+  suffix: CMO's pet, steal target #imp edit
   parent: MarkerBase
   components:
   - type: Sprite
@@ -212,7 +162,7 @@
 - type: entity
   name: Bingus Spawner
   id: SpawnMobCatBingus
-  suffix: CMO's pet, steal target
+  suffix: CMO's pet, steal target #imp edit
   parent: MarkerBase
   components:
   - type: Sprite
@@ -252,7 +202,7 @@
 - type: entity
   name: Cat Spawner
   id: SpawnMobCat
-  suffix: CMO's pet, steal target
+  suffix: CMO's pet, steal target # imp edit
   parent: MarkerBase
   components:
   - type: Sprite
@@ -267,7 +217,7 @@
       - MobBingus
       - MobPipi
     rarePrototypes:
-      - MobFinfin
+      - MobFinfin #imp edit
     rareChance: 0.05
 
 - type: entity
@@ -287,7 +237,7 @@
       - MobCatKitten
     rarePrototypes:
       - MobCatSpace
-      - MobFinfin
+      - MobFinfin #imp edit
     rareChance: 0.05
 
 - type: entity
@@ -305,6 +255,7 @@
 
 - type: entity
   name:  McGriff Spawner
+  suffix: Warden's pet, steal target # imp edit
   id: SpawnMobMcGriff
   parent: MarkerBase
   components:
@@ -312,9 +263,11 @@
     layers:
       - state: green
       - state: ai
-  - type: ConditionalSpawner
+  - type: RandomSpawner # imp edit
     prototypes:
       - MobMcGriff
+    rarePrototypes: # imp
+      - MobMascotGriffy # imp
 
 - type: entity
   name: Sloth Paperwork Spawner
@@ -332,6 +285,7 @@
 - type: entity
   name: Walter Spawner
   id: SpawnMobWalter
+  suffix: Chemistry pet, steal target #imp
   parent: MarkerBase
   components:
   - type: Sprite
@@ -443,6 +397,7 @@
 - type: entity
   name: Shiva Spawner
   id: SpawnMobShiva
+  suffix: HoS's pet, steal target # imp edit
   parent: MarkerBase
   components:
   - type: Sprite
@@ -986,4 +941,3 @@
   - type: ConditionalSpawner
     prototypes:
     - MobReindeerDoe
-

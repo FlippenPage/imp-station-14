@@ -23,6 +23,7 @@
   - type: Crayon
     capacity: 100
   - type: Food
+    delay: 3 # imp i am so piskun mad at eating my CRAYONS
   - type: FlavorProfile
     flavors:
     - chewy
@@ -40,6 +41,8 @@
   - type: FoodSequenceElement
     entries:
       Burger: CrayonBurger
+  - type: SignatureWriter # imp
+    font: ComicNeueBold
 
 - type: entity
   parent: Crayon

@@ -36,6 +36,8 @@ using Robust.Shared.Player;
 using Content.Shared.StatusEffect;
 using Content.Shared.Flash.Components;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Prototypes;
+
 
 namespace Content.Server.Revenant.EntitySystems;
 
@@ -43,7 +45,6 @@ public sealed partial class RevenantSystem
 {
     [Dependency] private readonly ThrowingSystem _throwing = default!;
     [Dependency] private readonly EntityStorageSystem _entityStorage = default!;
-    [Dependency] private readonly EmagSystem _emag = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly MobThresholdSystem _mobThresholdSystem = default!;
     [Dependency] private readonly GhostSystem _ghost = default!;
@@ -61,6 +62,8 @@ public sealed partial class RevenantSystem
     [ValidatePrototypeId<StatusEffectPrototype>]
     private const string FlashedId = "Flashed";
 
+
+    private static readonly ProtoId<TagPrototype> WindowTag = "Window";
 
     private void InitializeAbilities()
     {
@@ -331,7 +334,7 @@ public sealed partial class RevenantSystem
         foreach (var ent in lookup)
         {
             //break windows
-            if (tags.HasComponent(ent) && _tag.HasTag(ent, "Window"))
+            if (tags.HasComponent(ent) && _tag.HasTag(ent, WindowTag))
             {
                 //hardcoded damage specifiers til i die.
                 var dspec = new DamageSpecifier();
@@ -420,7 +423,8 @@ public sealed partial class RevenantSystem
                 _whitelistSystem.IsBlacklistPass(component.MalfunctionBlacklist, ent))
                 continue;
 
-            _emag.DoEmagEffect(uid, ent); //it does not emag itself. adorable.
+            var ev = new GotEmaggedEvent(uid, EmagType.Interaction | EmagType.Access);
+            RaiseLocalEvent(ent, ref ev);
         }
     }
 

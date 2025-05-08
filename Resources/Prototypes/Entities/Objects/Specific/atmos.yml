@@ -5,7 +5,7 @@
   description: A hand-held environmental scanner which reports current gas levels.
   components:
   - type: Sprite
-    sprite: Objects/Specific/Atmos/gasanalyzer.rsi
+    sprite: _Impstation/Objects/Specific/Atmos/gasanalyzer.rsi # imp
     layers:
       - state: icon
         map: ["analyzer"]
@@ -35,3 +35,9 @@
     materialComposition:
       Steel: 400
       Glass: 100
+  - type: GuideHelp
+    guides:
+    - AtmosTools
+    - PipeNetworks
+    - Pipes
+    - GasCanisters

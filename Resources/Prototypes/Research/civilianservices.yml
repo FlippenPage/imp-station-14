@@ -15,6 +15,7 @@
   - SeedExtractorMachineCircuitboard
   - HydroponicsTrayMachineCircuitboard
   - ReagentGrinderIndustrialMachineCircuitboard
+  - PlantAnalyzer # Frontier
 
 - type: technology
   id: CritterMechs
@@ -53,12 +54,13 @@
   - SurveillanceCameraMonitorCircuitboard
   - SurveillanceWirelessCameraMonitorCircuitboard
   - TelecomServerCircuitboard
+  - HolopadMachineCircuitboard
 
 - type: technology
   id: AdvancedEntertainment
   name: research-technology-advanced-entertainment
   icon:
-    sprite: Structures/Machines/computers.rsi
+    sprite: _Impstation/Structures/Machines/computers.rsi # imp
     state: television
   discipline: CivilianServices
   tier: 1
@@ -69,6 +71,7 @@
     - DawInstrumentMachineCircuitboard
     - MassMediaCircuitboard
     - JukeboxCircuitBoard
+    - CameraHandheld #Imp
 
 - type: technology
   id: RoboticCleanliness
@@ -113,12 +116,13 @@
   - FauxTileJungleAstroGrass
   - FauxTileAstroIce
   - FauxTileAstroSnow
+  - FauxTileAstroAsteroidSand
 
 - type: technology
   id: BiochemicalStasis
   name: research-technology-biochemical-stasis
   icon:
-    sprite: Structures/Machines/stasis_bed.rsi
+    sprite: _Impstation/Structures/Machines/stasis_bed.rsi # imp
     state: icon
   discipline: CivilianServices
   tier: 2
@@ -193,7 +197,7 @@
   id: BluespaceCargoTransport
   name: research-technology-bluespace-cargo-transport
   icon:
-    sprite: Structures/cargo_telepad.rsi
+    sprite: _Impstation/Structures/cargo_telepad.rsi
     state: display
   discipline: CivilianServices
   tier: 2
@@ -219,7 +223,7 @@
   id: BluespaceChemistry
   name: research-technology-bluespace-chemistry
   icon:
-    sprite: Objects/Specific/Chemistry/beaker_bluespace.rsi
+    sprite: _Impstation/Objects/Specific/Chemistry/beaker_bluespace.rsi # imp
     state: beakerbluespace
   discipline: CivilianServices
   tier: 3

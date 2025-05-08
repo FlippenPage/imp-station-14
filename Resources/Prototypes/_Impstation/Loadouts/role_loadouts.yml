@@ -1,0 +1,58 @@
+# Cargo
+- type: roleLoadout
+  id: JobCourier
+  groups:
+  - CourierHead
+  - CourierNeck
+  - CourierJumpsuit
+  - CourierOuterClothing
+  - CourierShoes
+  - Glasses
+  - CourierBackpack
+  - Survival
+  - Trinkets
+  - GroupSpeciesBreathTool
+  - GroupTankHarnessWithOuterwear
+  - GroupBreathToolDecapoid
+  - GroupTankHarnessWithOuterwearAquatic
+
+# Security
+- type: roleLoadout
+  id: JobBrigmedic
+  groups:
+  - BrigmedicHead
+  - MedicalMask
+  - BrigmedicNeck
+  - BrigmedicJumpsuit
+  - BrigmedicOuterClothing
+  - MedicalGloves
+  - BrigmedicShoes
+  - BrigmedicBackpack
+  - SurvivalBrigmedic
+  - Trinkets
+  - SecurityStar
+  - GroupSpeciesBreathToolMedSec
+  - GroupTankHarnessWithOuterwear
+  - GroupBreathToolDecapoid
+  - GroupTankHarnessWithOuterwearAquatic
+
+# Service
+- type: roleLoadout
+  id: JobHospitalityDirector
+  groups:
+  - HospitalityDirectorHead
+  - ServiceMask
+  - HospitalityDirectorNeck
+  - HospitalityDirectorJumpsuit
+  - HospitalityDirectorOuterClothing
+  - HospitalityDirectorGloves
+  - HospitalityDirectorShoes
+  - HospitalityDirectorHeadset
+  - Glasses
+  - HospitalityDirectorBackpack
+  - SurvivalCommand
+  - Trinkets
+  - GroupSpeciesBreathTool
+  - GroupTankHarnessCommandWithOuterwear
+  - GroupBreathToolDecapoid
+  - GroupTankHarnessCommandWithOuterwearAquatic

@@ -9,6 +9,7 @@ steal-target-groups-seedextractor = seed extractor
 steal-target-groups-medtekcartridge = MedTek cartridge
 steal-target-groups-logprobecartridge = LogProbe cartridge
 steal-target-groups-astronavcartridge = AstroNav cartridge
+steal-target-groups-stocktradingcartridge = StockTrading cartridge
 
 steal-target-groups-servicetechfab = service techfab machine board
 steal-target-groups-shipyardcomputercircuitboard = shipyard computer board
@@ -21,6 +22,9 @@ steal-target-groups-evil-skull = evil skull
 
 steal-target-groups-finfin = Fin Fin
 steal-target-groups-finfinmeat = Fin Fin's Fin-flesh
+steal-target-groups-animal-poly = Poly, the Chief Engineer's parrot
+steal-target-groups-suppy = Suppy, Engineering's pet suppermatter chunk
+steal-target-groups-animal-oswald = Oswald, the Hospitality Director's penguin
 
 # Thief Structure
 
@@ -37,6 +41,7 @@ steal-target-groups-secdrobe = SecDrobe
 steal-target-groups-bardrobe = BarDrobe
 steal-target-groups-pietyvend = PietyVend
 steal-target-groups-cargodrobe = CargoDrobe
+steal-target-groups-salvdrobe = SalvDrobe
 steal-target-groups-medidrobe = MediDrobe
 steal-target-groups-chemdrobe = ChemDrobe
 steal-target-groups-curadrobe = CuraDrobe

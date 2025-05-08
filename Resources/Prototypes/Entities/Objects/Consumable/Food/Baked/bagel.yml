@@ -16,7 +16,7 @@
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 7
+        maxVol: 10 # imp
         reagents:
         - ReagentId: Nutriment
           Quantity: 5
@@ -44,9 +44,37 @@
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 12
+        maxVol: 15 # imp
         reagents:
         - ReagentId: Bicaridine
-          Quantity: 5
+          Quantity: 4 # imp
         - ReagentId: Nutriment
-          Quantity: 5
+          Quantity: 6.5 # imp
+
+- type: entity
+  id: FoodBagelCotton
+  parent: FoodBagelBase
+  name: cotton bagel
+  description: A delicious bagel made with cotton dough.
+  components:
+  - type: FlavorProfile
+    flavors:
+    - bread
+    - cotton
+  - type: Sprite
+    state: bagel-cottondough
+  - type: Food
+    requiresSpecialDigestion: true
+  - type: Tag
+    tags:
+    - ClothMade
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10 # imp
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1.5 # imp
+        - ReagentId: Fiber
+          Quantity: 3.5 # imp
+

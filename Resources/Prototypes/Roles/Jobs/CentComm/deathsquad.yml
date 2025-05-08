@@ -5,13 +5,16 @@
   playTimeTracker: JobDeathSquad
   setPreference: false
   startingGear: DeathSquadGear
-  icon: "JobIconNanotrasen"
+  icon: "JobIconDeathsquad" #imp
   supervisors: job-supervisors-centcom
   canBeAntag: false
   accessGroups:
   - AllAccess
   access:
   - CentralCommand
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant, DeathRattleImplantCentcomm ]
 
 - type: startingGear
   id: DeathSquadGear
@@ -31,7 +34,7 @@
   storage:
     back:
     - WeaponPulsePistol
-    - WeaponRevolverMateba
+    - WeaponRevolverMatebaAP
     - SpeedLoaderMagnumAP
     - SpeedLoaderMagnumAP
     - BoxFlashbang

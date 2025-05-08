@@ -5,22 +5,15 @@
   parent: [ BaseItem, BaseMinorContraband ]
   components:
   - type: RevealRevenantOnCollide
+  - type: CollisionWake
+    enabled: false
   - type: Sprite
     sprite: _Impstation/Objects/Misc/nullrod.rsi
     state: nullrod_base
   - type: Item
     size: Small
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 150
-      behaviors:
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
   - type: Tag
     tags:
-    - Recyclable
     - NullRod
 
 - type: entity
@@ -31,7 +24,6 @@
   components:
   - type: ChaplainGearMenu
     possibleSets:
-    # - ChaplainGearRosary ## UNFINISHED!
     - ChaplainGearGrail
     - ChaplainGearGlove
     - ChaplainGearBow
@@ -46,6 +38,7 @@
     damage:
       types:
         Blunt: 15
+        Holy: 15
     soundHit:
       collection: MetalThud
   - type: Clothing
@@ -53,29 +46,6 @@
     quickEquip: false
     slots:
     - Belt
-
-
-- type: entity
-  name: silvered rosary
-  id: NullRodRosary
-  parent: NullRodBase
-  description: An expensive-looking rosary, made from silver. Exudes somewhat soothing vibes. Nice!
-  components:
-  - type: Prayable
-    bibleUserOnly: true
-  - type: Sprite
-    sprite: _Impstation/Objects/Misc/nullrod.rsi
-    state: nullrod_rosary
-  - type: Item
-    size: Small
-    shape:
-    - 0,0,1,1
-  - type: Clothing
-    sprite: _Impstation/Objects/Misc/nullrod.rsi
-    slots:
-    - Neck
-    - Belt
-
 
 - type: entity
   name: gildgrail
@@ -94,19 +64,12 @@
     size: Small
     shape:
     - 0,0,1,1
-  - type: MeleeWeapon
-    wideAnimationRotation: -135
-    damage:
-      types:
-        Blunt: 5
-    soundHit:
-      collection: MetalThud
   - type: FitsInDispenser
     solution: grail
   - type: SolutionContainerManager
     solutions:
       grail:
-        maxVol: 150
+        maxVol: 200
   - type: MixableSolution
     solution: grail
   - type: RefillableSolution
@@ -152,12 +115,11 @@
     - Shake
     mixMessage: "null-grail-mix-success"
 
-
 - type: entity
   name: divine grasp
   id: NullRodGlove
   parent: [ NullRodBase, ClothingHandsInedibleBase]
-  description: The touch of god! Or goddess. It's up to you, really.
+  description: The touch of god! Or whatever you believe in, really. I don't think the gauntlet cares.
   components:
   - type: Sprite
     sprite: _Impstation/Objects/Misc/nullrod_glove.rsi
@@ -169,17 +131,20 @@
   - type: Clothing
     sprite: _Impstation/Objects/Misc/nullrod_glove.rsi
   - type: StaminaDamageOnHit
-    damage: 22
+    damage: 23
   - type: MeleeWeapon
     attackRate: 0.68
     damage:
       types:
-        Blunt: 10
+        Blunt: 14
+        Holy: 20
     soundHit:
       path: /Audio/_Impstation/Weapons/nullglove.ogg
       params:
         variation: 0.35
     mustBeEquippedToUse: true
+  - type: MeleeThrowOnHit
+    speed: 7
   - type: Reflect
     reflectProb: .22
     spread: 120
@@ -241,6 +206,7 @@
   - type: ContainerContainer
     containers:
       projectiles: !type:ContainerSlot
+      ballistic-ammo: !type:Container
   - type: BallisticAmmoProvider
     whitelist:
       tags:
@@ -268,6 +234,8 @@
       - state: quiver
       - state: quiver_unshaded
         shader: unshaded
+      - state: mag-0 # This is an empty sprite to get the mag visuals to shut up
+        map: [ "enum.GunVisualLayers.Mag" ]
     - type: Item
       size: Large
       shape:
@@ -282,7 +250,9 @@
     - type: BallisticAmmoProvider
       proto: HolyArrow
       mayTransfer: true
-      capacity: 8
+      capacity: 7
       whitelist:
         tags:
         - HolyArrow
+    - type: MagazineVisuals
+      steps: 1 # Sprite is fake, I couldn't be bothered. Sorry :(

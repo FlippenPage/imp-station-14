@@ -31,6 +31,12 @@
   - type: Tag
     tags:
     - DoorBumpOpener
+  - type: NightVision # EE edit
+    isActive: true
+    toggleAction: null
+    color: "#50595C"
+    activateSound: null
+    deactivateSound: null
 
 - type: entity
   id: MobGoliath
@@ -90,6 +96,7 @@
     - id: FoodMeatGoliath
       amount: 3
     - id: MaterialGoliathHide1
+      amount: 3
 
 - type: entity
   id: ActionGoliathTentacle
@@ -318,6 +325,9 @@
     stage: 1
   - type: StaticPrice
     price: 5000
+  - type: Tag # imp
+    tags:
+    - KodeEdible
 
 - type: entity
   id: FoodHivelordRemainsInert

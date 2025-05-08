@@ -15,12 +15,13 @@ import requests
 import yaml
 
 DEBUG = False
-DEBUG_CHANGELOG_FILE_OLD = Path("../Changelog-Impstation-old.yml")
+DEBUG_CHANGELOG_FILE_OLD = Path("Resources/Changelog/Old.yml")
 GITHUB_API_URL = os.environ.get("GITHUB_API_URL", "https://api.github.com")
 
 # https://discord.com/developers/docs/resources/webhook
 DISCORD_SPLIT_LIMIT = 2000
 DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
+DISCORD_ROLE_ID = os.environ.get("DISCORD_ROLE_ID")
 
 CHANGELOG_FILE = "Resources/Changelog/Impstation.yml"
 
@@ -136,10 +137,18 @@ def diff_changelog(
 
 
 def get_discord_body(content: str):
+    if DISCORD_ROLE_ID:
+        # if a ping is configured,
+        # allow that role to be mentioned
+        allowed_mentions = {"roles": [DISCORD_ROLE_ID]}
+    else:
+        # if no role mention is allowed
+        # then this is explicitly needed to suppress @everyone
+        allowed_mentions = {"parse": []}
+
     return {
         "content": content,
-        # Do not allow any mentions.
-        "allowed_mentions": {"parse": []},
+        "allowed_mentions": allowed_mentions,
         # SUPPRESS_EMBEDS
         "flags": 1 << 2,
     }
@@ -174,11 +183,17 @@ def changelog_entries_to_message_lines(entries: Iterable[ChangelogEntry]) -> lis
                     message = message[: DISCORD_SPLIT_LIMIT - 100].rstrip() + " [...]"
 
                 if url is not None:
-                    line = f"{emoji} - {message} [PR]({url}) \n"
+                    line = f"{emoji} - {message} [PR]({url})\n"
                 else:
                     line = f"{emoji} - {message}\n"
 
                 message_lines.append(line)
+
+    # add ping if role id is configured
+    # don't add it if the message is empty, in that case we want to skip send
+    if message_lines and DISCORD_ROLE_ID:
+        ping_line = f"<@&{DISCORD_ROLE_ID}>\n"
+        message_lines.insert(0, ping_line)
 
     return message_lines
 
@@ -193,6 +208,7 @@ def send_message_lines(message_lines: list[str]):
         new_chunk_length = chunk_length + line_length
 
         if new_chunk_length > DISCORD_SPLIT_LIMIT:
+            print("Split changelog and sending to discord")
             send_discord_webhook(chunk_lines)
 
             new_chunk_length = line_length
@@ -202,6 +218,7 @@ def send_message_lines(message_lines: list[str]):
         chunk_length = new_chunk_length
 
     if chunk_lines:
+        print("Sending final changelog to discord")
         send_discord_webhook(chunk_lines)
 
 

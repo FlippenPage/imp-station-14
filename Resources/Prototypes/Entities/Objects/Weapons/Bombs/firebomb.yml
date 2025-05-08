@@ -15,7 +15,7 @@
     - state: fuel
     - state: wires
   - type: Item
-    sprite: Objects/Consumable/Drinks/cola.rsi
+    sprite: Objects/Weapons/Bombs/ied.rsi
   - type: OnUseTimerTrigger
     delay: 5
     examinable: false
@@ -52,6 +52,7 @@
   - type: Construction
     graph: FireBomb
     node: firebomb
+  - type: Engraveable # imp
 
 # has igniter but no fuel or wires
 - type: entity

@@ -75,7 +75,8 @@
 - type: latheRecipe
   id: HandheldHealthAnalyzer
   result: HandheldHealthAnalyzerEmpty
-  category: Tools
+  categories:
+  - Tools
   completetime: 4
   materials:
     Glass: 500
@@ -215,18 +216,3 @@
   materials:
     Steel: 100
     Plastic: 100
-
-- type: latheRecipe
-  id: PrescriptionLens
-  result: PrescriptionLens
-  completetime: 1
-  materials:
-    Glass: 50
-
-- type: latheRecipe
-  id: PrescriptionLensStrong
-  result: PrescriptionLensStrong
-  completetime: 1
-  materials:
-    Glass: 100
-    Plasma: 50

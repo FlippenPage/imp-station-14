@@ -4,4 +4,4 @@ contraband-examine-text-Tier1 = [color=crimson]This item is Tier 1 Syndicate con
 contraband-examine-text-Tier2 = [color=crimson]This item is Tier 2 Syndicate contraband![/color]
 contraband-examine-text-Tier3 = [color=crimson]This item is Tier 3 Syndicate contraband![/color]
 
-contraband-examine-text-TierX = [color=purple]This item is Tier X contraband![/color]
+contraband-examine-text-TierX = [color=#b337b3]This item is Tier X contraband![/color]

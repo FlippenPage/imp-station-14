@@ -41,8 +41,8 @@ using Robust.Server.Player;
 using Content.Shared.Silicons.StationAi;
 using Robust.Shared.Physics.Components;
 using static Content.Shared.Configurable.ConfigurationComponent;
-using Content.Shared._Impstation.Spelfs.Components;
-using Content.Server._Impstation.Spelfs;
+using Content.Shared._Impstation.Thaven.Components;
+using Content.Server._Impstation.Thaven;
 
 namespace Content.Server.Administration.Systems
 {
@@ -55,7 +55,7 @@ namespace Content.Server.Administration.Systems
         [Dependency] private readonly IConsoleHost _console = default!;
         [Dependency] private readonly IAdminManager _adminManager = default!;
         [Dependency] private readonly IGameTiming _gameTiming = default!;
-        [Dependency] private readonly IMapManager _mapManager = default!;
+        [Dependency] private readonly SharedMapSystem _map = default!;
         [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly AdminSystem _adminSystem = default!;
         [Dependency] private readonly DisposalTubeSystem _disposalTubes = default!;
@@ -75,7 +75,7 @@ namespace Content.Server.Administration.Systems
         [Dependency] private readonly AdminFrozenSystem _freeze = default!;
         [Dependency] private readonly IPlayerManager _playerManager = default!;
         [Dependency] private readonly SiliconLawSystem _siliconLawSystem = default!;
-        [Dependency] private readonly SpelfMoodsSystem _moods = default!;
+        [Dependency] private readonly ThavenMoodsSystem _moods = default!;
 
         private readonly Dictionary<ICommonSession, List<EditSolutionsEui>> _openSolutionUis = new();
 
@@ -108,7 +108,7 @@ namespace Content.Server.Administration.Systems
                 mark.Text = Loc.GetString("toolshed-verb-mark");
                 mark.Message = Loc.GetString("toolshed-verb-mark-description");
                 mark.Category = VerbCategory.Admin;
-                mark.Act = () => _toolshed.InvokeCommand(player, "=> $marked", Enumerable.Repeat(args.Target, 1), out _);
+                mark.Act = () => _toolshed.InvokeCommand(player, "=> $marked", new List<EntityUid> {args.Target}, out _);
                 mark.Impact = LogImpact.Low;
                 args.Verbs.Add(mark);
 
@@ -156,12 +156,10 @@ namespace Content.Server.Administration.Systems
 
                             var profile = _ticker.GetPlayerProfile(targetActor.PlayerSession);
                             var mobUid = _spawning.SpawnPlayerMob(coords.Value, null, profile, stationUid);
-                            var targetMind = _mindSystem.GetMind(args.Target);
 
-                            if (targetMind != null)
-                            {
-                                _mindSystem.TransferTo(targetMind.Value, mobUid, true);
-                            }
+                            if (_mindSystem.TryGetMind(args.Target, out var mindId, out var mindComp))
+                                _mindSystem.TransferTo(mindId, mobUid, true, mind: mindComp);
+
                         },
                         ConfirmationPopup = true,
                         Impact = LogImpact.High,
@@ -373,7 +371,7 @@ namespace Content.Server.Administration.Systems
 
                 }
 
-                if (lawBoundComponent != null && target != null)
+                if (lawBoundComponent != null && target != null && _adminManager.HasAdminFlag(player, AdminFlags.Moderator))
                 {
                     args.Verbs.Add(new Verb()
                     {
@@ -393,24 +391,26 @@ namespace Content.Server.Administration.Systems
                     });
                 }
 
-                if (TryComp<SpelfMoodsComponent>(args.Target, out var moods))
+                // Begin Impstation Additions
+                if (TryComp<ThavenMoodsComponent>(args.Target, out var moods))
                 {
                     args.Verbs.Add(new Verb()
                     {
-                        Text = Loc.GetString("spelf-moods-ui-verb"),
+                        Text = Loc.GetString("thaven-moods-ui-verb"),
                         Category = VerbCategory.Admin,
                         Act = () =>
                         {
-                            var ui = new SpelfMoodsEui(_moods, EntityManager, _adminManager);
+                            var ui = new ThavenMoodsEui(_moods, EntityManager, _adminManager);
                             if (!_playerManager.TryGetSessionByEntity(args.User, out var session))
                                 return;
 
                             _euiManager.OpenEui(ui, session);
-                            ui.UpdateMoods(moods, args.Target);
+                            ui.UpdateMoods((args.Target, moods));
                         },
                         Icon = new SpriteSpecifier.Rsi(new ResPath("/Textures/Interface/Actions/actions_borg.rsi"), "state-laws"),
                     });
                 }
+                // End Impstation Additions
             }
         }
 

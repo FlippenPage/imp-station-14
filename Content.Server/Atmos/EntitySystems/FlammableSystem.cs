@@ -1,5 +1,6 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Atmos.Components;
+using Content.Server.Audio;
 using Content.Server.IgnitionSource;
 using Content.Server.Stunnable;
 using Content.Server.Temperature.Components;
@@ -9,8 +10,10 @@ using Content.Shared.ActionBlocker;
 using Content.Shared.Alert;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
+using Content.Shared.Audio;
 using Content.Shared.Damage;
 using Content.Shared.Database;
+using Content.Shared.IgnitionSource;
 using Content.Shared.Interaction;
 using Content.Shared.Inventory;
 using Content.Shared.Physics;
@@ -24,6 +27,7 @@ using Content.Shared.Toggleable;
 using Content.Shared.Weapons.Melee.Events;
 using Content.Shared.FixedPoint;
 using Robust.Server.Audio;
+using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
@@ -37,7 +41,7 @@ namespace Content.Server.Atmos.EntitySystems
         [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
         [Dependency] private readonly StunSystem _stunSystem = default!;
         [Dependency] private readonly TemperatureSystem _temperatureSystem = default!;
-        [Dependency] private readonly IgnitionSourceSystem _ignitionSourceSystem = default!;
+        [Dependency] private readonly SharedIgnitionSourceSystem _ignitionSourceSystem = default!;
         [Dependency] private readonly DamageableSystem _damageableSystem = default!;
         [Dependency] private readonly AlertsSystem _alertsSystem = default!;
         [Dependency] private readonly FixtureSystem _fixture = default!;
@@ -47,6 +51,7 @@ namespace Content.Server.Atmos.EntitySystems
         [Dependency] private readonly SharedPopupSystem _popup = default!;
         [Dependency] private readonly UseDelaySystem _useDelay = default!;
         [Dependency] private readonly AudioSystem _audio = default!;
+        [Dependency] private readonly AmbientSoundSystem _ambient = default!;
         [Dependency] private readonly IRobustRandom _random = default!;
 
         private EntityQuery<InventoryComponent> _inventoryQuery;
@@ -137,6 +142,10 @@ namespace Content.Server.Atmos.EntitySystems
 
             _fixture.TryCreateFixture(uid, component.FlammableCollisionShape, component.FlammableFixtureID, hard: false,
                 collisionMask: (int) CollisionGroup.FullTileLayer, body: body);
+
+            // imp edit, disables AmbientSound if it's meant to be handled with a toggle
+            if (component.ToggleAmbientSound && TryComp<AmbientSoundComponent>(uid, out var ambient))
+                _ambient.SetAmbience(uid, false, ambient);
         }
 
         private void OnInteractUsing(EntityUid uid, FlammableComponent flammable, InteractUsingEvent args)
@@ -211,8 +220,14 @@ namespace Content.Server.Atmos.EntitySystems
             var mass2 = 1f;
             if (_physicsQuery.TryComp(uid, out var physics) && _physicsQuery.TryComp(otherUid, out var otherPhys))
             {
-                mass1 = physics.Mass;
-                mass2 = otherPhys.Mass;
+                // imp edit - if either entity has a static BodyType then it has no mass, so just equalise instead
+                var anyStatic = physics.BodyType == BodyType.Static || otherPhys.BodyType == BodyType.Static;
+
+                if (!anyStatic)
+                {
+                    mass1 = physics.Mass;
+                    mass2 = otherPhys.Mass;
+                }
             }
 
             // when the thing on fire is more massive than the other, the following happens:
@@ -315,6 +330,11 @@ namespace Content.Server.Atmos.EntitySystems
 
             _ignitionSourceSystem.SetIgnited(uid, false);
 
+            // imp edit
+            if (flammable.ToggleAmbientSound && TryComp<AmbientSoundComponent>(uid, out var ambient))
+                _ambient.SetAmbience(uid, false, ambient);
+
+
             UpdateAppearance(uid, flammable);
         }
 
@@ -337,6 +357,12 @@ namespace Content.Server.Atmos.EntitySystems
                     _adminLogger.Add(LogType.Flammable, $"{ToPrettyString(uid):target} set on fire by {ToPrettyString(ignitionSource):actor}");
                 flammable.OnFire = true;
             }
+
+            // imp edit
+            if (flammable.ToggleAmbientSound &&
+                TryComp<AmbientSoundComponent>(uid, out var ambient) &&
+                !ambient.Enabled)
+                _ambient.SetAmbience(uid, true, ambient);
 
             UpdateAppearance(uid, flammable);
         }
@@ -467,3 +493,5 @@ namespace Content.Server.Atmos.EntitySystems
         }
     }
 }
+
+

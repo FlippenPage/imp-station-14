@@ -9,6 +9,9 @@ heretic-magicitem-examine = [color=yellow]Allows you to use advanced spells whil
 heretic-blade-examine = [color=yellow]Using it while it's in your hand will break the blade and teleport you away from danger.[/color]
 heretic-blade-use = The blade shatters, and you feel the voices pulling you away.
 
+heretic-ghoul-examine = { CAPITALIZE(POSS-ADJ($ent)) } body looks like a decaying corpse.
+heretic-hell-victim-examine = { CAPITALIZE(POSS-ADJ($ent)) } eyes and skin are worryingly pale.
+
 heretic-rust-mark-itembreak = {$name} shatters into dust!
 
 heretic-manselink-fail-exists = This creature is already connected!
@@ -16,15 +19,15 @@ heretic-manselink-fail-nomind = This creature does not have a mind!
 heretic-manselink-start = You begin to connect this creature's mind to yours.
 heretic-manselink-start-target = You feel your mind being pulled somewhere...
 
-heretic-livingheart-notargets = No available targets, visit the rune.
-heretic-livingheart-offstation = It's {$state}, off station, {$direction}!
-heretic-livingheart-onstation = It's {$state}, {$direction}!
-heretic-livingheart-unknown = It's... not in this plane of reality.
+heretic-fleshsurgery-barf = The contents of your stomach come pouring out!
+heretic-fleshsurgery-eyes = Your vision becomes dull and cloudy!
+heretic-fleshsurgery-mute = Your tongue falls limp!
 
 ## speech
 heretic-speech-mansusgrasp = R'CH T'H TR'TH!
 
 heretic-speech-ash-jaunt = ASH'N P'SSG'
+heretic-speech-ash-dash = FL'SH F'R'
 heretic-speech-ash-volcano = V'LC'N!
 heretic-speech-ash-rebirth = G'LR'Y T' TH' N'GHT'W'TCH'ER!
 heretic-speech-ash-flame = FL'MS!!

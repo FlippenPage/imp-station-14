@@ -1,3 +1,12 @@
+- type: loadoutEffectGroup
+  id: Tutorial #imp
+  effects:
+  - !type:JobRequirementLoadoutEffect
+    requirement:
+      !type:OverallPlaytimeRequirement
+      time: 54000 #15 hrs
+      inverted: true # don't let experienced players select these
+
 - type: loadout
   id: CigPackNewport
   storage:
@@ -11,19 +20,13 @@
     - CigPackSpirits
 
 - type: loadout
-  id: PersonalAI
-  storage:
-    back:
-    - PersonalAI
-
-- type: loadout
-  id: GoldPersonalAI
+  id: TutorialAI_Newcomer #imp. <15 hours.
   effects:
   - !type:GroupLoadoutEffect
-    proto: PrestigeGold
+    proto: Tutorial
   storage:
     back:
-    - GoldPersonalAI
+    - TutorialPersonalAI
 
 - type: loadout
   id: FolderHamster
@@ -48,6 +51,15 @@
   storage:
     back:
     - HarmonicaInstrument
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: MusicallyTalented
+
+- type: loadout
+  id: PanFluteInstrument
+  storage:
+    back:
+    - PanFluteInstrument
   effects:
   - !type:GroupLoadoutEffect
     proto: MusicallyTalented
@@ -81,3 +93,51 @@
   storage:
     back:
     - ClothingHeadHatKippahBlueAndGold
+
+- type: loadout
+  id: ClothingHeadPaperSack
+  storage:
+    back:
+    - ClothingHeadPaperSack
+
+- type: loadout
+  id: ClothingHeadPaperSackSmile
+  storage:
+    back:
+    - ClothingHeadPaperSackSmile
+
+- type: loadout
+  id: HeartLocket
+  storage:
+    back:
+    - HeartLocket
+
+- type: loadout
+  id: HeartLocketSilver
+  storage:
+    back:
+    - HeartLocketSilver
+
+- type: loadout
+  id: GoldRingTrinket
+  storage:
+    back:
+    - GoldRingTrinket
+
+- type: loadout
+  id: SilverRingTrinket
+  storage:
+    back:
+    - SilverRingTrinket
+
+- type: loadout
+  id: PlushieDoll
+  storage:
+    back:
+    - PlushieDoll
+
+- type: loadout
+  id: PlushieDollHair
+  storage:
+    back:
+    - PlushieDollHair

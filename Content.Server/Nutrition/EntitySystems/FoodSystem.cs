@@ -270,7 +270,7 @@ public sealed class FoodSystem : EntitySystem
         if (stomachToUse == null)
         {
             _solutionContainer.TryAddSolution(soln.Value, split);
-            _popup.PopupEntity(forceFeed ? Loc.GetString("food-system-you-cannot-eat-any-more-other") : Loc.GetString("food-system-you-cannot-eat-any-more"), args.Target.Value, args.User);
+            _popup.PopupEntity(forceFeed ? Loc.GetString("food-system-you-cannot-eat-any-more-other", ("target", args.Target.Value)) : Loc.GetString("food-system-you-cannot-eat-any-more"), args.Target.Value, args.User);
             return;
         }
 
@@ -338,13 +338,7 @@ public sealed class FoodSystem : EntitySystem
         if (ev.Cancelled)
             return;
 
-        // Unembed any embedded projectiles
-        var childEnumerator = Transform(food).ChildEnumerator;
-        while (childEnumerator.MoveNext(out var child))
-        {
-            if (TryComp<EmbeddableProjectileComponent>(child, out var embeddable))
-                _projectile.RemoveEmbed(child, embeddable);
-        }
+        _projectile.RemoveEmbeddedChildren(food); // imp edit
 
         var dev = new DestructionEventArgs();
         RaiseLocalEvent(food, dev);

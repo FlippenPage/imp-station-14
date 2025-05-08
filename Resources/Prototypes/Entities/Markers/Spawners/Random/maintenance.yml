@@ -17,7 +17,7 @@
         - id: ClothingEyesGlassesGar
         - id: ClothingEyesGlassesGarOrange
         - id: ClothingEyesGlassesGarGiga
-        - id: ClothingEyesGlassesGarMecha
+        - id: ClothingEyesGlassesGarMecha # imp
       - id: Wristwatch
         weight: 0.5
       - id: ClothingHeadHatCake
@@ -89,6 +89,9 @@
       - id: ClothingShoesTourist
       - id: ClothingUniformJumpsuitLoungewear
       - id: ClothingHeadHatCowboyRed
+      - id: HeartLocket # imp
+      - id: HeartLocketSilver # imp
+      - id: CDDogtags # CD
     # Uncommon Group
     - !type:GroupSelector
       weight: 23
@@ -104,14 +107,15 @@
         - id: ClothingNeckCloakGoliathCloak
         - id: ClothingNeckCloakAce
         - id: ClothingNeckCloakAro
+        - id: ClothingNeckCloakAroace
         - id: ClothingNeckCloakBi
         - id: ClothingNeckCloakIntersex
         - id: ClothingNeckCloakLesbian
         - id: ClothingNeckCloakGay
         - id: ClothingNeckCloakEnby
         - id: ClothingNeckCloakPan
-        - id: ClothingNeckCloakBear
-        - id: ClothingNeckCloakStraight
+        - id: ClothingNeckCloakBear # imp
+        - id: ClothingNeckCloakStraight # imp
       - id: ToySkeleton
       - id: Basketball
       - id: Football
@@ -143,18 +147,22 @@
       - !type:GroupSelector
         children:
         - id: ClothingNeckLGBTPin
+        - id: ClothingNeckAllyPin
         - id: ClothingNeckAromanticPin
         - id: ClothingNeckAsexualPin
+        - id: ClothingNeckAroacePin
         - id: ClothingNeckBisexualPin
         - id: ClothingNeckGayPin
         - id: ClothingNeckIntersexPin
         - id: ClothingNeckLesbianPin
         - id: ClothingNeckNonBinaryPin
         - id: ClothingNeckPansexualPin
+        - id: ClothingNeckOmnisexualPin
+        - id: ClothingNeckGenderqueerPin
         - id: ClothingNeckTransPin
         - id: ClothingNeckAutismPin
         - id: ClothingNeckGoldAutismPin
-        - id: ClothingNeckStraightPin
+        - id: ClothingNeckStraightPin # imp
     # Rare Group
     - !type:GroupSelector
       weight: 2
@@ -168,7 +176,8 @@
       - id: ClothingUniformJumpsuitFamilyGuy
       - id: WristwatchGold
       - id: RubberStampGreytide
-      - id: StraightHandyFlag
+      - id: StraightHandyFlag # imp
+      - id: ClothingBeltFoamSheathFilled # DeltaV - Add small chance of it spawning in maints locker.
 
 - type: entityTable
   id: MaintToolsTable
@@ -268,6 +277,7 @@
     - !type:GroupSelector
       weight: 2
       children:
+      - id: Binoculars
       - id: LanternFlash
       - id: PowerCellHigh
       - id: NetProbeCartridge
@@ -514,6 +524,34 @@
       offset: 0.0
 
 - type: entityTable
+  id: InsulsTable
+  table: !type:GroupSelector
+    children:
+    - id: ClothingHandsGlovesColorYellowBudget # budget insuls
+      weight: 85
+    - id: ClothingHandsGlovesColorYellow # true insuls
+      weight: 10
+    - id: ClothingHandsGlovesFingerlessInsulated # fingerless
+      weight: 4
+    - id: ClothingHandsGlovesConducting # conducting
+      weight: 1
+
+- type: entity
+  name: Maint Loot Spawner
+  id: MaintenanceInsulsSpawner
+  suffix: Insuls, safe
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+    - state: red
+    - sprite: Clothing/Hands/Gloves/Color/yellow.rsi
+      state: icon
+  - type: EntityTableSpawner
+    table: !type:NestedSelector
+      tableId: InsulsTable
+
+- type: entityTable
   id: MaintEnemyTable
   table: !type:GroupSelector
     children:
@@ -547,3 +585,4 @@
     table: !type:NestedSelector
       tableId: MaintEnemyTable
       prob: 0.6
+

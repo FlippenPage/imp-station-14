@@ -8,6 +8,7 @@
   components:
   - type: Bloodstream
     bloodMaxVolume: 650
+    bloodReagent: ShimmeringBlood #imp
   - type: GhostRole
     allowMovement: true
     allowSpeech: true
@@ -15,6 +16,8 @@
     name: ghost-role-information-space-dragon-name
     description: ghost-role-information-space-dragon-description
     rules: ghost-role-information-space-dragon-rules
+    mindRoles:
+    - MindRoleGhostRoleTeamAntagonist
     raffle:
       settings: default
   - type: GhostTakeoverAvailable
@@ -116,6 +119,8 @@
     groups:
     - id: Medicine
     - id: Poison
+  - type: Absorbable # imp
+    biomassRestored: 0.8
   - type: Butcherable
     spawned:
     - id: FoodMeatDragon
@@ -152,19 +157,43 @@
     - DoorBumpOpener
   - type: Puller
     needsHands: false
-    
+  - type: Body #imp
+    prototype: AnimalCarp
+  - type: NightVision # EE
+    isActive: true
+    toggleAction: null
+    color: "#50595C"
+    activateSound: null
+    deactivateSound: null
+
 - type: entity
   parent: BaseMobDragon
   id: MobDragon
   components:
   - type: Dragon
     spawnRiftAction: ActionSpawnRift
+  - type: GhostRole
+    mindRoles:
+    - MindRoleDragon
   - type: ActionGun
     action: ActionDragonsBreath
     gunProto: DragonsBreathGun
   - type: GuideHelp
     guides:
     - MinorAntagonists
+  - type: Inventory # imp
+    templateId: dragon
+  - type: InventorySlots # imp
+  - type: Loadout # imp
+    prototypes:
+      - StartingGearDragonPinpointer
+  - type: Strippable # imp
+  - type: UserInterface # imp
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+  - type: Hands # imp. don't worry, they don't actually have hands.
+  - type: ComplexInteraction # imp. necessary for them to be able to use the pinpointer. This doesn't do much else for them, except I think they can now open crates.
 
 - type: entity
   categories: [ HideSpawnMenu ]

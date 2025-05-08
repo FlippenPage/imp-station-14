@@ -39,6 +39,7 @@
       - HumanoidAppearance
       - Plunger
       - SolutionTransfer
+      - EntityStorage
     whitelist:
       components:
       - Item
@@ -79,7 +80,7 @@
     interfaces:
       enum.DisposalUnitUiKey.Key:
         type: DisposalUnitBoundUserInterface
-  - type: RatKingRummageable
+  - type: Rummageable
   - type: SolutionContainerManager
     solutions:
       drainBuffer:

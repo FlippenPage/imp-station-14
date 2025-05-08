@@ -2,6 +2,8 @@ using Content.Shared.DisplacementMap;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.Serialization.Manager;
+using Robust.Shared.Prototypes;
+using static Robust.Client.GameObjects.SpriteComponent;
 
 namespace Content.Client.DisplacementMap;
 
@@ -12,7 +14,15 @@ public sealed class DisplacementMapSystem : EntitySystem
     public bool TryAddDisplacement(DisplacementData data, SpriteComponent sprite, int index, string key, HashSet<string> revealedLayers)
     {
         if (data.ShaderOverride != null)
-            sprite.LayerSetShader(index, data.ShaderOverride);
+        {
+            var test = sprite[index];
+            //imp edit start - replaced the simple shader replacement w/ a ternary that checks if the layer is unshaded before setting the shader
+            sprite.LayerSetShader(index,
+                sprite[index] is Layer layer && layer.ShaderPrototype == "unshaded"
+                    ? data.ShaderOverrideUnshaded
+                    : data.ShaderOverride);
+            //imp edit end
+        }
 
         var displacementKey = $"{key}-displacement";
         if (!revealedLayers.Add(displacementKey))

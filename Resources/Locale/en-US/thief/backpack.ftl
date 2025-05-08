@@ -1,4 +1,4 @@
-thief-backpack-window-title = thief toolbox
+thief-backpack-window-title = thieving kit
 
 thief-backpack-window-description =
     Inside are your tools of the trade, which will dissolve when you're ready.
@@ -39,7 +39,7 @@ thief-backpack-category-syndie-name = syndie kit
 thief-backpack-category-syndie-description =
     Trinkets from a disavowed past, or stolen from a careless agent?
     You've made some connections. Whiskey, echo...
-    Includes: An Emag, Interdyne cigs, a Syndicate codeword,
+    Includes: An Emag, Access Breaker, Interdyne cigs, a Syndicate codeword,
     a Radio Jammer, a lighter and some strange red crystals.
 
 thief-backpack-category-sleeper-name = sleeper kit
@@ -49,11 +49,12 @@ thief-backpack-category-sleeper-description =
     Includes: Sleepy nitrous oxide tank, two nocturine bottles,
     and a hypopen.
 
+# imp edit; lower-case s
 thief-backpack-category-communicator-name = communicator kit
 thief-backpack-category-communicator-description =
     Money is power, and secrets are money. Use your silver tongue
     and wealth to subvert the station.
-    Includes: Master key for all station channels, a CyberSun pen,
+    Includes: Master key for all station channels, a Cybersun pen,
     voice chameleon mask, and 20k spesos inside a briefcase.
 
 thief-backpack-category-smuggler-name = smuggler kit

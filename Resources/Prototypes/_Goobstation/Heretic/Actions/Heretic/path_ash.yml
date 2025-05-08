@@ -5,7 +5,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: InstantAction
-    useDelay: 15
+    useDelay: 20
     itemIconStyle: NoItem
     icon:
       sprite: _Goobstation/Heretic/abilities_heretic.rsi
@@ -14,6 +14,23 @@
   - type: HereticAction
     requireMagicItem: true
     messageLoc: heretic-speech-ash-jaunt
+
+- type: entity
+  id: ActionHereticBlazingDash
+  name: Blazing Dash
+  description: A spell that sets you ablaze and temporarily grants you the speed of a wildfire. Be sure to bring a firesuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 10
+    itemIconStyle: NoItem
+    icon:
+      sprite: _Goobstation/Heretic/abilities_heretic.rsi
+      state: ashen_shift
+    event: !type:EventHereticBlazingDash
+  - type: HereticAction
+    requireMagicItem: true
+    messageLoc: heretic-speech-ash-dash
 
 - type: entity
   id: ActionHereticVolcanoBlast

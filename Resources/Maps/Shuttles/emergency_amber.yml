@@ -17,7 +17,7 @@ entities:
   - uid: 1
     components:
     - type: MetaData
-      name: NT Evac Box
+      name: NT Evac Brick
     - type: Transform
       parent: invalid
     - type: MapGrid
@@ -47,6 +47,11 @@ entities:
       bodyType: Dynamic
     - type: Fixtures
       fixtures: {}
+    - type: DeviceNetwork
+      configurators: []
+      deviceLists: []
+      transmitFrequencyId: ShuttleTimer
+      deviceNetId: Wireless
     - type: OccluderTree
     - type: SpreaderGrid
     - type: Shuttle
@@ -413,11 +418,6 @@ entities:
         chunkSize: 4
     - type: GasTileOverlay
     - type: RadiationGridResistance
-    - type: DeviceNetwork
-      configurators: []
-      deviceLists: []
-      transmitFrequencyId: ShuttleTimer
-      deviceNetId: Wireless
 - proto: AirAlarm
   entities:
   - uid: 2

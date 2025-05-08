@@ -98,8 +98,8 @@
 - type: entity
   parent: ClothingNeckBase
   id: ClothingNeckCloakNanotrasen
-  name: nanotrasen cloak
-  description: A stately blue cloak to represent NanoTrasen.
+  name: Nanotrasen cloak # imp edit; preferential to capitalizing company names
+  description: A stately blue cloak to represent Nanotrasen. # imp edit; lower-case t
   components:
   - type: Sprite
     sprite: Clothing/Neck/Cloaks/nanotrasen.rsi
@@ -134,15 +134,6 @@
   components:
   - type: Sprite
     sprite: Clothing/Neck/Cloaks/miner.rsi
-
-- type: entity
-  parent: ClothingNeckBase
-  id: ClothingNeckCloakDriller
-  name: driller's cape
-  description: Worn by the bravest salvagers, whose diamond-tipped drills can pierce the very heavens.
-  components:
-  - type: Sprite
-    sprite: Clothing/Neck/Cloaks/driller.rsi
 
 - type: entity
   parent: ClothingNeckBase
@@ -234,6 +225,15 @@
   components:
   - type: Sprite
     sprite: Clothing/Neck/Cloaks/aro.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckCloakAroace
+  name: aeropilot's cloak # thank you happyman442 this was the best name idea ever
+  description: Cloak awarded to Nanotrasen's finest pilots on planets with inhabitable atmospheres.
+  components:
+  - type: Sprite
+    sprite: Clothing/Neck/Cloaks/aroace.rsi
 
 - type: entity
   parent: ClothingNeckBase

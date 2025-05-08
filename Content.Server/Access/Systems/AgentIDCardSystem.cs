@@ -9,7 +9,7 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
 using Content.Shared.Roles;
 using System.Diagnostics.CodeAnalysis;
-using Content.Shared._DeltaV.NanoChat; // DeltaV
+using Content.Shared._DV.NanoChat; // DeltaV
 
 namespace Content.Server.Access.Systems
 {
@@ -81,7 +81,7 @@ namespace Content.Server.Access.Systems
                     }
                 }
             }
-            // End DeltaV
+            // End DV
 
             if (addedLength == 0)
             {
@@ -97,7 +97,10 @@ namespace Content.Server.Access.Systems
                 return;
             }
 
+
             _popupSystem.PopupEntity(Loc.GetString("agent-id-new", ("number", addedLength), ("card", args.Target)), args.Target.Value, args.User);
+            if (addedLength > 0)
+                Dirty(uid, access);
         }
 
         private void AfterUIOpen(EntityUid uid, AgentIDCardComponent component, AfterActivatableUIOpenEvent args)

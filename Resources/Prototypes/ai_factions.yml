@@ -7,9 +7,12 @@
     - PetsNT
     - Zombie
     - Revolutionary
-    - Changeling
-    - Heretic
-    - Dino
+    - AllHostile
+    - Wizard
+    - Changeling # imp
+    - Heretic # imp
+    - Dino # imp
+    - Penguin # imp
 
 - type: npcFaction
   id: NanoTrasen
@@ -19,12 +22,19 @@
   - Xeno
   - Zombie
   - Revolutionary
-  - Dino
+  - Dragon
+  - AllHostile
+  - Wizard
+  - Dino # imp
+
 
 - type: npcFaction
   id: Mouse
   hostile:
-    - PetsNT
+  - PetsNT
+  - AllHostile
+  - Wizard
+  - Penguin # imp
 
 - type: npcFaction
   id: Passive
@@ -36,7 +46,10 @@
   - SimpleHostile
   - Zombie
   - Xeno
-  - Dino
+  - AllHostile
+  - Wizard
+  - Dino # imp
+  - Dragon
 
 - type: npcFaction
   id: SimpleHostile
@@ -47,9 +60,13 @@
   - PetsNT
   - Zombie
   - Revolutionary
-  - Changeling
-  - Heretic
-  - Dino
+  - AllHostile
+  - Wizard
+  - Changeling # imp
+  - Heretic # imp
+  - Dino # imp
+  - Penguin # imp
+  - Dragon
 
 - type: npcFaction
   id: SimpleNeutral
@@ -62,9 +79,13 @@
   - Xeno
   - PetsNT
   - Zombie
-  - Changeling
-  - Heretic
-  - Dino
+  - Dragon
+  - AllHostile
+  - Wizard
+  - Changeling # imp
+  - Heretic # imp
+  - Dino # imp
+  - Penguin # imp
 
 - type: npcFaction
   id: Xeno
@@ -75,9 +96,13 @@
   - PetsNT
   - Zombie
   - Revolutionary
-  - Changeling
-  - Heretic
-  - Dino
+  - AllHostile
+  - Wizard
+  - Changeling # imp
+  - Heretic # imp
+  - Dino # imp
+  - Penguin # imp
+  - Dragon
 
 - type: npcFaction
   id: Zombie
@@ -89,9 +114,13 @@
   - Passive
   - PetsNT
   - Revolutionary
-  - Changeling
-  - Heretic
-  - Dino
+  - AllHostile
+  - Wizard
+  - Changeling # imp
+  - Heretic # imp
+  - Dino # imp
+  - Penguin # imp
+  - Dragon
 
 - type: npcFaction
   id: Revolutionary
@@ -100,4 +129,47 @@
   - Zombie
   - SimpleHostile
   - Dragon
-  - Dino
+  - AllHostile
+  - Wizard
+  - Dino # imp
+
+- type: npcFaction
+  id: AllHostile
+  hostile:
+  - NanoTrasen
+  - Dragon
+  - Mouse
+  - Passive
+  - PetsNT
+  - SimpleHostile
+  - SimpleNeutral
+  - Syndicate
+  - Xeno
+  - Zombie
+  - Revolutionary
+  - Wizard
+  - Changeling # imp
+  - Heretic # imp
+  - Dino # imp
+  - Penguin # imp
+
+
+- type: npcFaction
+  id: Wizard
+  hostile:
+  - NanoTrasen
+  - Dragon
+  - Mouse
+  - Passive
+  - PetsNT
+  - SimpleHostile
+  - SimpleNeutral
+  - Syndicate
+  - Xeno
+  - Zombie
+  - Revolutionary
+  - AllHostile
+  - Changeling # imp
+  - Heretic # imp
+  - Dino # imp
+  - Penguin # imp

@@ -7,8 +7,7 @@
     issuer: objective-issuer-syndicate
   - type: RoleRequirement
     roles:
-      mindRoles:
-      - TraitorRole
+    - TraitorRole
 
 - type: entity
   abstract: true
@@ -48,7 +47,7 @@
 - type: entity
   parent: [BaseTraitorObjective, BaseLivingObjective]
   id: EscapeShuttleObjective
-  name: Escape to centcomm alive and unrestrained.
+  name: Escape to CentComm alive and unrestrained. # imp caps fix
   description: One of our undercover agents will debrief you when you arrive. Don't show up in cuffs.
   components:
   - type: Objective
@@ -56,12 +55,13 @@
     icon:
       sprite: Structures/Furniture/chairs.rsi
       state: shuttle
+    trivial: true #imp edit
   - type: EscapeShuttleCondition
 
 - type: entity
   parent: BaseTraitorObjective
   id: DieObjective
-  name: Die a glorious death
+  name: Die a glorious death. # imp style fix
   description: Die.
   components:
   - type: Objective
@@ -69,6 +69,7 @@
     icon:
       sprite: Mobs/Ghosts/ghost_human.rsi
       state: icon
+    trivial: true #imp edit
   - type: ObjectiveBlacklistRequirement
     blacklist:
       components:
@@ -94,7 +95,7 @@
 - type: entity
   parent: [BaseTraitorObjective, BaseKillObjective]
   id: KillRandomPersonObjective
-  description: Do it however you like, just make sure they don't make it to centcomm.
+  description: Do it however you like, just make sure they don't make it to CentComm. # imp caps fix
   components:
   - type: Objective
     difficulty: 1.75
@@ -303,14 +304,3 @@
   - type: StealCondition
     stealGroup: NukeDisk
     owner: objective-condition-steal-station
-
-#- type: entity
-#  parent: BaseTraitorStealObjective
-#  id: StealSupermatterSliverObjective
-#  components:
-#  - type: Objective
-#    difficulty: 3.5
-#  - type: StealCondition
-#    stealGroup: SupermatterSliver
-#    objectiveNoOwnerText: objective-condition-steal-smsliver-title
-#    descriptionText: objective-condition-steal-smsliver-description

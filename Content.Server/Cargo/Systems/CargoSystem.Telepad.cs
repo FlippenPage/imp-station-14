@@ -67,7 +67,7 @@ public sealed partial class CargoSystem
             if (comp.CurrentState == CargoTelepadState.Unpowered)
             {
                 comp.CurrentState = CargoTelepadState.Idle;
-                _appearance.SetData(uid, CargoTelepadVisuals.State, CargoTelepadState.Idle, appearance);
+                // _appearance.SetData(uid, CargoTelepadVisuals.State, CargoTelepadState.Idle, appearance); #imp edit to remove default visuals
                 comp.Accumulator = comp.Delay;
                 continue;
             }
@@ -78,7 +78,7 @@ public sealed partial class CargoSystem
             if (comp.Accumulator > 0f)
             {
                 comp.CurrentState = CargoTelepadState.Idle;
-                _appearance.SetData(uid, CargoTelepadVisuals.State, CargoTelepadState.Idle, appearance);
+                // _appearance.SetData(uid, CargoTelepadVisuals.State, CargoTelepadState.Idle, appearance); #imp edit to remove default visuals
                 continue;
             }
 
@@ -92,14 +92,15 @@ public sealed partial class CargoSystem
             var currentOrder = comp.CurrentOrders.First();
             if (FulfillOrder(currentOrder, xform.Coordinates, comp.PrinterOutput))
             {
-                _audio.PlayPvs(_audio.GetSound(comp.TeleportSound), uid, AudioParams.Default.WithVolume(-8f));
+                _audio.PlayPvs(_audio.ResolveSound(comp.TeleportSound), uid, AudioParams.Default.WithVolume(-8f));
 
                 if (_station.GetOwningStation(uid) is { } station)
                     UpdateOrders(station);
 
                 comp.CurrentOrders.Remove(currentOrder);
                 comp.CurrentState = CargoTelepadState.Teleporting;
-                _appearance.SetData(uid, CargoTelepadVisuals.State, CargoTelepadState.Teleporting, appearance);
+                Spawn(comp.BeamInFx, Transform(uid).Coordinates);
+                // _appearance.SetData(uid, CargoTelepadVisuals.State, CargoTelepadState.Teleporting, appearance); #imp edit to remove default visuals
             }
 
             comp.Accumulator += comp.Delay;
@@ -147,9 +148,9 @@ public sealed partial class CargoSystem
         if (disabled)
             return;
 
-        TryComp<AppearanceComponent>(uid, out var appearance);
+        // TryComp<AppearanceComponent>(uid, out var appearance);
         component.CurrentState = CargoTelepadState.Unpowered;
-        _appearance.SetData(uid, CargoTelepadVisuals.State, CargoTelepadState.Unpowered, appearance);
+        // _appearance.SetData(uid, CargoTelepadVisuals.State, CargoTelepadState.Unpowered, appearance); #imp edit to remove default visuals
     }
 
     private void OnTelepadPowerChange(EntityUid uid, CargoTelepadComponent component, ref PowerChangedEvent args)

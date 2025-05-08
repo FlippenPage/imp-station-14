@@ -34,6 +34,12 @@
     prefix: advertisement-cargodrobe-
     count: 3
 
+- type: localizedDataset #imp
+  id: SalvDrobeAds
+  values:
+    prefix: advertisement-salvdrobe-
+    count: 3
+
 - type: localizedDataset
   id: ChangAds
   values:
@@ -80,6 +86,18 @@
   id: RobustSoftdrinksAds
   values:
     prefix: advertisement-cola-
+    count: 8
+
+- type: localizedDataset
+  id: DrGibbAds
+  values:
+    prefix: advertisement-gibb-
+    count: 8
+
+- type: localizedDataset
+  id: SmiteAds
+  values:
+    prefix: advertisement-smite-
     count: 8
 
 - type: localizedDataset
@@ -218,7 +236,7 @@
   id: SecDrobeAds
   values:
     prefix: advertisement-secdrobe-
-    count: 5
+    count: 6
 
 - type: localizedDataset
   id: SecTechAds
@@ -273,3 +291,9 @@
   values:
     prefix: advertisement-medibot-
     count: 17
+
+- type: localizedDataset
+  id: PrideDrobeAds
+  values:
+    prefix: advertisement-pride-
+    count: 4

@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Damage;
 using Content.Shared.Hands.Components;
-using Content.Shared.Mobs;
 using Content.Shared.Tag;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
@@ -24,12 +24,13 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
     /// </summary>
     private static readonly TimeSpan ExcessTime = TimeSpan.FromSeconds(0.5f);
 
+    private static readonly ProtoId<TagPrototype> InstantDoAftersTag = "InstantDoAfters";
+
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<DoAfterComponent, DamageChangedEvent>(OnDamage);
         SubscribeLocalEvent<DoAfterComponent, EntityUnpausedEvent>(OnUnpaused);
-        SubscribeLocalEvent<DoAfterComponent, MobStateChangedEvent>(OnStateChanged);
         SubscribeLocalEvent<DoAfterComponent, ComponentGetState>(OnDoAfterGetState);
         SubscribeLocalEvent<DoAfterComponent, ComponentHandleState>(OnDoAfterHandleState);
     }
@@ -46,18 +47,6 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
         Dirty(uid, component);
     }
 
-    private void OnStateChanged(EntityUid uid, DoAfterComponent component, MobStateChangedEvent args)
-    {
-        if (args.NewMobState != MobState.Dead || args.NewMobState != MobState.Critical)
-            return;
-
-        foreach (var doAfter in component.DoAfters.Values)
-        {
-            InternalCancel(doAfter, component);
-        }
-        Dirty(uid, component);
-    }
-
     /// <summary>
     /// Cancels DoAfter if it breaks on damage and it meets the threshold
     /// </summary>
@@ -65,8 +54,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
     {
         // If we're applying state then let the server state handle the do_after prediction.
         // This is to avoid scenarios where a do_after is erroneously cancelled on the final tick.
-        if (!args.InterruptsDoAfters || !args.DamageIncreased || args.DamageDelta == null || GameTiming.ApplyingState
-            || args.DamageDelta.DamageDict.ContainsKey("Radiation")) //Sanity check so people can crowbar doors open to flee from Lord Singuloth
+        if (!args.InterruptsDoAfters || !args.DamageIncreased || args.DamageDelta == null || GameTiming.ApplyingState)
             return;
 
         var delta = args.DamageDelta.GetTotal();
@@ -248,7 +236,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
 
         // TODO DO AFTER
         // Why does this tag exist? Just make this a bool on the component?
-        if (args.Delay <= TimeSpan.Zero || _tag.HasTag(args.User, "InstantDoAfters"))
+        if (args.Delay <= TimeSpan.Zero || _tag.HasTag(args.User, InstantDoAftersTag))
         {
             RaiseDoAfterEvents(doAfter, comp);
             // We don't store instant do-afters. This is just a lazy way of hiding them from client-side visuals.

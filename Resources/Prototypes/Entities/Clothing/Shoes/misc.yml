@@ -32,7 +32,7 @@
     sprite: Clothing/Shoes/Misc/slippers.rsi
 
 - type: entity
-  parent: ClothingShoesBaseButcherable
+  parent: ClothingShoesClownBase #imp edit
   id: ClothingShoeSlippersDuck
   name: ducky slippers
   # description: You wish these made quacking sounds as you walked.
@@ -50,6 +50,48 @@
   - type: Construction
     graph: ClothingShoeSlippersDuck
     node: shoes
+  #start imp edit
+  - type: ItemToggle
+    onUse: false
+    onActivate: false
+    soundActivate: 
+      path: /Audio/_Impstation/Effects/Footsteps/quack_on.ogg
+    soundDeactivate: 
+      path: /Audio/_Impstation/Effects/Footsteps/quack_off.ogg
+  #end imp edit
+
+- type: entity
+  parent: ClothingShoesBaseButcherable
+  id: ClothingShoeSlippersLizard
+  name: lizard plushie slippers
+  description: An adorable pair of slippers that resemble a lizardperson. Combine this with some other green clothing and you'll be the coolest crewmember on the station!
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/Misc/lizard-slippers.rsi
+  - type: Clothing
+    sprite: Clothing/Shoes/Misc/lizard-slippers.rsi
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepLizardSlippers
+      params:
+        variation: 0.02
+  - type: Construction
+    graph: ClothingShoeSlippersLizard
+    node: shoes
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: JuiceThatMakesYouWeh
+        Quantity: 60
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 40
+        reagents:
+        - ReagentId: Fiber
+          Quantity: 20
+        - ReagentId: JuiceThatMakesYouWeh
+          Quantity: 20
 
 - type: entity
   parent: ClothingShoesBaseButcherable

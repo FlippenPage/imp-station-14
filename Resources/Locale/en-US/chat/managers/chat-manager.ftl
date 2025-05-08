@@ -49,7 +49,7 @@ chat-manager-dead-channel-name = DEAD
 chat-manager-admin-channel-name = ADMIN
 
 chat-manager-rate-limited = You are sending messages too quickly!
-chat-manager-rate-limit-admin-announcement = Player { $player } breached chat rate limits. Watch them if this is a regular occurence.
+chat-manager-rate-limit-admin-announcement = Rate limit warning: { $player }
 
 ## Speech verbs for chat
 
@@ -118,6 +118,11 @@ chat-speech-verb-canine-1 = barks
 chat-speech-verb-canine-2 = woofs
 chat-speech-verb-canine-3 = howls
 
+chat-speech-verb-name-goat = Goat
+chat-speech-verb-goat-1 = bleats
+chat-speech-verb-goat-2 = grunts
+chat-speech-verb-goat-3 = cries
+
 chat-speech-verb-name-small-mob = Mouse
 chat-speech-verb-small-mob-1 = squeaks
 chat-speech-verb-small-mob-2 = pieps
@@ -151,3 +156,8 @@ chat-speech-verb-name-electricity = Electricity
 chat-speech-verb-electricity-1 = crackles
 chat-speech-verb-electricity-2 = buzzes
 chat-speech-verb-electricity-3 = screeches
+
+chat-speech-verb-name-echo = Echo
+chat-speech-verb-echo-1 = echoes
+chat-speech-verb-echo-2 = mimics
+chat-speech-verb-echo-3 = repeats

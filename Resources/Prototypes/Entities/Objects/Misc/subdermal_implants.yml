@@ -119,7 +119,10 @@
         - Hands # no use giving a mouse a storage implant, but a monkey is another story...
     - type: Storage
       grid:
-      - 0,0,2,2
+      - 0,0,0,1
+      - 1,0,1,0
+      - 1,2,1,2
+      - 2,1,2,2
     - type: ContainerContainer
       containers:
         storagebase: !type:Container
@@ -141,6 +144,18 @@
       whitelist:
         components:
         - Cuffable # useless if you cant be cuffed
+
+- type: entity
+  parent: BaseSubdermalImplant
+  id: RadioImplant
+  name: radio implant
+  description: This implant grants access to the Syndicate channel without a headset.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SubdermalImplant
+  - type: RadioImplant
+    radioChannels:
+    - Syndicate
 
 - type: entity
   parent: [ BaseSubdermalImplant, StorePresetUplink ]
@@ -311,17 +326,52 @@
       - Dead
     - type: Rattle
 
+- type: entity
+  parent: BaseSubdermalImplant
+  id: FakeMindShieldImplant
+  name: fake mindshield implant
+  description: This implant produces a covert signal, causing Nanotrasen HUDs to misidentify the implanted individual as having a mindshield. # imp edit
+  categories: [ HideSpawnMenu ]
+  components:
+      - type: SubdermalImplant
+        implantAction: FakeMindShieldToggleAction
+      - type: FakeMindShieldImplant
+
 # Sec and Command implants
 
 - type: entity
   parent: BaseSubdermalImplant
   id: MindShieldImplant
   name: mindshield implant
-  description: This implant will ensure loyalty to Nanotrasen and prevent mind control devices.
+  description: This proprietary implant ensures loyalty to Nanotrasen, blocking the effects of mind control devices or mental subversion. Ostensibly required for, and injected at shift-start into, all members of Command and Security. # imp edit
   categories: [ HideSpawnMenu ]
   components:
    - type: SubdermalImplant
-     permanent: true
+   - type: MindShieldImplant
    - type: Tag
      tags:
        - MindShield
+
+# Centcomm implants
+
+- type: entity
+  parent: BaseSubdermalImplant
+  id: RadioImplantCentcomm
+  name: radio implant
+  description: This implant grants access to the Central Command radio, without need for a headset. Only authorized for CentComm employees. # imp edit
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SubdermalImplant
+  - type: RadioImplant
+    radioChannels:
+    - CentCom
+
+- type: entity
+  parent: DeathRattleImplant
+  id: DeathRattleImplantCentcomm
+  name: centcomm death rattle implant
+  description: This implant will inform the Centcomm radio channel should the user fall into critical condition or die.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Rattle
+    radioChannel: CentCom

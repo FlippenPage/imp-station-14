@@ -1,0 +1,30 @@
+- type: latheRecipe
+  id: PrescriptionLens
+  result: PrescriptionLens
+  completetime: 1
+  materials:
+    Glass: 50
+
+- type: latheRecipe
+  id: PrescriptionLensStrong
+  result: PrescriptionLensStrong
+  completetime: 1
+  materials:
+    Glass: 100
+    Plasma: 50
+
+- type: latheRecipe
+  id: BlindingLens
+  result: BlindingLens
+  completetime: 1
+  materials:
+    Glass: 100
+    Plasma: 50
+
+- type: latheRecipe
+  id: WalkingCane
+  result: WalkingCane
+  completetime: 2
+  materials:
+    Steel: 100
+    Wood: 100

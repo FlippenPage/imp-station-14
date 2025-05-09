@@ -55,7 +55,7 @@ public sealed partial class EECCVars : CVars
         CVarDef.Create("supermatter.singuloose_moles_modifier", 1f, CVar.SERVER);
 
     /// <summary>
-    ///     Toggles whether or not Singuloose delaminations can occur. If both Singuloose and Tesloose are disabled, it will always delam into a Nuke.
+    ///     Toggles whether or not Singuloose delaminations can occur. If all delam types are disabled, it will always delam into a Nuke.
     /// </summary>
     public static readonly CVarDef<bool> SupermatterDoSingulooseDelam =
         CVarDef.Create("supermatter.do_singuloose", true, CVar.SERVER);
@@ -69,7 +69,7 @@ public sealed partial class EECCVars : CVars
         CVarDef.Create("supermatter.tesloose_power_modifier", 1f, CVar.SERVER);
 
     /// <summary>
-    ///     Toggles whether or not Tesloose delaminations can occur. If both Singuloose and Tesloose are disabled, it will always delam into a Nuke.
+    ///     Toggles whether or not Tesloose delaminations can occur. If If all delam types are disabled, it will always delam into a Nuke.
     /// </summary>
     public static readonly CVarDef<bool> SupermatterDoTeslooseDelam =
         CVarDef.Create("supermatter.do_tesloose", true, CVar.SERVER);

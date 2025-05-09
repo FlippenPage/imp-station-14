@@ -358,16 +358,11 @@
       growthTickChance: 0.3
       spreadChance: 0.4
     - type: SpeedModifierContacts
-      walkSpeedModifier: 0.2
-      sprintSpeedModifier: 0.2
+      walkSpeedModifier: 0
+      sprintSpeedModifier: 0
       ignoreWhitelist:
         components:
         - IgnoreKudzu
-    - type: PointLight
-      color: "#ffe302"
-      radius: 2.5
-      energy: 1.5
-      castShadows: false
     - type: CrystalMassVisuals
     - type: AmbientSound
       range: 5

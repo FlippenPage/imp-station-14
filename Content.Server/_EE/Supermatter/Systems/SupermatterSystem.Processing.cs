@@ -5,6 +5,7 @@ using Content.Server.Chat.Systems;
 using Content.Server.Singularity.Components;
 using Content.Shared._EE.CCVar;
 using Content.Shared._EE.Supermatter.Components;
+using Content.Shared._Impstation.CCVar;
 using Content.Shared.Atmos;
 using Content.Shared.Audio;
 using Content.Shared.Chat;
@@ -632,7 +633,10 @@ public sealed partial class SupermatterSystem
             && sm.Power >= _config.GetCVar(EECCVars.SupermatterPowerPenaltyThreshold) * _config.GetCVar(EECCVars.SupermatterTesloosePowerModifier))
             return DelamType.Tesla;
 
-        //TODO: Add resonance cascade when there's crazy conditions or a destabilizing crystal
+        if (_config.GetCVar(ImpCCVars.SupermatterDoCascadeDelam)
+            && sm.ItsCascadeIThink == true)
+            return DelamType.Cascade;
+
 
         return DelamType.Explosion;
     }
@@ -709,8 +713,8 @@ public sealed partial class SupermatterSystem
         switch (sm.PreferredDelamType)
         {
             case DelamType.Cascade:
-                // one day...
-                // Spawn(sm.KudzuSpawnPrototype, xform.Coordinates);
+                _explosion.TriggerExplosive(uid);
+                Spawn(sm.KudzuSpawnPrototype, xform.Coordinates);
                 break;
 
             case DelamType.Singulo:

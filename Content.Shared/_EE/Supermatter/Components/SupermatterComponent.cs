@@ -54,9 +54,8 @@ public sealed partial class SupermatterComponent : Component
     [DataField]
     public EntProtoId TeslaSpawnPrototype = "TeslaEnergyBall";
 
-    // one day...
-    // [DataField]
-    // public EntProtoId KudzuSpawnPrototype = "SupermatterKudzu";
+    [DataField]
+    public EntProtoId KudzuSpawnPrototype = "SupermatterKudzu";
 
     [DataField]
     public EntProtoId AnomalyBluespaceSpawnPrototype = "AnomalyBluespace";
@@ -343,6 +342,9 @@ public sealed partial class SupermatterComponent : Component
     [DataField]
     public DelamType PreferredDelamType = DelamType.Explosion;
 
+    [DataField]
+    public bool ItsCascadeIThink;
+
     #endregion
 
     #region Announcements
@@ -543,6 +545,11 @@ public enum SupermatterVisuals : byte
 
 [Serializable, NetSerializable]
 public sealed partial class SupermatterDoAfterEvent : SimpleDoAfterEvent
+{
+}
+
+[Serializable, NetSerializable]
+public sealed partial class EvilCrystalDoAfterEvent : SimpleDoAfterEvent
 {
 }
 

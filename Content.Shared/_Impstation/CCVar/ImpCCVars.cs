@@ -44,4 +44,11 @@ public sealed class ImpCCVars : CVars
     /// </summary>
     public static readonly CVarDef<string> ChatHighlightsColor =
         CVarDef.Create("chat.highlights_color", "#17FFC1FF", CVar.CLIENTONLY | CVar.ARCHIVE, "The color in which the highlights will be displayed.");
+
+    /// <summary>
+    ///     Toggles whether or not Resonance Cascade delaminations can occur. If all delam types are disabled, it will always delam into a Nuke.
+    /// </summary>
+    public static readonly CVarDef<bool> SupermatterDoCascadeDelam =
+        CVarDef.Create("supermatter.do_cascade", true, CVar.SERVER);
+
 }

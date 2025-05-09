@@ -79,6 +79,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterComponent, InteractUsingEvent>(OnItemInteract);
         SubscribeLocalEvent<SupermatterComponent, ExaminedEvent>(OnExamine);
         SubscribeLocalEvent<SupermatterComponent, SupermatterDoAfterEvent>(OnGetSliver);
+        SubscribeLocalEvent<SupermatterComponent, EvilCrystalDoAfterEvent>(OnGetEvilCrystal);
         SubscribeLocalEvent<SupermatterComponent, GravPulseEvent>(OnGravPulse);
     }
 
@@ -248,6 +249,15 @@ public sealed partial class SupermatterSystem : EntitySystem
         _popup.PopupClient(Loc.GetString("supermatter-tamper-end"), uid, args.User);
 
         sm.DelamTimer /= 2;
+    }
+
+    private void OnGetEvilCrystal(EntityUid uid, SupermatterComponent sm, ref EvilCrystalDoAfterEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        sm.ItsCascadeIThink = true;
+        sm.Delamming = true;
     }
 
     private void OnGravPulse(Entity<SupermatterComponent> ent, ref GravPulseEvent args)

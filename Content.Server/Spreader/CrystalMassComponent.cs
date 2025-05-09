@@ -11,7 +11,7 @@ public sealed partial class CrystalMassComponent : Component
 {
 
     [DataField] 
-    public SoundSpecifier DustSound = new SoundPathSpecifier("/Audio/_EinsteinEngines/Supermatter/supermatter.ogg");
+    public SoundSpecifier DustSound = new SoundPathSpecifier("/Audio/_EE/Supermatter/supermatter.ogg");
 
     /// <summary>
     /// At level 3 spreading can occur; prior to that we have a chance of increasing our growth level and changing our sprite.

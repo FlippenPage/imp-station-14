@@ -1,5 +1,5 @@
 - type: entity
-  name: TS-99 Blaster Pistol
+  name: TS-99 blaster pistol
   parent: [ BaseWeaponPowerCellSmall, BaseSecurityContraband ]
   id: WeaponBlasterPistol
   description: A cell-loaded fusion pistol, built on the smallest budget imaginable.
@@ -29,7 +29,7 @@
     steps: 5
     zeroVisible: true
   - type: Gun
-    fireRate: 1.5
+    fireRate: 2.5
     selectedMode: SemiAuto
     availableModes:
     - SemiAuto
@@ -46,10 +46,12 @@
         whitelist:
           tags:
             - BlasterCell
+  - type: MeleeWeapon
+    wideAnimationRotation: -80
 
 - type: entity
-  name: TW-07 Blaster Cannon
-  parent: [BaseWeaponBattery, BaseGunWieldable]
+  name: TW-07 blaster cannon
+  parent: [BaseWeaponBattery, BaseGunWieldable, BaseSecurityContraband]
   id: WeaponBlasterCannon
   description: What once started as an overzealous gardening tool was soon picked up by military developers. Packs one hell of a punch!
   components:
@@ -82,10 +84,26 @@
   - type: ProjectileBatteryAmmoProvider
     proto: BulletBlasterCannon
     fireCost: 200
+  - type: MeleeWeapon
+    attackRate: 0.4 #slower, but hits harder; bigger object to shove with
+    damage:
+      types:
+        Blunt: 8
+  - type: StaminaDamageOnHit
+    damage: 15 #slight stagger, but still like 7 hits to stun completely
+  - type: MeleeRequiresWield
+  - type: MeleeThrowOnHit
+    distance: 0.8
+    speed: 5
+  - type: DamageOtherOnHit #for throwing
+    staminaCost: 15
+    damage:
+      types:
+        Blunt: 12
 
 - type: entity
-  name: TT-10 Blaster Magnum
-  parent: WeaponDisablerPractice
+  name: TT-10 blaster magnum
+  parent: [WeaponDisablerPractice, BaseSecurityContraband]
   id: WeaponBlasterMagnum
   description: A culmination of energy weapons research rolled into a single, menacing package.
   components:
@@ -108,6 +126,9 @@
     magState: mag
     steps: 5
     zeroVisible: true
+  - type: Battery
+    maxCharge: 1000
+    startingCharge: 1000
   - type: Gun
     fireRate: 1
     soundGunshot:
@@ -118,3 +139,5 @@
   - type: BatterySelfRecharger
     autoRecharge: true
     autoRechargeRate: 30
+  - type: MeleeWeapon
+    wideAnimationRotation: -80

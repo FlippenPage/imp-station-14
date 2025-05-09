@@ -15,6 +15,10 @@
   - Syringe
   - PillCanister
   - HandLabeler
+  - BaseChemistryEmptyVial
+  - ConicalFlask #Imp
+  - LargeConicalFlask #Imp
+
 
 - type: latheRecipePack
   parent: BasicChemistryStatic

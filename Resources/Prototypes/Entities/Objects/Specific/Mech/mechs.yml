@@ -51,7 +51,7 @@
     range: 2
     soundHit:
       collection: MetalThud
-    canWideSwing: false
+    canWideSwing: false #imp
   - type: Puller
     needsHands: false
   - type: InputMover

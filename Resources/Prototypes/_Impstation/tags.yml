@@ -1,4 +1,8 @@
 # PUT YOUR TAGS IN ALPHABETICAL ORDER
+
+- type: Tag
+  id: AdministrationGlasses
+
 - type: Tag
   id: BeltUtility
 
@@ -15,7 +19,16 @@
   id: Cablecuffs
 
 - type: Tag
+  id: CaptainsEyepatch
+
+- type: Tag
+  id: CaptainsVisor
+
+- type: Tag
   id: CartridgeLPistol
+
+- type: Tag
+  id: CartridgePistolStun
 
 - type: Tag
   id: CleanerGrenade
@@ -42,16 +55,37 @@
   id: DionaMinded
 
 - type: Tag
+  id: EncryptionKeyRevolution
+
+- type: Tag
+  id: EvidenceMarker
+
+- type: Tag
   id: FloorChasmEntity
 
 - type: Tag
   id: Gastropod
 
 - type: Tag
+  id: Glowstick
+
+- type: Tag
   id: Guidebook
 
 - type: Tag
+  id: HandheldCriminalRecords
+
+- type: Tag
   id: HolyArrow
+
+- type: Tag
+  id: JanitorialWelder
+
+- type: Tag
+  id: JukeboxBoard
+
+- type: Tag
+  id: KodeEdible
 
 - type: Tag
   id: MagazineBR
@@ -63,7 +97,16 @@
   id: MagazineLPistol
 
 - type: Tag
+  id: MagazinePistolFreelancer
+
+- type: Tag
+  id: MagazinePistolP2
+
+- type: Tag
   id: MagazineZipper
+
+- type: Tag
+  id: MakeshiftLoader
 
 - type: Tag
   id: MimeBeltBlack
@@ -81,6 +124,12 @@
   id: OreBag
 
 - type: Tag
+  id: Pribar
+
+- type: Tag
+  id: Plushie
+
+- type: Tag
   id: RubberStamp
 
 - type: Tag
@@ -93,16 +142,25 @@
   id: ShellShotgunBeanbag
 
 - type: Tag
+  id: ShellCoconut
+
+- type: Tag
   id: SpiderFood
 
 - type: Tag
   id: SprayPainter
 
 - type: Tag
+  id: Suppy
+
+- type: Tag
   id: VapeCart
 
 - type: Tag
   id: Vaporizer
+
+- type: Tag
+  id: WeaponCapacitorRechargerCircuitboard
 
 - type: Tag
   id: WeaponCleanerLakeUpgradeKit
@@ -112,15 +170,3 @@
 
 - type: Tag
   id: WeaponSurvivalRifleUpgradeSMGKit
-
-- type: Tag
-  id: EvidenceMarker
-
-- type: Tag
-  id: Pribar
-
-- type: Tag
-  id: HandheldCriminalRecords
-
-- type: Tag
-  id: EncryptionKeyRevolution

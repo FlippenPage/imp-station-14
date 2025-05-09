@@ -62,7 +62,7 @@
     soundHit:
       path: /Audio/Effects/hit_kick.ogg
     soundSwing:
-      path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
+      path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
     resetOnHandSelected: false
   - type: AltFireMelee
     attackType: Heavy
@@ -121,7 +121,7 @@
     soundHit:
       path: /Audio/Effects/hit_kick.ogg
     soundSwing:
-      path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
+      path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
     resetOnHandSelected: false
   - type: AltFireMelee
     attackType: Heavy
@@ -182,7 +182,7 @@
     soundHit:
       path: /Audio/Effects/hit_kick.ogg
     soundSwing:
-      path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
+      path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
     resetOnHandSelected: false
   - type: AltFireMelee
     attackType: Heavy
@@ -240,7 +240,7 @@
       soundHit:
         path: /Audio/Effects/hit_kick.ogg
       soundSwing:
-        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
+        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
       resetOnHandSelected: false
     - type: AltFireMelee
       attackType: Heavy
@@ -308,7 +308,7 @@
       soundHit:
         path: /Audio/Effects/hit_kick.ogg
       soundSwing:
-        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
+        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
       resetOnHandSelected: false
     - type: AltFireMelee
       attackType: Heavy
@@ -376,7 +376,7 @@
       soundHit:
         path: /Audio/Effects/hit_kick.ogg
       soundSwing:
-        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
+        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
       resetOnHandSelected: false
     - type: AltFireMelee
       attackType: Heavy
@@ -418,26 +418,6 @@
             True: { state: base-unshaded }
             False: { state: base-unshaded-off }
     - type: PacifismAllowedGun
-#imp edit begin; weapon melee
-    - type: MeleeWeapon
-      range: 0.8
-      attackRate: 0.8
-      damage:
-        types:
-          Blunt: 5
-      soundHit:
-        path: /Audio/Effects/hit_kick.ogg
-      soundSwing:
-        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
-      resetOnHandSelected: false
-    - type: AltFireMelee
-      attackType: Heavy
-    - type: DamageOtherOnHit #for throwing
-      staminaCost: 6
-      damage:
-        types:
-          Blunt: 5
-#imp edit end
 
 # Admeme
 - type: entity
@@ -488,7 +468,7 @@
       soundHit:
         path: /Audio/Effects/hit_kick.ogg
       soundSwing:
-        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
+        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
       resetOnHandSelected: false
     - type: AltFireMelee
       attackType: Heavy
@@ -553,7 +533,7 @@
       soundHit:
         path: /Audio/Effects/hit_kick.ogg
       soundSwing:
-        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_folley.ogg
+        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
       resetOnHandSelected: false
     - type: AltFireMelee
       attackType: Heavy

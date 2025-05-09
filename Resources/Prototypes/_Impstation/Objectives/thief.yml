@@ -126,6 +126,8 @@
   parent: BaseThiefStealObjective
   id: SecPillCanisterStealObjective
   components:
+  - type: NotJobRequirement
+    job: [ SecurityOfficer, Detective, Brigmedic, Warden ] # you never know
   - type: StealCondition
     stealGroup: SecPillCanister
   - type: Objective
@@ -220,7 +222,7 @@
   id: SecTechStealObjective
   components:
   - type: NotJobRequirement
-    job: [ SecurityOfficer, Detective ] #you never know!
+    job: [ SecurityOfficer, Detective, Brigmedic, Warden ] #you never know!
   - type: StealCondition
     stealGroup: SecTech
   - type: Objective
@@ -253,7 +255,7 @@
   id: SecDrobeStealObjective
   components:
   - type: NotJobRequirement
-    job: [ SecurityOfficer, Detective ]
+    job: [ SecurityOfficer, Detective, Brigmedic, Warden ]
   - type: StealCondition
     stealGroup: SecDrobe
   - type: Objective
@@ -289,6 +291,17 @@
     job: [ CargoTechnician, SalvageSpecialist, Courier ]
   - type: StealCondition
     stealGroup: CargoDrobe
+  - type: Objective
+    difficulty: 0.5
+
+- type: entity
+  parent: BaseThiefStealStructureObjective
+  id: SalvDrobeStealObjective
+  components:
+  - type: NotJobRequirement
+    job: [ CargoTechnician, SalvageSpecialist, Courier ]
+  - type: StealCondition
+    stealGroup: SalvDrobe
   - type: Objective
     difficulty: 0.5
 
@@ -363,7 +376,7 @@
   id: DetDrobeStealObjective
   components:
   - type: NotJobRequirement
-    job: Detective
+    job: [ SecurityOfficer, Detective, Brigmedic, Warden ]
   - type: StealCondition
     stealGroup: DetDrobe
   - type: Objective

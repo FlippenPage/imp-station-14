@@ -1,16 +1,14 @@
 using Content.Server.Access.Systems;
-using Content.Server.DetailExaminable;
 using Content.Server.Humanoid;
 using Content.Server.IdentityManagement;
 using Content.Server.Mind.Commands;
 using Content.Server.PDA;
-using Content.Server.Shuttles.Systems;
-using Content.Server.Spawners.EntitySystems;
 using Content.Server.Station.Components;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
+using Content.Shared.DetailExaminable;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.PDA;
@@ -27,6 +25,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using Robust.Shared.GameObjects.Components.Localization; //imp
 
 namespace Content.Server.Station.Systems;
 
@@ -39,16 +38,15 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 {
     [Dependency] private readonly SharedAccessSystem _accessSystem = default!;
     [Dependency] private readonly ActorSystem _actors = default!;
-    [Dependency] private readonly ArrivalsSystem _arrivalsSystem = default!;
     [Dependency] private readonly IdCardSystem _cardSystem = default!;
     [Dependency] private readonly IConfigurationManager _configurationManager = default!;
-    [Dependency] private readonly ContainerSpawnPointSystem _containerSpawnPointSystem = default!;
     [Dependency] private readonly HumanoidAppearanceSystem _humanoidSystem = default!;
     [Dependency] private readonly IdentitySystem _identity = default!;
     [Dependency] private readonly MetaDataSystem _metaSystem = default!;
     [Dependency] private readonly PdaSystem _pdaSystem = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly GrammarSystem _grammar = default!; // imp
 
     private bool _randomizeCharacters;
 
@@ -134,7 +132,20 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             {
                 EquipRoleName(jobEntity, loadout, roleProto!);
             }
-
+            if (prototype?.ID == "StationAi" && profile != null && TryComp<GrammarComponent>(jobEntity, out var grammar)) //station AI get pronouns
+                _grammar.SetGender((jobEntity, grammar), profile.Gender);
+            /*//START IMP EDIT: let silicon have detail text and pronouns
+            if (profile != null)
+            {
+                if (!string.IsNullOrEmpty(profile.FlavorText) && _configurationManager.GetCVar(CCVars.FlavorText))
+                    AddComp<DetailExaminableComponent>(jobEntity).Content = profile.FlavorText;
+                if (TryComp<GrammarComponent>(jobEntity, out var grammar))
+                {
+                    _grammar.SetProperNoun((jobEntity, grammar), true); //it's a person now, not just a chassis labeled with a funny name
+                    _grammar.SetGender((jobEntity, grammar), profile.Gender);
+                }
+            }
+            //END IMP EDIT*/ // imp: commented out per mod feedback
             DoJobSpecials(job, jobEntity);
             _identity.QueueIdentityUpdate(jobEntity);
             return jobEntity;

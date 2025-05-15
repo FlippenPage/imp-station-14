@@ -69,7 +69,7 @@ public sealed class MaterialStorageSystem : SharedMaterialStorageSystem
 
         if (material.StackEntity != null)
         {
-            if (!_prototypeManager.Index<EntityPrototype>(material.StackEntity).TryGetComponent<PhysicalCompositionComponent>(out var composition))
+            if (!_prototypeManager.Index<EntityPrototype>(material.StackEntity).TryGetComponent<PhysicalCompositionComponent>(out var composition, EntityManager.ComponentFactory))
                 return;
 
             var volumePerSheet = composition.MaterialComposition.FirstOrDefault(kvp => kvp.Key == msg.Material).Value;
@@ -102,8 +102,9 @@ public sealed class MaterialStorageSystem : SharedMaterialStorageSystem
         if (!base.TryInsertMaterialEntity(user, toInsert, receiver, storage, material, composition))
             return false;
         _audio.PlayPvs(storage.InsertingSound, receiver);
-        _popup.PopupEntity(Loc.GetString("machine-insert-item", ("user", user), ("machine", receiver),
-            ("item", toInsert)), receiver);
+        if (user != receiver) // Goobstation - for automation to not spam popups
+            _popup.PopupEntity(Loc.GetString("machine-insert-item", ("user", user), ("machine", receiver),
+                ("item", toInsert)), receiver);
         QueueDel(toInsert);
 
         // Logging
@@ -169,7 +170,7 @@ public sealed class MaterialStorageSystem : SharedMaterialStorageSystem
             return new List<EntityUid>();
 
         var entProto = _prototypeManager.Index<EntityPrototype>(materialProto.StackEntity);
-        if (!entProto.TryGetComponent<PhysicalCompositionComponent>(out var composition))
+        if (!entProto.TryGetComponent<PhysicalCompositionComponent>(out var composition, EntityManager.ComponentFactory))
             return new List<EntityUid>();
 
         var materialPerStack = composition.MaterialComposition[materialProto.ID];

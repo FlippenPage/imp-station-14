@@ -31,7 +31,10 @@ public sealed partial class SupermatterComponent : Component
     public Color LightColorNormal = Color.FromHex("#ffe000");
 
     [DataField]
-    public Color LightColorDelam = Color.FromHex("#ffe000");
+    public Color LightColorDelam = Color.FromHex("#ff5555");
+
+    [DataField]
+    public float HallucinationRange = 6f;
 
     #endregion
 
@@ -69,6 +72,12 @@ public sealed partial class SupermatterComponent : Component
 
     [DataField]
     public EntProtoId CollisionResultPrototype = "Ash";
+
+    [DataField, ViewVariables(VVAccess.ReadOnly)]
+    public EntProtoId DelamEffectsPrototype = "SupermatterDelamEffects";
+
+    [DataField, ViewVariables(VVAccess.ReadOnly)]
+    public EntProtoId DelamGamerulePrototype = "SupermatterDelamEventScheduler";
 
     #endregion
 
@@ -142,7 +151,7 @@ public sealed partial class SupermatterComponent : Component
     /// The percentage of the gas on the supermatter's tile that is absorbed each atmos tick.
     /// </summary>
     [DataField]
-    public float GasEfficiency = 0.15f;
+    public float GasEfficiency = 0.05f;
 
     /// <summary>
     /// Uses <see cref="PowerlossDynamicScaling"/> and <see cref="GasStorage"/> to lessen the effects of our powerloss functions

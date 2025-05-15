@@ -55,7 +55,7 @@
   parent: ClothingUniformBase
   id: ClothingUniformJumpsuitChiefJusticeFormal
   name: chief justice's formal jumpsuit
-  description: A fancy double-breasted suit with golden accouterments. Sharp and authoritative. # imp edit - fixed typo
+  description: A fancy double-breasted suit with golden accoutrements. Sharp and authoritative. # imp edit - fixed typo
   components:
   - type: Sprite
     sprite: _DV/Clothing/Uniforms/Jumpsuit/cjformal.rsi
@@ -113,10 +113,10 @@
     sprite: _DV/Clothing/Uniforms/Jumpsuit/prosecutorred.rsi
 
 - type: entity
-  parent: ClothingUniformBase
+  parent: [ ClothingUniformBase, Tier1Contraband ] # imp - contraband
   id: ClothingUniformCybersunAttorney
-  name: cybersun attorney suit
-  description: This durable Suit Jacket and Turtleneck Combo doubles as an Accounting suit, and includes an extra button. Take that, Nerd-otrasen!
+  name: Cybersun attorney suit # imp edit; preferential to capitalizing company names
+  description: This durable suit jacket and turtleneck combo doubles as an accounting suit, and includes an extra button. Take that, Nerd-otrasen! # imp edit; capitalization
   components:
   - type: Sprite
     sprite: _DV/Clothing/Uniforms/Jumpsuit/cybersunattorney.rsi
@@ -150,9 +150,9 @@
     sprite: _DV/Clothing/Uniforms/Jumpsuit/explorer.rsi
 
 - type: entity
-  parent: ClothingUniformBase
+  parent: [ ClothingUniformBase, Tier1Contraband ] # imp - contraband
   id: ClothingUniformCybersunHazard
-  name: cybersun hazard suit
+  name: Cybersun hazard suit # imp edit; preferential to capitalizing company names
   description: This high-visibility jumpsuit prevents you from getting run over, yet keeps you dark enough to stay unnoticed!
   components:
   - type: Sprite
@@ -161,9 +161,9 @@
     sprite: _DV/Clothing/Uniforms/Jumpsuit/cybersunhazard.rsi
 
 - type: entity
-  parent: ClothingUniformBase
+  parent: [ ClothingUniformBase, Tier1Contraband ] # imp - contraband
   id: ClothingUniformCybersunCasual
-  name: cybersun casual jumpsuit
+  name: Cybersun casual jumpsuit # imp edit; preferential to capitalizing company names
   description: With all the non-descript gizmos they shoved in this thing, are you sure it's even safe to put on?
   components:
   - type: Sprite
@@ -172,10 +172,10 @@
     sprite: _DV/Clothing/Uniforms/Jumpsuit/cybersuncasual.rsi
 
 - type: entity
-  parent: ClothingUniformBase
+  parent: [ ClothingUniformBase, Tier1Contraband ] # imp - contraband
   id: ClothingUniformCybersunRND
-  name: cybersun research turtleneck
-  description: It's another Turtleneck. What'd you expect?
+  name: Cybersun research turtleneck # imp edit; preferential to capitalizing company names
+  description: A turtleneck used by only the stuffiest of eggheads. Perfect for keeping warm while forced into military research. # imp rewrite
   components:
   - type: Sprite
     sprite: _DV/Clothing/Uniforms/Jumpsuit/cybersunrnd.rsi

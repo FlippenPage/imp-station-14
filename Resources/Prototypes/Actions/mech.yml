@@ -82,4 +82,4 @@
     iconOn: 
       sprite: Interface/Actions/actions_mecha.rsi
       state: mech_phasing_on
-    event: !type:ToggleActionEvent
+    event: !type:MechTogglePhazonPhaseEvent

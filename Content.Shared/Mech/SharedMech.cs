@@ -7,7 +7,8 @@ namespace Content.Shared.Mech;
 public enum MechVisuals : byte
 {
     Open, //whether or not it's open and has a rider
-    Broken //if it broke and no longer works.
+    Broken, //if it broke and no longer works.
+    Phasing //if that shits goin in a wall (phazon only)
 }
 
 [Serializable, NetSerializable]
@@ -58,5 +59,9 @@ public sealed partial class MechOpenUiEvent : InstantActionEvent
 }
 
 public sealed partial class MechEjectPilotEvent : InstantActionEvent
+{
+}
+
+public sealed partial class MechTogglePhazonPhaseEvent : InstantActionEvent
 {
 }

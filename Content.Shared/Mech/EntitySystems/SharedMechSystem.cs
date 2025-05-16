@@ -18,6 +18,9 @@ using Content.Shared.Weapons.Melee;
 using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
+using Robust.Shared.Physics;
+using Robust.Shared.Physics.Systems;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 
@@ -39,11 +42,17 @@ public abstract class SharedMechSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private readonly CollisionWakeSystem _collision = default!;
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+    [Dependency] private readonly FixtureSystem _fixtures = default!;
+
+    private EntityQuery<PhysicsComponent> _physicsQuery;
 
     /// <inheritdoc/>
     public override void Initialize()
     {
         SubscribeLocalEvent<MechComponent, MechToggleEquipmentEvent>(OnToggleEquipmentAction);
+        SubscribeLocalEvent<MechComponent, MechTogglePhazonPhaseEvent>(OnTogglePhasingAction);
         SubscribeLocalEvent<MechComponent, MechEjectPilotEvent>(OnEjectPilotEvent);
         SubscribeLocalEvent<MechComponent, UserActivateInWorldEvent>(RelayInteractionEvent);
         SubscribeLocalEvent<MechComponent, ComponentStartup>(OnStartup);
@@ -77,6 +86,24 @@ public abstract class SharedMechSystem : EntitySystem
         };
 
         _doAfter.TryStartDoAfter(doAfterEventArgs);
+    }
+
+    private void OnTogglePhasingAction(EntityUid uid, MechComponent component, MechTogglePhazonPhaseEvent args)
+    {
+        if (args.Handled)
+            return;
+        args.Handled = true;
+
+        if (!args.Action.Comp.Toggled)
+        {
+            IsPhasing(uid, true, component);
+            _actions.SetToggled(args.Action, true);
+        }
+        else
+        {
+            IsPhasing(uid, false, component);
+            _actions.SetToggled(args.Action, false);
+        }
     }
 
     private void RelayInteractionEvent(EntityUid uid, MechComponent component, UserActivateInWorldEvent args)
@@ -139,6 +166,15 @@ public abstract class SharedMechSystem : EntitySystem
         _actions.AddAction(pilot, ref component.MechCycleActionEntity, component.MechCycleAction, mech);
         _actions.AddAction(pilot, ref component.MechUiActionEntity, component.MechUiAction, mech);
         _actions.AddAction(pilot, ref component.MechEjectActionEntity, component.MechEjectAction, mech);
+
+        // i hate this but actiongrants only apply to the mech itself, not the pilot, and i dont want to do eviler shit here
+        TryComp<ActionGrantComponent>(mech, out var actGrant);
+        if (actGrant != null)
+            foreach (var action in actGrant.Actions)
+            {
+                EntityUid? actionEnt = null;
+                _actions.AddAction(pilot, ref actionEnt, action, mech);
+            }
     }
 
     private void RemoveUser(EntityUid mech, EntityUid pilot)
@@ -269,6 +305,28 @@ public abstract class SharedMechSystem : EntitySystem
         equipmentComponent.EquipmentOwner = null;
         _container.Remove(toRemove, component.EquipmentContainer);
         UpdateUserInterface(uid, component);
+    }
+
+    public void IsPhasing(EntityUid uid, bool isPhasing, MechComponent component)
+    {
+        if (!TryComp<FixturesComponent>(uid, out var fixtures))
+            return;
+
+        if (isPhasing == true && fixtures != null)
+        {
+            foreach (var fixture in fixtures.Fixtures.Values)
+                _physics.SetHard(uid, fixture, false);
+            component.Phasing = true;
+            UpdateAppearance(uid, component);
+        }
+        else
+        {
+            if (isPhasing == false && fixtures != null)
+                foreach (var fixture in fixtures.Fixtures.Values)
+                    _physics.SetHard(uid, fixture, true);
+            component.Phasing = false;
+            UpdateAppearance(uid, component);
+        }
     }
 
     /// <summary>
@@ -432,6 +490,8 @@ public abstract class SharedMechSystem : EntitySystem
 
         _appearance.SetData(uid, MechVisuals.Open, IsEmpty(component), appearance);
         _appearance.SetData(uid, MechVisuals.Broken, component.Broken, appearance);
+        // phazon only
+        _appearance.SetData(uid, MechVisuals.Phasing, component.Phasing, appearance);
     }
 
     private void OnDragDrop(EntityUid uid, MechComponent component, ref DragDropTargetEvent args)

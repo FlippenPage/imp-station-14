@@ -302,6 +302,7 @@
     baseState: phazon
     openState: phazon-open
     brokenState: phazon-broken
+    phasingState: phazon-phase
     pilotWhitelist:
       components:
         - HumanoidAppearance
@@ -329,6 +330,11 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 1.5
     baseSprintSpeed: 2.85
+  - type: ActionGrant
+    actions: 
+    - ActionMechPhazonPhase
+  - type: CollisionWake
+    enabled: false
 
 - type: entity
   id: MechPhazonBattery

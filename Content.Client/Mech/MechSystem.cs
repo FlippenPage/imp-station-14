@@ -42,6 +42,11 @@ public sealed class MechSystem : SharedMechSystem
             state = component.OpenState;
             drawDepth = DrawDepth.SmallMobs;
         }
+        else if (component.PhasingState != null && _appearance.TryGetData<bool>(uid, MechVisuals.Phasing, out var phasing, args.Component) && phasing)
+        {
+            state = component.PhasingState;
+            drawDepth = DrawDepth.SmallMobs;
+        }
 
         layer.SetState(state);
         args.Sprite.DrawDepth = (int) drawDepth;

@@ -155,6 +155,7 @@
       - Heat
       - Shock
     locPrefix: silicon
+  - type: MobCollision
 
 - type: entity
   id: MechRipley

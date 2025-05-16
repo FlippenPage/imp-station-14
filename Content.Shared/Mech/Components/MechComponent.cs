@@ -63,6 +63,12 @@ public sealed partial class MechComponent : Component
     public bool Broken = false;
 
     /// <summary>
+    /// Whether the mech is phasing or not (Phazon). This just updates appearance data. #imp
+    /// </summary>
+    [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
+    public bool Phasing = false;
+
+    /// <summary>
     /// The slot the pilot is stored in.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
@@ -159,6 +165,9 @@ public sealed partial class MechComponent : Component
     public string? OpenState;
     [DataField]
     public string? BrokenState;
+    [DataField]
+    public string? PhasingState;
+
     #endregion
 
     [DataField] public EntityUid? MechCycleActionEntity;

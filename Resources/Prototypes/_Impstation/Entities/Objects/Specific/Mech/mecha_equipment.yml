@@ -1,0 +1,25 @@
+- type: entity
+  id: MechMountedSleeper
+  parent: BaseMechEquipment
+  name: mounted sleeper
+  description: A mounted sleeper that stabilizes patients.
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Specific/Mech/mecha_equipment.rsi
+    state: mecha_sleeper_miner
+  - type: MechGrabber
+    maxContents: 1
+    grabSound: "/Audio/Misc/cryo_warning.ogg"
+    whitelist:
+      components:
+      - MobState
+  - type: UIFragment
+    ui: !type:MechGrabberHealthUi
+  - type: ContainerContainer
+    containers:
+      item-container: !type:Container
+  - type: HealthAnalyzer
+  - type: UserInterface
+    interfaces:
+      enum.HealthAnalyzerUiKey.Key:
+        type: HealthAnalyzerBoundUserInterface

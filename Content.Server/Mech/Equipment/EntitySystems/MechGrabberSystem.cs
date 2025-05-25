@@ -9,6 +9,7 @@ using Content.Shared.Mech.Components;
 using Content.Shared.Mech.Equipment.Components;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Wall;
+using Content.Shared.Whitelist;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -30,6 +31,7 @@ public sealed class MechGrabberSystem : EntitySystem
     [Dependency] private readonly InteractionSystem _interaction = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly TransformSystem _transform = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -132,12 +134,16 @@ public sealed class MechGrabberSystem : EntitySystem
         if (args.Target == args.User || component.DoAfter != null)
             return;
 
-        if (TryComp<PhysicsComponent>(target, out var physics) && physics.BodyType == BodyType.Static ||
-            HasComp<WallMountComponent>(target) ||
-            HasComp<MobStateComponent>(target))
+        if (TryComp<PhysicsComponent>(target, out var physics) && physics.BodyType == BodyType.Static)
         {
             return;
         }
+
+        if (_whitelist.IsWhitelistFail(component.Whitelist, target))
+            return;
+
+        if (_whitelist.IsBlacklistPass(component.Blacklist, target))
+            return;
 
         if (Transform(target).Anchored)
             return;
@@ -186,5 +192,34 @@ public sealed class MechGrabberSystem : EntitySystem
         _mech.UpdateUserInterface(equipmentComponent.EquipmentOwner.Value);
 
         args.Handled = true;
+    }
+
+    private void OnActivateUI(EntityUid uid, MechGrabberComponent component, AfterActivatableUIOpenEvent args)
+    {
+        if (component.ItemContainer.ContainedEntities.HasValue)
+            return;
+
+        TryComp<TemperatureComponent>(entity.Comp.BodyContainer.ContainedEntity, out var temp);
+        TryComp<BloodstreamComponent>(entity.Comp.BodyContainer.ContainedEntity, out var bloodstream);
+
+        if (TryComp<HealthAnalyzerComponent>(entity, out var healthAnalyzer))
+        {
+            healthAnalyzer.ScannedEntity = entity.Comp.BodyContainer.ContainedEntity;
+        }
+
+        // TODO: This should be a state my dude
+        _uiSystem.ServerSendUiMessage(
+            entity.Owner,
+            HealthAnalyzerUiKey.Key,
+            new HealthAnalyzerScannedUserMessage(GetNetEntity(entity.Comp.BodyContainer.ContainedEntity),
+            temp?.CurrentTemperature ?? 0,
+            (bloodstream != null && _solutionContainerSystem.ResolveSolution(entity.Comp.BodyContainer.ContainedEntity.Value,
+                bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution))
+                ? bloodSolution.FillFraction
+                : 0,
+            null,
+            null,
+            null
+        ));
     }
 }

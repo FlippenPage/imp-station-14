@@ -22,6 +22,10 @@
   - type: Sprite
     state: mecha_clamp
   - type: MechGrabber
+    blacklist:
+      components:
+      - WallMount
+      - MobState
   - type: UIFragment
     ui: !type:MechGrabberUi
   - type: ContainerContainer
@@ -40,6 +44,10 @@
     maxContents: 4
     grabDelay: 3
     grabEnergyDelta: -20
+    blacklist:
+      components:
+      - WallMount
+      - MobState
   - type: Tag
     tags:
     - SmallMech

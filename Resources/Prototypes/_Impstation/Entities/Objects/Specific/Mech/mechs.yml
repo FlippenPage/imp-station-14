@@ -274,6 +274,12 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 3
     baseSprintSpeed: 4.10
+  - type: Stealth
+    minVisibility: 0.1
+    lastVisibility: 0.1
+    useAltShader: true
+  - type: FootstepModifier
+    footstepSoundCollection: null
 
 - type: entity
   id: MechReticenceBattery

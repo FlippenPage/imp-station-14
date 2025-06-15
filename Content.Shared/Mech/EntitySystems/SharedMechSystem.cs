@@ -29,7 +29,7 @@ namespace Content.Shared.Mech.EntitySystems;
 /// <summary>
 /// Handles all of the interactions, UI handling, and items shennanigans for <see cref="MechComponent"/>
 /// </summary>
-public abstract class SharedMechSystem : EntitySystem
+public abstract partial class SharedMechSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
@@ -51,8 +51,10 @@ public abstract class SharedMechSystem : EntitySystem
     /// <inheritdoc/>
     public override void Initialize()
     {
+
+        InitializeSpecific(); //imp
+
         SubscribeLocalEvent<MechComponent, MechToggleEquipmentEvent>(OnToggleEquipmentAction);
-        SubscribeLocalEvent<MechComponent, MechTogglePhazonPhaseEvent>(OnTogglePhasingAction);
         SubscribeLocalEvent<MechComponent, MechEjectPilotEvent>(OnEjectPilotEvent);
         SubscribeLocalEvent<MechComponent, UserActivateInWorldEvent>(RelayInteractionEvent);
         SubscribeLocalEvent<MechComponent, ComponentStartup>(OnStartup);
@@ -86,24 +88,6 @@ public abstract class SharedMechSystem : EntitySystem
         };
 
         _doAfter.TryStartDoAfter(doAfterEventArgs);
-    }
-
-    private void OnTogglePhasingAction(EntityUid uid, MechComponent component, MechTogglePhazonPhaseEvent args)
-    {
-        if (args.Handled)
-            return;
-        args.Handled = true;
-
-        if (!args.Action.Comp.Toggled)
-        {
-            IsPhasing(uid, true, component);
-            _actions.SetToggled(args.Action, true);
-        }
-        else
-        {
-            IsPhasing(uid, false, component);
-            _actions.SetToggled(args.Action, false);
-        }
     }
 
     private void RelayInteractionEvent(EntityUid uid, MechComponent component, UserActivateInWorldEvent args)
@@ -305,28 +289,6 @@ public abstract class SharedMechSystem : EntitySystem
         equipmentComponent.EquipmentOwner = null;
         _container.Remove(toRemove, component.EquipmentContainer);
         UpdateUserInterface(uid, component);
-    }
-
-    public void IsPhasing(EntityUid uid, bool isPhasing, MechComponent component)
-    {
-        if (!TryComp<FixturesComponent>(uid, out var fixtures))
-            return;
-
-        if (isPhasing == true && fixtures != null)
-        {
-            foreach (var fixture in fixtures.Fixtures.Values)
-                _physics.SetHard(uid, fixture, false);
-            component.Phasing = true;
-            UpdateAppearance(uid, component);
-        }
-        else
-        {
-            if (isPhasing == false && fixtures != null)
-                foreach (var fixture in fixtures.Fixtures.Values)
-                    _physics.SetHard(uid, fixture, true);
-            component.Phasing = false;
-            UpdateAppearance(uid, component);
-        }
     }
 
     /// <summary>

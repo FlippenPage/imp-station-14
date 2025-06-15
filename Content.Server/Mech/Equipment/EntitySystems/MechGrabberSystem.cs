@@ -193,33 +193,4 @@ public sealed class MechGrabberSystem : EntitySystem
 
         args.Handled = true;
     }
-
-    private void OnActivateUI(EntityUid uid, MechGrabberComponent component, AfterActivatableUIOpenEvent args)
-    {
-        if (component.ItemContainer.ContainedEntities.HasValue)
-            return;
-
-        TryComp<TemperatureComponent>(entity.Comp.BodyContainer.ContainedEntity, out var temp);
-        TryComp<BloodstreamComponent>(entity.Comp.BodyContainer.ContainedEntity, out var bloodstream);
-
-        if (TryComp<HealthAnalyzerComponent>(entity, out var healthAnalyzer))
-        {
-            healthAnalyzer.ScannedEntity = entity.Comp.BodyContainer.ContainedEntity;
-        }
-
-        // TODO: This should be a state my dude
-        _uiSystem.ServerSendUiMessage(
-            entity.Owner,
-            HealthAnalyzerUiKey.Key,
-            new HealthAnalyzerScannedUserMessage(GetNetEntity(entity.Comp.BodyContainer.ContainedEntity),
-            temp?.CurrentTemperature ?? 0,
-            (bloodstream != null && _solutionContainerSystem.ResolveSolution(entity.Comp.BodyContainer.ContainedEntity.Value,
-                bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution))
-                ? bloodSolution.FillFraction
-                : 0,
-            null,
-            null,
-            null
-        ));
-    }
 }

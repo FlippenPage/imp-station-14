@@ -1,0 +1,44 @@
+- type: entity
+  id: ActionMechAirtight
+  name: Toggle Cabin Airtight
+  description: Airtight cabin preserves internal air and can be pressurized with a mounted air tank.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    itemIconStyle: NoItem
+    icon: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_internals_off
+    iconOn: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_internals_on
+    event: !type:ToggleActionEvent
+
+- type: entity
+  id: ActionMechPhazonPhase
+  name: Toggle Phasing
+  description: Allows the mech to travel through walls for a large power cost.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    itemIconStyle: NoItem
+    icon: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_phasing_off
+    iconOn: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_phasing_on
+    event: !type:MechTogglePhazonPhaseEvent
+
+- type: entity
+  id: ActionMechPhazonPhase
+  name: Reconfigure arm microtool array
+  description: Allows the mech to travel through walls for a large power cost.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    itemIconStyle: NoItem
+    icon: 
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_damtype_brute
+    event: !type:MechMeleeDamTypeSwitchEvent

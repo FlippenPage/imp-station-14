@@ -322,7 +322,7 @@
     attackRate: 0.7
     damage:
       types:
-        Blunt: 14 
+        Blunt: 30
         Piercing: 6
     soundHit:
       collection: GreatWrench

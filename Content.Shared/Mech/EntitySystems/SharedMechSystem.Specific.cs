@@ -1,3 +1,4 @@
+using Content.Shared.Actions;
 using Content.Shared.Mech.Components;
 using Robust.Shared.Physics;
 
@@ -9,6 +10,7 @@ public abstract partial class SharedMechSystem
     private void InitializeSpecific()
     {
         SubscribeLocalEvent<MechComponent, MechTogglePhazonPhaseEvent>(OnTogglePhasingAction);
+        SubscribeLocalEvent<MechComponent, MechMeleeDamTypeSwitchEvent>(OnCycleMeleeType);
     }
 
     private void OnTogglePhasingAction(EntityUid uid, MechComponent component, MechTogglePhazonPhaseEvent args)
@@ -49,5 +51,15 @@ public abstract partial class SharedMechSystem
             UpdateAppearance(uid, component);
         }
     }
-    
+
+    private void OnCycleMeleeType(EntityUid uid, MechComponent component, MechMeleeDamTypeSwitchEvent args)
+    {
+        if (args.Handled)
+            return;
+        args.Handled = true;
+
+        TryComp<BaseActionComponent>(args.Action, out var action);
+
+        action?.Icon 
+    }
 }

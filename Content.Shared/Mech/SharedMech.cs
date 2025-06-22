@@ -62,6 +62,10 @@ public sealed partial class MechEjectPilotEvent : InstantActionEvent
 {
 }
 
-public sealed partial class MechTogglePhazonPhaseEvent : InstantActionEvent
+public sealed partial class MechTogglePhazonPhaseEvent : InstantActionEvent // imp
+{
+}
+
+public sealed partial class MechMeleeDamTypeSwitchEvent : InstantActionEvent // imp
 {
 }

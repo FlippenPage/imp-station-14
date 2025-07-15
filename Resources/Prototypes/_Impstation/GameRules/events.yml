@@ -130,3 +130,12 @@
       - type: NpcFactionMember
         factions:
         - Syndicate
+
+- type: entity
+  id: RadiationStorm
+  parent: BaseStationEvent
+  components:
+  - type: StationEvent
+    startAnnouncement: true
+    weight: 8
+  - type: RadiationStormRule

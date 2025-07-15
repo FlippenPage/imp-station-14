@@ -7,7 +7,7 @@ uniform highp float life;
 uniform highp float range;
 
 void fragment() {
-	highp vec2 finalCoords = (FRAGCOORD.xy - positionInput) / (renderScale * 32.0);
+	highp vec2 finalCoords = (FRAGCOORD.xy - positionInput) / (renderScale * 5.0); // imp. renderscale multiplier down to 5
 	highp float distanceToCenter = length(finalCoords);
 	highp float nlife = pow(sin(clamp(life, 0.0, 1.0) * 3.141592), 0.5);
 	highp float on = ((range - distanceToCenter) / range);

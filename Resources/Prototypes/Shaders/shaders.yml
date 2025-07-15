@@ -40,7 +40,7 @@
   path: "/Textures/Shaders/radiation.swsl"
   params:
     positionInput: 0,0
-    life: 0
+    life: 0.5  # imp. accounts for the shader cutting in half at certain values
 
 - type: shader
   id: Rainbow

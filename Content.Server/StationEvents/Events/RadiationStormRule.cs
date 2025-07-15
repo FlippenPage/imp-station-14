@@ -59,13 +59,21 @@ namespace Content.Server.StationEvents.Events
 
                 var stationEnt = _robustRandom.Pick(possibleTargets);
 
-                if (!_entityManager.TryGetComponent<MapGridComponent>(stationEnt, out var grid))
+                if (!TryComp<StationDataComponent>(component.Target, out var stationData))
                     return;
 
-                if (_mapSystem.IsPaused(grid.Owner))
+                var grid = StationSystem.GetLargestGrid(stationData);
+
+                if (grid is null)
                     return;
 
-                SpawnPulse(uid, component, grid);
+                if (_mapSystem.IsPaused(grid.Value))
+                    return;
+
+                if (!TryComp<MapGridComponent>(grid, out var mapGrid))
+                    return;
+
+                SpawnPulse(uid, component, mapGrid);
             }
         }
 

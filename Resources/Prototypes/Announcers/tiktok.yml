@@ -130,6 +130,9 @@
     ## NyanoTrasen
     # - id: noosphericStorm # A large amount of glimmer has joined the station and made people psionic
     #   path: events/noospheric_storm.ogg
+      ## Imp
+    - id: radiationStorm
+      path: unused/radiation.ogg
 
     # Shuttle
     - id: shuttleCalled # The shuttle is on its way

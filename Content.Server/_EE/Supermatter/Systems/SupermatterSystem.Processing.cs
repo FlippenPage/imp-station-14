@@ -2,7 +2,9 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using Content.Server.Chat.Systems;
+using Content.Server.Light.Components;
 using Content.Server.Singularity.Components;
+using Content.Server.StationEvents.Events;
 using Content.Shared._EE.CCVar;
 using Content.Shared._EE.Supermatter.Components;
 using Content.Shared._Impstation.Thaven.Components;
@@ -11,9 +13,11 @@ using Content.Shared.Audio;
 using Content.Shared.Chat;
 using Content.Shared.DeviceLinking;
 using Content.Shared.Eye.Blinding.Components;
+using Content.Shared.Light.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Physics;
+using Content.Shared.Popups;
 using Content.Shared.Radiation.Components;
 using Content.Shared.Silicons.Laws.Components;
 using Content.Shared.Speech;
@@ -28,7 +32,6 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Spawners;
-using Vector4 = Robust.Shared.Maths.Vector4;
 
 namespace Content.Server._EE.Supermatter.Systems;
 
@@ -689,6 +692,16 @@ public sealed partial class SupermatterSystem
         // Scramble the thaven shared mood
         _moods.NewSharedMoods();
 
+        // Flickers all powered lights on the map
+        var lightLookup = new HashSet<Entity<PoweredLightComponent>>();
+        _entityLookup.GetEntitiesOnMap<PoweredLightComponent>(mapId, lightLookup);
+        foreach (var light in lightLookup)
+        {
+            if (!_random.Prob(sm.LightFlickerChance))
+                continue;
+            _ghost.DoGhostBooEvent(light);
+        }
+
         // Add post-delamination event scheduler
         var gamerule = _gameTicker.AddGameRule(sm.DelamGamerulePrototype);
         _gameTicker.StartGameRule(gamerule);
@@ -697,21 +710,22 @@ public sealed partial class SupermatterSystem
 
         foreach (var mob in mobLookup)
         {
+            // Scramble thaven moods
+            if (TryComp<ThavenMoodsComponent>(mob, out var moods))
+                _moods.RefreshMoods((mob, moods));
+
             // Scramble laws for silicons, then ignore other effects
             if (TryComp<SiliconLawBoundComponent>(mob, out var law))
             {
                 var target = EnsureComp<IonStormTargetComponent>(mob); // they hit the fucking ai
                 var oldChance = target.Chance;
                 target.Chance = 1f;
-                _ionStorm.IonStormTarget((mob.Owner, law, target));
+                var ev = new IonStormEvent();
+                RaiseLocalEvent(mob, ref ev);
                 target.Chance = oldChance; // hacky fucking code. whatever. don't look at me
 
                 continue;
             }
-
-            // Scramble thaven moods
-            if (TryComp<ThavenMoodsComponent>(mob, out var moods))
-                _moods.RefreshMoods((mob, moods));
 
             // Add effects to all mobs
             // TODO: change paracusia to actual hallucinations whenever those are real
@@ -797,6 +811,9 @@ public sealed partial class SupermatterSystem
 
             if (!EnsureComp<ParacusiaComponent>(mob, out var paracusia))
             {
+                _popup.PopupEntity(Loc.GetString("supermatter-paracusia-player-message"), mob, mob, PopupType.LargeCaution);
+                _audio.PlayEntity(sm.GainParacusiaSound, mob, mob);
+                _audio.PlayEntity(sm.GiveParacusiaSound, mob, uid);
                 _paracusia.SetSounds(mob, paracusiaSounds, paracusia);
                 _paracusia.SetTime(mob, paracusiaMinTime, paracusiaMaxTime, paracusia);
                 _paracusia.SetDistance(mob, paracusiaDistance, paracusia);

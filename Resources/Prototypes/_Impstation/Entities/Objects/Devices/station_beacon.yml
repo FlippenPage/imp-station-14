@@ -1,6 +1,6 @@
 #Medical
 - type: entity
-  parent: DefaultStationBeaconScience
+  parent: DefaultStationBeaconMedical
   id: DefaultStationBeaconParamedic
   suffix: Paramedic
   components:
@@ -15,6 +15,15 @@
   components:
   - type: NavMapBeacon
     defaultText: station-beacon-xenoarchaeology
+
+#Security
+- type: entity
+  parent: DefaultStationBeaconSecurity
+  id: DefaultStationBeaconEvidence
+  suffix: Evidence
+  components:
+  - type: NavMapBeacon
+    defaultText: station-beacon-evidence
 
 #Supply
 - type: entity
@@ -33,6 +42,22 @@
   components:
   - type: NavMapBeacon
     defaultText: station-beacon-smengine
+
+- type: entity
+  parent: DefaultStationBeaconEngineering
+  id: DefaultStationBeaconDrone
+  suffix: Drone
+  components:
+  - type: NavMapBeacon
+    defaultText: station-beacon-drone
+
+- type: entity
+  parent: DefaultStationBeaconEngineering
+  id: DefaultStationBeaconMaterials
+  suffix: Materials
+  components:
+  - type: NavMapBeacon
+    defaultText: station-beacon-materials
 
 #Solars
 - type: entity
@@ -195,7 +220,7 @@
   components:
   - type: NavMapBeacon
     defaultText: station-beacon-solars-science
-    
+
 - type: entity
   parent: DefaultStationBeaconEngineering
   id: DefaultStationBeaconSolarsSecurity
@@ -219,7 +244,7 @@
   components:
   - type: NavMapBeacon
     defaultText: station-beacon-solars-engineering
-   
+
 - type: entity
   parent: DefaultStationBeaconEngineering
   id: DefaultStationBeaconSolarsMedical

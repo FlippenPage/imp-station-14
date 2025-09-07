@@ -58,6 +58,10 @@ namespace Content.Client.Lobby.UI
 
         private readonly SpriteSystem _sprite;
 
+        // CCvar.
+        private int _maxNameLength;
+        private bool _allowFlavorText;
+
         private FlavorText.FlavorText? _flavorText;
         private TextEdit? _flavorTextEdit;
 
@@ -104,12 +108,11 @@ namespace Content.Client.Lobby.UI
 
         private bool _isDirty;
 
+        private static readonly ProtoId<GuideEntryPrototype> DefaultSpeciesGuidebook = "Species";
+
         // Begin CD - Station Records
         private readonly RecordEditorGui _recordsTab;
         // End CD - Station Records
-
-        [ValidatePrototypeId<GuideEntryPrototype>]
-        private const string DefaultSpeciesGuidebook = "Species";
 
         public event Action<List<ProtoId<GuideEntryPrototype>>>? OnOpenGuidebook;
 
@@ -140,6 +143,10 @@ namespace Content.Client.Lobby.UI
             _requirements = requirements;
             _controller = UserInterfaceManager.GetUIController<LobbyUIController>();
             _sprite = _entManager.System<SpriteSystem>();
+
+            _maxNameLength = _cfgManager.GetCVar(CCVars.MaxNameLength);
+            _allowFlavorText = _cfgManager.GetCVar(CCVars.FlavorText);
+
             ImportButton.OnPressed += args =>
             {
                 ImportProfile();
@@ -175,6 +182,7 @@ namespace Content.Client.Lobby.UI
             #region Name
 
             NameEdit.OnTextChanged += args => { SetName(args.Text); };
+            NameEdit.IsValid = args => args.Length <= _maxNameLength;
             NameRandomize.OnPressed += args => RandomizeName();
             AppearanceRandomize.OnPressed += args => { RandomizeAppearance(); }; // IMP
             RandomizeEverythingButton.OnPressed += args => { RandomizeEverything(); };
@@ -229,6 +237,7 @@ namespace Content.Client.Lobby.UI
             {
                 SpeciesButton.SelectId(args.Id);
                 SetSpecies(_species[args.Id].ID);
+                RefreshTraits(); // DeltaV - Allows for hiding traits
                 UpdateHairPickers();
                 OnSkinColorOnValueChanged();
             };
@@ -241,6 +250,7 @@ namespace Content.Client.Lobby.UI
             };
 
             RgbSkinColorContainer.AddChild(_rgbSkinColorSelector = new ColorSelectorSliders());
+            _rgbSkinColorSelector.SelectorType = ColorSelectorSliders.ColorSelectorType.Hsv; // defaults color selector to HSV
             _rgbSkinColorSelector.OnColorChanged += _ =>
             {
                 OnSkinColorOnValueChanged();
@@ -471,7 +481,7 @@ namespace Content.Client.Lobby.UI
         /// </summary>
         public void RefreshFlavorText()
         {
-            if (_cfgManager.GetCVar(CCVars.FlavorText))
+            if (_allowFlavorText)
             {
                 if (_flavorText != null)
                     return;
@@ -524,6 +534,14 @@ namespace Content.Client.Lobby.UI
 
             foreach (var trait in traits)
             {
+                // Begin DeltaV Additions - Species trait exlusion
+                if (Profile?.Species is { } selectedSpecies && trait.ExcludedSpecies.Contains(selectedSpecies))
+                {
+                    Profile = Profile?.WithoutTraitPreference(trait.ID, _prototypeManager);
+                    continue;
+                }
+                // End DeltaV Additions
+
                 if (trait.Category == null)
                 {
                     defaultTraits.Add(trait.ID);
@@ -823,9 +841,9 @@ namespace Content.Client.Lobby.UI
             var species = Profile?.Species ?? SharedHumanoidAppearanceSystem.DefaultSpecies;
             var page = DefaultSpeciesGuidebook;
             if (_prototypeManager.HasIndex<GuideEntryPrototype>(species))
-                page = species;
+                page = new ProtoId<GuideEntryPrototype>(species.Id); // Gross. See above todo comment.
 
-            if (_prototypeManager.TryIndex<GuideEntryPrototype>(DefaultSpeciesGuidebook, out var guideRoot))
+            if (_prototypeManager.TryIndex(DefaultSpeciesGuidebook, out var guideRoot))
             {
                 var dict = new Dictionary<ProtoId<GuideEntryPrototype>, GuideEntry>();
                 dict.Add(DefaultSpeciesGuidebook, guideRoot);
@@ -1035,7 +1053,7 @@ namespace Content.Client.Lobby.UI
 
             _loadoutWindow = new LoadoutWindow(Profile, roleLoadout, roleLoadoutProto, _playerManager.LocalSession, collection)
             {
-                Title = Loc.GetString(jobProto?.Name ?? "Job") + " Loadout",
+                Title = Loc.GetString("loadout-window-title-loadout", ("job", $"{jobProto?.LocalizedName}")),
             };
 
             // Refresh the buttons etc.
@@ -1127,7 +1145,7 @@ namespace Content.Client.Lobby.UI
                     var color = SkinColor.HumanSkinTone((int) Skin.Value);
 
                     Markings.CurrentSkinColor = color;
-                    Profile = Profile.WithCharacterAppearance(Profile.Appearance.WithSkinColor(color));
+                    Profile = Profile.WithCharacterAppearance(Profile.Appearance.WithSkinColor(color));//
                     break;
                 }
                 case HumanoidSkinColor.Hues:
@@ -1474,17 +1492,13 @@ namespace Content.Client.Lobby.UI
             {
                 return;
             }
-            var hairMarking = Profile.Appearance.HairStyleId switch
-            {
-                HairStyles.DefaultHairStyle => new List<Marking>(),
-                _ => new() { new(Profile.Appearance.HairStyleId, new List<Color>() { Profile.Appearance.HairColor }) },
-            };
+            var hairMarking = Profile.Appearance.HairStyleId == HairStyles.DefaultHairStyle
+                ? new List<Marking>()
+                : new() { new(Profile.Appearance.HairStyleId, new List<Color>() { Profile.Appearance.HairColor }) };
 
-            var facialHairMarking = Profile.Appearance.FacialHairStyleId switch
-            {
-                HairStyles.DefaultFacialHairStyle => new List<Marking>(),
-                _ => new() { new(Profile.Appearance.FacialHairStyleId, new List<Color>() { Profile.Appearance.FacialHairColor }) },
-            };
+            var facialHairMarking = Profile.Appearance.FacialHairStyleId == HairStyles.DefaultFacialHairStyle
+                ? new List<Marking>()
+                : new() { new(Profile.Appearance.FacialHairStyleId, new List<Color>() { Profile.Appearance.FacialHairColor }) };
 
             HairStylePicker.UpdateData(
                 hairMarking,

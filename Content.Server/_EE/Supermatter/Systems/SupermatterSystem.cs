@@ -7,6 +7,7 @@ using Content.Server.Chat.Systems;
 using Content.Server.Examine;
 using Content.Server.Explosion.EntitySystems;
 using Content.Server.GameTicking;
+using Content.Server.Ghost;
 using Content.Server.Lightning;
 using Content.Server.Popups;
 using Content.Server.Radio.EntitySystems;
@@ -52,6 +53,7 @@ public sealed partial class SupermatterSystem : EntitySystem
     [Dependency] private readonly ExamineSystem _examine = default!;
     [Dependency] private readonly ExplosionSystem _explosion = default!;
     [Dependency] private readonly GameTicker _gameTicker = default!;
+    [Dependency] private readonly GhostSystem _ghost = default!;
     [Dependency] private readonly GravityWellSystem _gravityWell = default!;
     [Dependency] private readonly IonStormSystem _ionStorm = default!;
     [Dependency] private readonly LightningSystem _lightning = default!;

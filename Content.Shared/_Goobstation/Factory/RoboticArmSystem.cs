@@ -385,29 +385,20 @@ public sealed class RoboticArmSystem : EntitySystem
     private bool IsOutputBlocked(EntityUid uid)
     {
         var coords = OutputPosition(uid);
-        return coords.GetTileRef(EntityManager, _map) is {} turf &&
+        return _turf.GetTileRef(coords) is {} turf &&
             _turf.IsTileBlocked(turf, CollisionGroup.MachineMask);
     }
 
     private void StartMoving(Entity<RoboticArmComponent> ent)
     {
-        SetPowerDraw(ent, ent.Comp.MovingPowerDraw);
         ent.Comp.NextMove = _timing.CurTime + ent.Comp.MoveDelay;
         DirtyField(ent, ent.Comp, nameof(RoboticArmComponent.NextMove));
     }
 
     private void StopMoving(Entity<RoboticArmComponent> ent)
     {
-        SetPowerDraw(ent, ent.Comp.IdlePowerDraw);
         ent.Comp.NextMove = null;
         DirtyField(ent, ent.Comp, nameof(RoboticArmComponent.NextMove));
-    }
-
-    private void SetPowerDraw(EntityUid uid, float draw)
-    {
-        SharedApcPowerReceiverComponent? receiver = null;
-        if (_power.ResolveApc(uid, ref receiver))
-            _power.SetLoad(receiver, draw);
     }
 
     public EntityCoordinates OutputPosition(EntityUid uid)

@@ -26,7 +26,7 @@ namespace Content.Server.Heretic.EntitySystems;
 
 public sealed partial class MansusGraspSystem : EntitySystem
 {
-    [Dependency] private readonly StaminaSystem _stamina = default!;
+    [Dependency] private readonly SharedStaminaSystem _stamina = default!;
     [Dependency] private readonly SharedStunSystem _stun = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
@@ -118,7 +118,7 @@ public sealed partial class MansusGraspSystem : EntitySystem
 
         var target = (EntityUid)args.Target;
 
-        if ((TryComp<HereticComponent>(args.Target, out var th) && th.CurrentPath == ent.Comp.Path))
+        if (TryComp<HereticComponent>(args.Target, out var heretic) && heretic.MainPath == ent.Comp.Path)
             return;
 
         args.Handled = true;
@@ -133,15 +133,15 @@ public sealed partial class MansusGraspSystem : EntitySystem
         }
 
         // upgraded grasp
-        if (hereticComp.CurrentPath != null)
+        if (hereticComp.MainPath != null)
         {
-            if (hereticComp.PathStage >= 2)
-                ApplyGraspEffect(args.User, target, hereticComp.CurrentPath!);
+            if (hereticComp.Power >= 2)
+                ApplyGraspEffect(args.User, target, hereticComp.MainPath!);
 
-            if (hereticComp.PathStage >= 4 && HasComp<StatusEffectsComponent>(target))
+            if (hereticComp.Power >= 4 && HasComp<StatusEffectsComponent>(target))
             {
                 var markComp = EnsureComp<HereticCombatMarkComponent>(target);
-                markComp.Path = hereticComp.CurrentPath;
+                markComp.Path = hereticComp.MainPath;
             }
         }
 

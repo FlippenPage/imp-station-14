@@ -4,6 +4,7 @@
 
 using Content.Shared._Impstation.SpawnedFromTracker;
 using Content.Shared.Actions;
+using Content.Shared.Audio;
 using Content.Shared.Construction.Components;
 using Content.Shared.Humanoid;
 using Content.Shared.Item;
@@ -20,6 +21,16 @@ using Content.Shared.Mind.Components;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
+using Content.Shared.Throwing;
+using Robust.Shared.Prototypes;
+using Content.Shared.Stacks;
+using Robust.Shared.Map.Components;
+using Content.Shared.Maps;
+using Robust.Shared.Map;
+using Robust.Shared.Random;
+using Robust.Shared.Containers;
+using Content.Shared.Storage.Components;
+using Content.Shared.Storage.EntitySystems;
 
 namespace Content.Shared._Impstation.Replicator;
 
@@ -27,6 +38,8 @@ public abstract class SharedReplicatorNestSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly ITileDefinitionManager _tileDef = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
 
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
@@ -36,18 +49,21 @@ public abstract class SharedReplicatorNestSystem : EntitySystem
     [Dependency] private readonly SharedMindSystem _mind = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly StepTriggerSystem _stepTrigger = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly ActionContainerSystem _actionContainer = default!;
+    [Dependency] private readonly ThrowingSystem _throwing = default!;
+    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly TileSystem _tile = default!;
+    [Dependency] private readonly SharedAmbientSoundSystem _ambientSound = default!;
+    [Dependency] private readonly TurfSystem _turf = default!;
+    [Dependency] private readonly SharedEntityStorageSystem _entStorage = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<ReplicatorNestComponent, StepTriggeredOffEvent>(OnStepTriggered);
-
-        SubscribeLocalEvent<ReplicatorComponent, ReplicatorUpgrade2ActionEvent>(OnUpgrade2);
-        SubscribeLocalEvent<ReplicatorComponent, ReplicatorUpgrade3ActionEvent>(OnUpgrade3);
+        SubscribeLocalEvent<ReplicatorComponent, ReplicatorUpgradeActionEvent>(OnUpgrade);
     }
 
     public override void Update(float frameTime)
@@ -69,29 +85,7 @@ public abstract class SharedReplicatorNestSystem : EntitySystem
         }
     }
 
-    private void OnStepTriggered(Entity<ReplicatorNestComponent> ent, ref StepTriggeredOffEvent args)
-    {
-        // dont accept if they are already falling
-        if (HasComp<ReplicatorNestFallingComponent>(args.Tripper))
-            return;
-
-        var isReplicator = HasComp<ReplicatorComponent>(args.Tripper);
-
-        // Allow dead replicators regardless of current level. 
-        if (TryComp<MobStateComponent>(args.Tripper, out var mobState) && isReplicator && _mobState.IsDead(args.Tripper))
-        {
-            StartFalling(ent, args.Tripper);
-            return;
-        }
-
-        // Don't allow living beings. If you want those sweet bonus points, you have to kill.
-        if (mobState != null && _mobState.IsAlive(args.Tripper))
-            return;
-
-        StartFalling(ent, args.Tripper);
-    }
-
-    private void StartFalling(Entity<ReplicatorNestComponent> ent, EntityUid tripper, bool playSound = true)
+    public void StartFalling(Entity<ReplicatorNestComponent> ent, EntityUid tripper, bool playSound = true)
     {
         HandlePoints(ent, tripper);
 
@@ -111,32 +105,39 @@ public abstract class SharedReplicatorNestSystem : EntitySystem
 
     private void HandlePoints(Entity<ReplicatorNestComponent> ent, EntityUid tripper) // this is its own method because I think it reads cleaner. also the way goobcode handled this sucked.
     {
-        if (_whitelist.IsBlacklistPass(ent.Comp.Blacklist, tripper))
-            return;
+        // regardless of what falls in, you get at least one point
+        if (!HasComp<StackComponent>(tripper)) // as long as it's not a stack.
+        {
+            ent.Comp.TotalPoints += 10;
+            ent.Comp.SpawningProgress += 10;
+        }
 
-        // regardless of what falls in, you get at least one point.
-        ent.Comp.TotalPoints++;
-        ent.Comp.SpawningProgress++;
+        // if the item is in a stack, you get points depending on how many items are in that stack.
+        if (TryComp<StackComponent>(tripper, out var stackComp))
+        {
+            ent.Comp.TotalPoints += stackComp.Count;
+            ent.Comp.SpawningProgress += stackComp.Count;
+        }
 
         // you get a bonus point if the item is Large, 2 bonus points if it's Huge, and 3 bonus points if it's above that.
-        if (TryComp<ItemComponent>(tripper, out var itemComp))
+        else if (TryComp<ItemComponent>(tripper, out var itemComp))
         {
             if (_item.GetSizePrototype(itemComp.Size) == _item.GetSizePrototype("Large"))
-                ent.Comp.TotalPoints++;
+                ent.Comp.TotalPoints += 10;
             else if (_item.GetSizePrototype(itemComp.Size) == _item.GetSizePrototype("Huge"))
-                ent.Comp.TotalPoints += 2;
+                ent.Comp.TotalPoints += 20;
             else if (_item.GetSizePrototype(itemComp.Size) >= _item.GetSizePrototype("Ginormous"))
-                ent.Comp.TotalPoints += 3;
+                ent.Comp.TotalPoints += 30;
             // regardless, items only net 1 spawning progress.
-            ent.Comp.SpawningProgress++;
+            ent.Comp.SpawningProgress += 10;
         }
 
         // if it wasn't an item and was anchorable, you get 3 bonus points.
         else if (TryComp<AnchorableComponent>(tripper, out _))
         {
-            ent.Comp.TotalPoints += 3;
+            ent.Comp.TotalPoints += 30;
             // structures give a lot more spawning progress than items
-            ent.Comp.SpawningProgress += 3;
+            ent.Comp.SpawningProgress += 30;
         }
 
         // recycling four dead replicators nets you one new replicator, but no progress towards leveling up.
@@ -163,13 +164,13 @@ public abstract class SharedReplicatorNestSystem : EntitySystem
             }
         }
 
-        // if we exceed the upgrade threshold after points are added, 
+        // if we exceed the upgrade threshold after points are added,
         if (ent.Comp.TotalPoints >= ent.Comp.NextUpgradeAt)
         {
             // level up
             ent.Comp.CurrentLevel++;
 
-            // this allows us to have an arbitrary number of unique messages for when the nest levels up - and a default for if we run out. 
+            // this allows us to have an arbitrary number of unique messages for when the nest levels up - and a default for if we run out.
             var growthMessage = $"replicator-nest-level{ent.Comp.CurrentLevel}";
             if (Loc.TryGetString(growthMessage, out var localizedMsg))
                 _popup.PopupEntity(localizedMsg, ent);
@@ -180,25 +181,44 @@ public abstract class SharedReplicatorNestSystem : EntitySystem
             if (ent.Comp.CurrentLevel <= ent.Comp.EndgameLevel)
                 ent.Comp.NeedsUpdate = true;
 
-            // if we've reached the endgame, the nest will ignore gravity when picking targets - actively pulling them in.
-            if (ent.Comp.CurrentLevel == ent.Comp.EndgameLevel)
-                _stepTrigger.SetIgnoreWeightless(ent, true);
-
             // update the threshold for the next upgrade (the default times the current level), and upgrade all our guys.
             // threshold increases plateau at the endgame level.
             ent.Comp.NextUpgradeAt += ent.Comp.CurrentLevel >= ent.Comp.EndgameLevel ? ent.Comp.UpgradeAt * ent.Comp.EndgameLevel : ent.Comp.UpgradeAt * ent.Comp.CurrentLevel;
             UpgradeAll(ent);
+            _audio.PlayPvs(ent.Comp.LevelUpSound, ent);
+
+            // increase the radius at which tiles are converted.
+            ent.Comp.TileConversionRadius += ent.Comp.TileConversionIncrease;
+
+            // and increase the radius of the ambient nest sound
+            if (TryComp<AmbientSoundComponent>(ent.Comp.PointsStorage, out var ambientComp))
+                _ambientSound.SetRange(ent.Comp.PointsStorage, ambientComp.Range + 1, ambientComp);
         }
 
         // after upgrading, if we exceed the next spawn threshold, spawn a new (un-upgraded) replicator, then set the next spawn threshold.
         if (ent.Comp.SpawningProgress >= ent.Comp.NextSpawnAt)
         {
             SpawnNew(ent);
-            ent.Comp.NextSpawnAt += ent.Comp.SpawnNewAt;
+            ent.Comp.NextSpawnAt += ent.Comp.SpawnNewAt * ent.Comp.UnclaimedSpawners.Count;
+        }
+
+        // then convert some tiles if we're over level 3.
+        if (ent.Comp.TotalPoints >= ent.Comp.NextTileConvertAt && ent.Comp.CurrentLevel > ent.Comp.EndgameLevel)
+        {
+            ConvertTiles(ent, ent.Comp.TileConversionRadius);
+            ent.Comp.NextTileConvertAt += ent.Comp.TileConvertAt;
         }
 
         // and dirty so the client knows if it's supposed to update the nest visuals
         Dirty(ent);
+
+        // finally, update the PointsStorage entity.
+        if (!TryComp<ReplicatorNestPointsStorageComponent>(ent.Comp.PointsStorage, out var pointsStorageComponent))
+            pointsStorageComponent = EnsureComp<ReplicatorNestPointsStorageComponent>(ent.Comp.PointsStorage);
+
+        pointsStorageComponent.Level = ent.Comp.CurrentLevel;
+        pointsStorageComponent.TotalPoints = ent.Comp.TotalPoints;
+        pointsStorageComponent.TotalReplicators = ent.Comp.SpawnedMinions.Count;
     }
 
     private void SpawnNew(Entity<ReplicatorNestComponent> ent)
@@ -225,83 +245,133 @@ public abstract class SharedReplicatorNestSystem : EntitySystem
         if (_net.IsClient || !_timing.IsFirstTimePredicted)
             return;
 
-        foreach (var replicator in ent.Comp.SpawnedMinions)
+        // this upgrades *all living replicators.* all nests are one hive
+        var query = EntityQueryEnumerator<ReplicatorComponent, MindContainerComponent>();
+        while (query.MoveNext(out var uid, out var replicatorComp, out var mindContainerComp))
         {
-            if (!TryComp<ReplicatorComponent>(replicator, out var comp))
+            if (replicatorComp.UpgradeActions.Count == 0 || replicatorComp.HasBeenGivenUpgradeActions == true || mindContainerComp.Mind == null)
                 continue;
 
-            if (comp.UpgradeStage >= ent.Comp.MaxUpgradeStage || comp.TargetUpgradeStage >= ent.Comp.MaxUpgradeStage)
-                continue;
+            foreach (var action in replicatorComp.UpgradeActions)
+            {
+                if (!mindContainerComp.HasMind)
+                    replicatorComp.Actions.Add(_actions.AddAction(uid, action));
+                else
+                    replicatorComp.Actions.Add(_actionContainer.AddAction((EntityUid)mindContainerComp.Mind, action));
+            }
 
-            if (!TryComp<MindContainerComponent>(replicator, out var mindContainer) || mindContainer.Mind == null)
-                continue;
-
-            comp.TargetUpgradeStage++;
-
-            var targetAction = comp.TargetUpgradeStage == 1 ? comp.Level2Action : comp.Level3Action;
-
-            if (!mindContainer.HasMind)
-                _actions.AddAction(replicator, targetAction);
-            else if (mindContainer.Mind != null)
-                _actionContainer.AddAction((EntityUid)mindContainer.Mind, targetAction);
+            replicatorComp.HasBeenGivenUpgradeActions = true;
         }
     }
 
-    public void OnUpgrade2(Entity<ReplicatorComponent> ent, ref ReplicatorUpgrade2ActionEvent args)
+    // force upgrade any tier to another given tier.
+    // or i guess technically you could feed it any EntProtoId...
+    public EntityUid? ForceUpgrade(Entity<ReplicatorComponent> ent, EntProtoId nextStage)
+    {
+        // don't run this clientside
+        if (_net.IsClient || !_timing.IsFirstTimePredicted)
+            return null;
+
+        var upgraded = UpgradeReplicator(ent, nextStage);
+
+        QueueDel(ent);
+        foreach (var action in ent.Comp.Actions)
+        {
+            QueueDel(action);
+        }
+
+        return upgraded;
+    }
+
+    public void OnUpgrade(Entity<ReplicatorComponent> ent, ref ReplicatorUpgradeActionEvent args)
     {
         // don't run this clientside
         if (_net.IsClient || !_timing.IsFirstTimePredicted)
             return;
 
-        UpgradeReplicator(ent, 2);
+        var nextStage = args.NextStage;
 
-        QueueDel(ent);
-        QueueDel(args.Action);
-    }
-
-    public void OnUpgrade3(Entity<ReplicatorComponent> ent, ref ReplicatorUpgrade3ActionEvent args)
-    {
-        // don't run this clientside
-        if (_net.IsClient || !_timing.IsFirstTimePredicted)
+        if (ent.Comp.MyNest == null || UpgradeReplicator(ent, nextStage) == null)
+        {
+            _popup.PopupEntity(Loc.GetString("replicator-cant-find-nest"), ent, PopupType.MediumCaution);
             return;
-
-        UpgradeReplicator(ent, 3);
+        }
 
         QueueDel(ent);
-        QueueDel(args.Action);
+        foreach (var action in ent.Comp.Actions)
+        {
+            QueueDel(action);
+        }
+
+        _popup.PopupEntity(Loc.GetString($"{ent.Comp.ReadyToUpgradeMessage}-others"), ent, PopupType.MediumCaution);
     }
 
-    public void UpgradeReplicator(Entity<ReplicatorComponent> ent, int desiredLevel)
+    public EntityUid? UpgradeReplicator(Entity<ReplicatorComponent> ent, EntProtoId nextStage)
     {
+        if (!_mind.TryGetMind(ent, out var mind, out _))
+            return null;
+
         var xform = Transform(ent);
-
-        // if adding more stages, maybe make this a switch.
-        var nextStage = desiredLevel == 2 ? ent.Comp.Level2Id : ent.Comp.Level3Id;
 
         var upgraded = Spawn(nextStage, xform.Coordinates);
         var upgradedComp = EnsureComp<ReplicatorComponent>(upgraded);
         upgradedComp.RelatedReplicators = ent.Comp.RelatedReplicators;
-        upgradedComp.TargetUpgradeStage = ent.Comp.TargetUpgradeStage;
+        upgradedComp.MyNest = ent.Comp.MyNest;
 
         if (ent.Comp.MyNest != null)
         {
             var nestComp = EnsureComp<ReplicatorNestComponent>((EntityUid)ent.Comp.MyNest);
             nestComp.SpawnedMinions.Remove(ent);
             nestComp.SpawnedMinions.Add(upgraded);
-        }
 
-        if (!_mind.TryGetMind(ent, out var mind, out _))
-            return;
+            _audio.PlayPvs(nestComp.UpgradeSound, upgraded);
+        }
 
         _mind.TransferTo(mind, upgraded);
 
-        return;
+        _popup.PopupEntity(Loc.GetString($"{ent.Comp.ReadyToUpgradeMessage}-self"), upgraded, PopupType.Medium);
+
+        return upgraded;
     }
 
     private void Embiggen(Entity<ReplicatorNestComponent> ent)
     {
         var ev = new ReplicatorNestEmbiggenedEvent(ent);
         RaiseLocalEvent(ent, ref ev);
+    }
+
+    private void ConvertTiles(Entity<ReplicatorNestComponent> ent, float radius)
+    {
+        var xform = Transform(ent);
+        if (xform.GridUid is not { } gridUid || !TryComp(gridUid, out MapGridComponent? mapGrid))
+            return;
+
+        var tileEnumerator = _map.GetLocalTilesEnumerator(gridUid, mapGrid, new Box2(xform.Coordinates.Position + new System.Numerics.Vector2(-radius, -radius), xform.Coordinates.Position + new System.Numerics.Vector2(radius, radius)));
+        var convertTile = (ContentTileDefinition)_tileDef[ent.Comp.ConversionTile];
+
+        while (tileEnumerator.MoveNext(out var tile))
+        {
+            if (tile.Tile.TypeId == convertTile.TileId)
+                continue;
+
+            var tileCoords = tile.GridIndices;
+            var nestCoords = xform.Coordinates.Position;
+
+            // have to check the distance from nest center to tileref, otherwise it comes out square due to Box2
+            if (Math.Sqrt(Math.Pow(tileCoords.X - (nestCoords.X - 0.5), 2) + Math.Pow(tileCoords.Y - (nestCoords.Y - 0.5), 2)) >= radius)
+                continue;
+
+            if (_random.Prob(ent.Comp.TileConversionChance))
+            {
+                var center = _turf.GetTileCenter(tile);
+
+                Spawn(ent.Comp.TileConversionVfx, center);
+                _audio.PlayPvs(ent.Comp.TilePlaceSound, center);
+
+                _tile.ReplaceTile(tile, convertTile);
+                _tile.PickVariant(convertTile);
+            }
+        }
     }
 }
 
@@ -310,14 +380,10 @@ public sealed partial class ReplicatorSpawnNestActionEvent : InstantActionEvent
 
 }
 
-public sealed partial class ReplicatorUpgrade2ActionEvent : InstantActionEvent
+public sealed partial class ReplicatorUpgradeActionEvent : InstantActionEvent
 {
-
-}
-
-public sealed partial class ReplicatorUpgrade3ActionEvent : InstantActionEvent
-{
-
+    [DataField(required: true)]
+    public EntProtoId NextStage;
 }
 
 [ByRefEvent]

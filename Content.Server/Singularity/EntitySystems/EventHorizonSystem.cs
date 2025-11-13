@@ -174,14 +174,15 @@ public sealed class EventHorizonSystem : SharedEventHorizonSystem
             return;
 
         // TODO: Should be sundries + static-sundries but apparently this is load-bearing for SpawnAndDeleteAllEntitiesInTheSameSpot so go figure.
-        foreach (var entity in _lookup.GetEntitiesInRange(uid, range, flags: LookupFlags.Uncontained))
+        // imp. did it. no it isn't?
+        foreach (var entity in _lookup.GetEntitiesInRange(uid, range, flags: LookupFlags.Sundries | LookupFlags.StaticSundries))
         {
             if (entity == uid)
                 continue;
 
             // See TODO above
-            if (_physicsQuery.TryComp(entity, out var otherBody) && !_physics.IsHardCollidable((uid, null, body), (entity, null, otherBody)))
-                continue;
+            // if (_physicsQuery.TryComp(entity, out var otherBody) && !_physics.IsHardCollidable((uid, null, body), (entity, null, otherBody)))
+            //  continue;
 
             AttemptConsumeEntity(uid, entity, eventHorizon);
         }

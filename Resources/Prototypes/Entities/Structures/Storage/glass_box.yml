@@ -215,6 +215,9 @@
     layers:
     - state: base
     - state: glass-broken
+    - state: glass # imp. fix glass layer not disappearing on break.
+      map: ["enum.OpenableVisuals.Layer"]
+      visible: false
   - type: Construction
     graph: GlassBox
     node: brokenGlassBox

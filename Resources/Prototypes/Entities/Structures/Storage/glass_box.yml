@@ -62,12 +62,13 @@
     doAfterDelay: 5
   - type: Lock
   - type: LockVisuals
-  - type: DamageVisuals
-    thresholds: [4, 8, 12] # TODO: Fix damage visuals on open state.
-    damageDivisor: 7.555
-    trackAllDamage: true
-    damageOverlay:
-      sprite: Structures/Storage/glassbox.rsi
+# imp. fuck whoever put these on here. theres a reason why NOTHING has changing states AND damage visuals!!! i'll kill you!!!
+#  - type: DamageVisuals
+#    thresholds: [4, 8, 12] # TODO: Fix damage visuals on open state.
+#    damageDivisor: 7.555
+#    trackAllDamage: true
+#    damageOverlay:
+#      sprite: Structures/Storage/glassbox.rsi
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Glass

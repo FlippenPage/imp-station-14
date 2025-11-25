@@ -1,0 +1,15 @@
+- type: entity
+  parent: MobStatusEffectBase
+  id: StatusEffectStasis
+  name: stasis
+  components:
+  - type: StatusEffectAlert
+    alert: Stasis
+
+- type: entity
+  parent: MobStatusEffectBase
+  id: StatusEffectEssenceRegen
+  name: stasis
+  components:
+  - type: StatusEffectAlert
+    alert: EssenceRegen

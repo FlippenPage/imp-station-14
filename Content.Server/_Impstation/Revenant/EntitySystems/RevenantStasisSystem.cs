@@ -18,11 +18,13 @@ using Content.Shared.Movement.Components;
 using Content.Shared.Popups;
 using Content.Shared.Revenant;
 using Content.Shared.Speech;
-using Content.Shared.StatusEffect;
+using Content.Shared.StatusEffectNew;
+using Content.Shared.StatusEffectNew.Components;
 using Content.Shared.Tag;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 
-namespace Content.Server.Revenant.EntitySystems;
+namespace Content.Server._Impstation.Revenant.EntitySystems;
 
 public sealed partial class RevenantStasisSystem : EntitySystem
 {
@@ -36,8 +38,7 @@ public sealed partial class RevenantStasisSystem : EntitySystem
     [Dependency] private readonly StatusEffectsSystem _statusEffects = default!;
     [Dependency] private readonly TagSystem _tags = default!;
 
-    [ValidatePrototypeId<StatusEffectPrototype>]
-    private const string RevenantStasisId = "Stasis";
+    private static readonly ProtoId<TagPrototype>[] ForbiddenTags = ["Salt", "Holy"];
 
     public override void Initialize()
     {
@@ -45,7 +46,7 @@ public sealed partial class RevenantStasisSystem : EntitySystem
 
         SubscribeLocalEvent<RevenantStasisComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<RevenantStasisComponent, ComponentShutdown>(OnShutdown);
-        SubscribeLocalEvent<RevenantStasisComponent, StatusEffectEndedEvent>(OnStatusEnded);
+        SubscribeLocalEvent<RevenantStasisComponent, StatusEffectRemovedEvent>(OnStatusEnded);
         SubscribeLocalEvent<RevenantStasisComponent, ChangeDirectionAttemptEvent>(OnAttemptDirection);
         SubscribeLocalEvent<RevenantStasisComponent, ExaminedEvent>(OnExamine);
         SubscribeLocalEvent<RevenantStasisComponent, ConstructionConsumedObjectEvent>(OnCrafted);
@@ -60,8 +61,8 @@ public sealed partial class RevenantStasisSystem : EntitySystem
     {
         EnsureComp<AlertsComponent>(uid);
 
-        EnsureComp<StatusEffectsComponent>(uid);
-        _statusEffects.TryAddStatusEffect(uid, RevenantStasisId, component.StasisDuration, true);
+        EnsureComp<StatusEffectComponent>(uid, out var statusEffect);
+        _statusEffects.TryAddStatusEffectDuration(statusEffect.AppliedTo.Value, SleepingSystem.StatusEffectForcedSleeping, duration);
 
         var mover = EnsureComp<InputMoverComponent>(uid);
         mover.CanMove = false;
@@ -91,7 +92,7 @@ public sealed partial class RevenantStasisSystem : EntitySystem
         }
     }
 
-    private void OnStatusEnded(EntityUid uid, RevenantStasisComponent component, StatusEffectEndedEvent args)
+    private void OnStatusEnded(EntityUid uid, RevenantStasisComponent component, StatusEffectRemovedEvent args)
     {
         if (args.Key == "Stasis")
         {
@@ -129,7 +130,7 @@ public sealed partial class RevenantStasisSystem : EntitySystem
 
         foreach (var reagent in args.Reagents)
         {
-            if (_tags.HasAnyTag(reagent, "Salt", "Holy"))
+            if (_tags.HasAnyTag(reagent, ForbiddenTags))
                 return;
         }
 

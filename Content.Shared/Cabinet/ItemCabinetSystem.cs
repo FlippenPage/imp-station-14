@@ -1,7 +1,9 @@
-﻿using Content.Shared.Containers.ItemSlots;
+﻿using Content.Shared.Chemistry.Components;
+using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Interaction;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
+using Content.Shared.Sprite;
 using Robust.Shared.Containers;
 using System.Diagnostics.CodeAnalysis;
 
@@ -15,6 +17,7 @@ public sealed class ItemCabinetSystem : EntitySystem
     [Dependency] private readonly ItemSlotsSystem _slots = default!;
     [Dependency] private readonly OpenableSystem _openable = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedScaleVisualsSystem _scaleVisuals = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -43,6 +46,11 @@ public sealed class ItemCabinetSystem : EntitySystem
     private void UpdateAppearance(Entity<ItemCabinetComponent> ent)
     {
         _appearance.SetData(ent, ItemCabinetVisuals.ContainsItem, HasItem(ent));
+
+        if (!ent.Comp.OldCabinetVisuals && !TryComp<ItemSlotsComponent>(ent, out var slots))
+        {
+            _slots.TryGetSlot(ent, ent.Comp.Slot, out var slot, slots);
+        }
     }
 
     private void OnContainerModified(EntityUid uid, ItemCabinetComponent component, ContainerModifiedMessage args)

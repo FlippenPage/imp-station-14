@@ -1,3 +1,4 @@
+using System.Numerics;
 using Content.Shared.Containers.ItemSlots;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
@@ -16,6 +17,19 @@ public sealed partial class ItemCabinetComponent : Component
     /// </summary>
     [DataField]
     public string Slot = "ItemCabinet";
+
+    /// <summary>
+    /// Toggles ScaleVisuals usage on the inserted item.
+    /// </summary>
+    [DataField]
+    public bool OldCabinetVisuals = true;
+
+    /// <summary>
+    /// If OldCabinetVisuals is false.
+    /// Sets inserted sprite scale.
+    /// </summary>
+    [DataField]
+    public Vector2 InsertedScale { get; set; } = Vector2.One;
 }
 
 [Serializable, NetSerializable]

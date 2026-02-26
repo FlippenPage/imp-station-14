@@ -96,7 +96,7 @@ public sealed class DoorSystem : SharedDoorSystem
             {
                 new AnimationTrackSpriteFlick
                 {
-                    LayerKey = DoorVisualLayers.BaseUnlit,
+                    LayerKey = DoorVisualLayers.BaseEmagging,
                     KeyFrames =
                     {
                         new AnimationTrackSpriteFlick.KeyFrame(comp.EmaggingSpriteState, 0f),
@@ -122,6 +122,10 @@ public sealed class DoorSystem : SharedDoorSystem
         //if (_animationSystem.HasRunningAnimation(entity, DoorComponent.AnimationKey))
         //    _animationSystem.Stop(entity.Owner, DoorComponent.AnimationKey);
         // ES END
+
+        // We are checking beforehand since some doors may not have an emagging visual layer, and we don't want LayerSetVisible to throw an error.
+        if (_sprite.TryGetLayer(entity.Owner, DoorVisualLayers.BaseEmagging, out var _, false))
+            _sprite.LayerSetVisible(entity.Owner, DoorVisualLayers.BaseEmagging, state == DoorState.Emagging);
 
         UpdateAppearanceForDoorState(entity, args.Sprite, state);
     }
@@ -200,7 +204,9 @@ public sealed class DoorSystem : SharedDoorSystem
                 if (_animationSystem.HasRunningAnimation(entity, DoorComponent.EmagKey))
                     return;
 
-                _animationSystem.Play(entity, (Animation)entity.Comp.EmaggingAnimation, DoorComponent.EmagKey);
+                // We are checking beforehand since some doors may not have an emagging visual layer.
+                if (_sprite.TryGetLayer(entity.Owner, DoorVisualLayers.BaseEmagging, out var _, false))
+                    _animationSystem.Play(entity, (Animation)entity.Comp.EmaggingAnimation, DoorComponent.EmagKey);
                 // ES END
 
                 return;

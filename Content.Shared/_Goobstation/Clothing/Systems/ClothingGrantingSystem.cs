@@ -28,11 +28,11 @@ public sealed class ClothingGrantingSystem : EntitySystem
 
         if (!clothing.Slots.HasFlag(args.SlotFlags)) return;
 
-        if (component.Components.Count > 1)
-        {
+        //if (component.Components.Count > 1)
+        //{
             //Logger.Error("Although a component registry supports multiple components, we cannot bookkeep more than 1 component for ClothingGrantComponent at this time.");
-            return;
-        }
+            //return;
+        //}
 
         foreach (var (name, data) in component.Components)
         {

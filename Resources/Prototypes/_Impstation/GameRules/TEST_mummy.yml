@@ -9,3 +9,27 @@
     maxOccurrences: 1
   - type: RandomSpawnRule
     prototype: MummySpawner
+
+- type: entity
+  id: MummyArtifactCrownSpawnEvent
+  parent: BaseStationEventShortDelay
+  components:
+  - type: GameRule
+    delay:
+      min:  30
+      max:  30
+  - type: StationEvent # i do same frequency as eeps ok? seem good numbers.
+    weight: 3.5
+    earliestStart: 25
+    maxOccurrences: 1
+    minimumPlayers: 30
+  - type: BluespaceArtifactRule
+    artifactSpawnerPrototype: ClothingHeadHatMummyCrown
+    artifactFlashPrototype: SandWave
+    possibleSightings:
+    - mummy-artifact-sighting-1
+    - mummy-artifact-sighting-2
+    - mummy-artifact-sighting-3
+    - mummy-artifact-sighting-4
+    - mummy-artifact-sighting-5
+    - mummy-artifact-sighting-6

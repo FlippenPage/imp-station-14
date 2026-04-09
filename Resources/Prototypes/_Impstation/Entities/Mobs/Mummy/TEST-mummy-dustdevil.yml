@@ -1,8 +1,8 @@
 - type: entity
   name: dust devil
-  suffix: TEMPORARY
   parent: [SimpleMobBase]
   id: MobMummyDustDevil
+  description: It twists and swirls and meows with renewed ferocity.
   components:
   - type: Sprite
     drawdepth: Mobs
@@ -32,7 +32,7 @@
         mask:
         - MobMask
         layer:
-        - MobMask
+        - MobLayer
   - type: MeleeWeapon
     soundHit:
         path: /Audio/Effects/bite.ogg
@@ -51,3 +51,12 @@
   - type: WalkingConvertsTiles
     conversionTile: FloorMummyDesert
 
+# Polymorph proto for Dust Devil
+- type: polymorph
+  id: DustDevil
+  configuration:
+    entity: MobMummyDustDevil
+    transferName: true
+    inventory: Transfer
+    revertOnDeath: true
+    revertOnCrit: true

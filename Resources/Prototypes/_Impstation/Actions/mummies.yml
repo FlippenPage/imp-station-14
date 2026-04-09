@@ -1,0 +1,50 @@
+- type: entity
+  parent: BaseAction
+  id: ActionSandWave
+  name: Sand Wave
+  description: Summons a sand wave to push back aggressors.
+  components:
+  - type: Action
+    useDelay: 10
+    itemIconStyle: BigAction
+    icon:
+      sprite: Actions/smokeaction.rsi # MUMMY TODO: sprite
+      state: smokeaction
+    priority: 2
+  - type: InstantAction
+    event: !type:InstantSpawnSpellEvent
+      prototype: SandWave
+      posData: !type:TargetCasterPos
+
+- type: entity
+  parent: BaseAction
+  id: ActionPolymorphDustDevil
+  name: Dust Devil Form
+  description: Transforms you into a fearsome dust tornado!
+  components:
+  - type: Action
+    useDelay: 10
+    itemIconStyle: BigAction
+    icon:
+      state: mummynado
+      sprite: _Impstation/Effects/dustdevil.rsi # MUMMY TODO: sprite
+    priority: 1
+  - type: InstantAction
+    event: !type:PolymorphActionEvent
+      protoId: DustDevil
+
+- type: entity
+  parent: BaseAction
+  id: ActionScarabThrow
+  name: Throw Scarab
+  description: Throws a scarab that is sure to hunt down your adversaries.
+  components:
+  - type: Action
+    icon: { sprite : _Impstation/Mobs/Animals/scarab.rsi, state: alive }
+    itemIconStyle: BigAction
+    priority: 3
+  - type: TargetAction
+    checkCanAccess: false
+    range: 60
+  - type: WorldTargetAction
+    event: !type:ActionGunShootEvent

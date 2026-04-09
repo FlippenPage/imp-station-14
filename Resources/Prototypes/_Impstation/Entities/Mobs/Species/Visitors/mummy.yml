@@ -58,6 +58,13 @@
   - type: Access
     tags:
     - Wizard #for sarocpogus
+  - type: ActionGrant
+    actions:
+    - ActionPolymorphDustDevil
+    - ActionSandWave
+  - type: ActionGun
+    action: ActionScarabThrow
+    gunProto: ScarabGun
   - type: Tag #mummy tag for imprinting mobs, no anomaly host tag
     tags:
     - CanPilot
@@ -77,3 +84,20 @@
   - type: Inventory
     speciesId: mummy
     templateId: mummy
+
+# Action gun for scarab throwing
+- type: entity
+  categories: [ HideSpawnMenu ]
+  id: ScarabGun
+  name: scarab gun
+  description: Like Halo 2.
+  components:
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 5
+  - type: BasicEntityAmmoProvider
+    proto: MobScarab
+    capacity: 1
+    count: 1
+  - type: Gun
+    soundEmpty: null
+    projectileSpeed: 5

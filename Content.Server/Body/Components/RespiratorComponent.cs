@@ -1,3 +1,4 @@
+using Content.Server._Impstation.Mummy.BreathingImmune;
 using Content.Server.Body.Systems;
 using Content.Shared.Atmos;
 using Content.Shared.Chat.Prototypes;
@@ -7,7 +8,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Server.Body.Components
 {
-    [RegisterComponent, Access(typeof(RespiratorSystem)), AutoGenerateComponentPause]
+    [RegisterComponent, Access(typeof(RespiratorSystem), typeof(BreathingImmuneSystem)), AutoGenerateComponentPause]
     public sealed partial class RespiratorComponent : Component
     {
         /// <summary>
@@ -102,6 +103,12 @@ namespace Content.Server.Body.Components
 
         [ViewVariables]
         public RespiratorStatus Status = RespiratorStatus.Inhaling;
+
+        /// <summary>
+        /// Whether the entity is immune to normal breathing. (i.e possesses the BreathingImmune component)
+        /// </summary>
+        [ViewVariables(VVAccess.ReadWrite)]
+        public bool HasImmunity = false;
     }
 }
 

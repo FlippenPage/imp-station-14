@@ -34,48 +34,21 @@
   - type: ClothingLatchOn
   - type: ClothingGrantAction
     action: ActionSandWave
+  - type: ClothingGrantComponent
+    component:
+    - type: BreathingImmune
+    - type: PressureImmunity
+    - type: TemperatureProtection
+      heatingCoefficient: 1.0
+    - type: Armor
+      modifiers:
+        coefficients: # liddle bit worse than heretic armor
+          Blunt: 0.60
+          Slash: 0.60
+          Piercing: 0.60
+          Heat: 0.60
+          Caustic: 0.60
   - type: MummyArtifact
   - type: AddGameruleOnEquip
     gameRule: MummySpawnOnCrownEquip
 
-- type: entity
-  id: AdminInstantEffectLocalRepulsion
-  name: instant effect
-  suffix: Local Repulsion
-  components:
-  - type: TimedDespawn
-  - type: TriggerOnSpawn
-  - type: ImpRepulsionOnTrigger
-    throwDeadzone: 0
-
-- type: entity
-  id: SandWave
-  categories: [HideSpawnMenu]
-  components:
-  - type: Sprite
-    sprite: _Impstation/Effects/mummysandwave.rsi
-    state: sandwave
-  - type: TimedDespawn
-    lifetime: 0.525
-  - type: TriggerOnSpawn
-  - type: ImpRepulsionOnTrigger
-  - type: TileReplaceRadiusOnTrigger
-    conversionTile: FloorMummyDesert
-  #- type: EmitSoundOnTrigger # We don't have a sound for it yet.
-
-- type: entity
-  parent: BaseAction
-  id: ActionSandWave
-  name: Sand Wave
-  description: Summons a sand wave to push back aggressors.
-  components:
-  - type: Action
-    useDelay: 10
-    itemIconStyle: BigAction
-    icon:
-      sprite: Actions/smokeaction.rsi # MUMMY TODO: sprite
-      state: smokeaction
-  - type: InstantAction
-    event: !type:InstantSpawnSpellEvent
-      prototype: SandWave
-      posData: !type:TargetCasterPos

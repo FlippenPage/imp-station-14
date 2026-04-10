@@ -127,6 +127,24 @@
   - accent-words-zombie-9
   - accent-words-zombie-10
 
+  id: boar
+  fullReplacements:
+  - accent-words-boar-1
+  - accent-words-boar-2
+  - accent-words-boar-3
+  - accent-words-boar-4
+  - accent-words-boar-5
+
+- type: accent
+  id: bananadeer
+  fullReplacements:
+  - accent-words-bananadeer-1
+  - accent-words-bananadeer-2
+  - accent-words-bananadeer-3
+  - accent-words-bananadeer-4
+  - accent-words-bananadeer-5
+  - accent-words-bananadeer-6
+
 - type: accent
   id: lessermummy
   fullReplacements:

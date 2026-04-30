@@ -194,7 +194,7 @@ public sealed partial class ShuttleSystem
         }
     }
 
-    private void DoGridImpact(Entity<MapGridComponent, TransformComponent, PhysicsComponent> ent,
+    public void DoGridImpact(Entity<MapGridComponent, TransformComponent, PhysicsComponent> ent,
                               Fixture fix,
                               Vector2 inelasticVelocity,
                               Vector2 velocity,

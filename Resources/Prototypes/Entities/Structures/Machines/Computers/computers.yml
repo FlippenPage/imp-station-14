@@ -723,17 +723,22 @@
       sprite: _Impstation/Structures/Machines/computers.rsi # imp
   - type: AccessReader
     access: [[ "Command" ]]
-  - type: CommunicationsConsole
-    title: comms-console-announcement-title-command # imp
+  # Begin DeltaV Removals - our own thing
+  # - type: CommunicationsConsole
+  #   title: comms-console-announcement-title-command
+  # End DeltaV Removals - our own thing
+  - type: DVCommunicationsConsole # DeltaV - new functionality
+    announcementTitle: comms-console-announcement-title-station
   - type: DeviceNetwork
     deviceNetId: Wireless
     transmitFrequencyId: ShuttleTimer
+    receiveFrequencyId: ShuttleTimer # DeltaV - new functionality
   - type: ActivatableUI
-    key: enum.CommunicationsConsoleUiKey.Key
+    key: enum.DVCommunicationsConsoleUi.Key # DeltaV - new UI
   - type: UserInterface
     interfaces:
-      enum.CommunicationsConsoleUiKey.Key:
-        type: CommunicationsConsoleBoundUserInterface
+      enum.DVCommunicationsConsoleUi.Key: # DeltaV - new UI
+        type: DVCommunicationsConsoleBoundUserInterface
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: Computer
@@ -769,13 +774,25 @@
       sprite: _Impstation/Structures/Machines/computers.rsi # imp
   - type: AccessReader
     access: [[ "NuclearOperative" ]]
-  - type: CommunicationsConsole
-    title: comms-console-announcement-title-nukie
-    color: "#ff0000"
-    canShuttle: false
-    global: true #announce to everyone they're about to fuck shit up
-    announceSentBy: false # The title already says who they are.
-    sound: /Audio/Announcements/war.ogg
+  # Begin DeltaV Changes
+  # - type: CommunicationsConsole
+  #   title: comms-console-announcement-title-nukie
+  #   color: "#ff0000"
+  #   canShuttle: false
+  #   global: true #announce to everyone they're about to fuck shit up
+  #   announceSentBy: false # The title already says who they are.
+  #   sound: /Audio/Announcements/war.ogg
+  - type: DVCommunicationsConsole
+    announcementTitle: comms-console-announcement-title-unauthorized
+    announcementColor: "#ff0000"
+    announcementSound:
+      path: /Audio/Announcements/war.ogg
+    canAlertLevel: false
+    canCallShuttles: false
+    canConfigureScreens: false
+    canKeycardAuthenticationDevice: false
+    globalAnnouncements: true
+  # End DeltaV Changes
   - type: Computer
     board: SyndicateCommsComputerCircuitboard
   - type: PointLight
@@ -806,13 +823,23 @@
       sprite: _Impstation/Structures/Machines/computers.rsi # imp
   - type: AccessReader
     access: [[ "Wizard" ]]
-  - type: CommunicationsConsole
-    title: comms-console-announcement-title-wizard
-    color: "#ff00ff"
-    canShuttle: false
-    global: true #announce to everyone they're about to fuck shit up
-    announceSentBy: false
-    sound: /Audio/Announcements/war.ogg
+  # Begin DeltaV Changes
+  # - type: CommunicationsConsole
+  #   title: comms-console-announcement-title-wizard
+  #   color: "#ff00ff"
+  #   canShuttle: false
+  #   global: true #announce to everyone they're about to fuck shit up
+  #   announceSentBy: false
+  #   sound: /Audio/Announcements/war.ogg
+  - type: DVCommunicationsConsole
+    announcementTitle: comms-console-announcement-title-wizard
+    announcementColor: "#ff00ff"
+    canAlertLevel: false
+    canCallShuttles: false
+    canConfigureScreens: false
+    canKeycardAuthenticationDevice: false
+    globalAnnouncements: true
+  # End DeltaV Changes
   - type: Computer
     board: WizardCommsComputerCircuitboard
   - type: PointLight
@@ -843,11 +870,21 @@
       sprite: _Impstation/Structures/Machines/computers.rsi # imp
   - type: AccessReader
     access: [[ "CentralCommand" ]]
-  - type: CommunicationsConsole
-    title: comms-console-announcement-title-centcom
-    color: "#4683d0" # Imp, from #1d8bad
-    canShuttle: false
-    global: true
+  # Begin DeltaV Changes
+  # - type: CommunicationsConsole
+  #   title: comms-console-announcement-title-centcom
+  #   color: "#4683d0" # Imp, from #1d8bad
+  #   canShuttle: false
+  #   global: true
+  - type: DVCommunicationsConsole
+    announcementTitle: comms-console-announcement-title-centcom
+    announcementColor: "#1d8bad"
+    canAlertLevel: false
+    canCallShuttles: false
+    canConfigureScreens: false
+    canKeycardAuthenticationDevice: false
+    globalAnnouncements: true
+  # End DeltaV Changes
   - type: Computer
     board: CentcommCommsComputerCircuitboard
   - type: PointLight

@@ -94,4 +94,27 @@
   - AllHostile
   - Dog
   - DuctSpider
-  - Replicator
+
+- type: npcFaction
+  id: Bee
+  hostile:
+  - NanoTrasen
+  - Dragon
+  - Mouse
+  - Passive
+  - PetsNT
+  - SimpleHostile
+  - SimpleNeutral
+  - Syndicate
+  - Xeno
+  - Zombie
+  - Revolutionary
+  - Wizard
+  - Xenoborg
+  - Changeling
+  - Heretic
+  - Dino
+  - Penguin
+  - AllHostile
+  - Dog
+  - DuctSpider

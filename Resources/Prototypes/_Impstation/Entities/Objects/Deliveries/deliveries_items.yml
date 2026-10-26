@@ -65,14 +65,14 @@
           Quantity: 10
 
 - type: entity
-  parent: BaseChemistryEmptyVial
+  parent: ChemistryEmptyVial
   suffix: homunculus kit
   id: HomunculusKitVialA
   name: vial a
   components:
   - type: SolutionContainerManager
     solutions:
-      beaker:
+      drink:
         maxVol: 50
         reagents:
         - ReagentId: Saline
@@ -90,7 +90,7 @@
         children:
         - id: HomunculusKitBeaker
         - id: HomunculusKitVialA
-        - id: BaseChemistryEmptyVial
+        - id: ChemistryEmptyVial
         - id: Syringe
         - id: PaperMailHomunculusKit
   - type: Sprite

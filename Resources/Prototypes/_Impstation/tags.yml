@@ -61,9 +61,6 @@
   id: CartridgeBazooka
 
 - type: Tag
-  id: CartridgeLPistol
-
-- type: Tag
   id: CartridgeMime
 
 - type: Tag
@@ -71,6 +68,9 @@
 
 - type: Tag
   id: CartridgePistolStun
+
+- type: Tag
+  id: ChefBeltItem
 
 - type: Tag
   id: ChemGoggles
@@ -124,10 +124,19 @@
   id: ConversionKitPB
 
 - type: Tag
+  id: CrayonMime
+
+- type: Tag
+  id: CrayonRainbow
+
+- type: Tag
   id: Crusher
 
 - type: Tag
   id: Crystal # BountyCrystal
+
+- type: Tag
+  id: DamageVariable
 
 - type: Tag
   id: Dart
@@ -143,6 +152,15 @@
 
 - type: Tag
   id: DecapoidGenericTag
+
+- type: Tag
+  id: Dinnerware
+
+- type: Tag
+  id: DionaNymph # for distinguishing diona organs that are the nymphs themselves rather than the inert organs they turn into
+
+- type: Tag
+  id: DrinkCup
 
 - type: Tag
   id: DroneUsable
@@ -164,6 +182,9 @@
 
 - type: Tag
   id: Firebomb # specifically the ones you make in a soda can. that's just what they're called.
+
+- type: Tag
+  id: FitsInDispenser
 
 - type: Tag
   id: FloorChasmEntity
@@ -206,6 +227,12 @@
 
 - type: Tag
   id: Insuls # anything with the APPEARANCE of insuls, not anything that insulates.
+
+- type: Tag
+  id: Ingredient
+
+- type: Tag
+  id: JanitorialRCD
 
 - type: Tag
   id: JanitorialWelder
@@ -283,6 +310,9 @@
   id: LightYellow
 
 - type: Tag
+  id: Log # ConstructionGraph: chairBigLog
+
+- type: Tag
   id: MagazineBR
 
 - type: Tag
@@ -358,6 +388,9 @@
   id: PyrottonBoll
 
 - type: Tag
+  id: RecyclerGibbable
+
+- type: Tag
   id: RegenerativeMesh
 
 - type: Tag
@@ -376,6 +409,9 @@
   id: SGD
 
 - type: Tag
+  id: Shaker
+
+- type: Tag
   id: ShellCoconut
 
 - type: Tag
@@ -383,6 +419,9 @@
 
 - type: Tag
   id: ShellSlug
+
+- type: Tag
+  id: SpacemanFrosting
 
 - type: Tag
   id: SpeedLoaderAM
@@ -427,6 +466,9 @@
   id: UnguFood
 
 - type: Tag
+  id: VanillaFrosting
+
+- type: Tag
   id: VapeCart
 
 - type: Tag
@@ -449,6 +491,9 @@
 
 - type: Tag
   id: WeldingTool
+
+- type: Tag
+  id: XenoHornet
 
 - type: Tag
   id: DecapoidSilicon

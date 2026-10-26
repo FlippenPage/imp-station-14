@@ -57,6 +57,8 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#eb87c0"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedPink
 
 - type: entity
   parent: Paper
@@ -78,6 +80,11 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#ba453f"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedRed
+  - type: Construction # Imp change
+    graph: ColoredPaper
+    node: paperRed
 
 - type: entity
   parent: Paper
@@ -99,6 +106,11 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#ec912e"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedOrange
+  - type: Construction # Imp change
+    graph: ColoredPaper
+    node: paperOrange
 
 - type: entity
   parent: Paper
@@ -120,6 +132,11 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#fee36c"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedYellow
+  - type: Construction # Imp change
+    graph: ColoredPaper
+    node: paperYellow
 
 - type: entity
   parent: Paper
@@ -141,6 +158,8 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#c7dd4b"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedGrass
 
 - type: entity
   parent: Paper
@@ -162,6 +181,11 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#0da04d"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedGreen
+  - type: Construction # Imp change
+    graph: ColoredPaper
+    node: paperGreen
 
 - type: entity
   parent: Paper
@@ -183,6 +207,11 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#1796c8"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedOcean
+  - type: Construction # Imp change
+    graph: ColoredPaper
+    node: paperBlue
 
 - type: entity
   parent: Paper
@@ -204,6 +233,8 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#49cddd"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedSky
 
 - type: entity
   parent: Paper
@@ -225,6 +256,11 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#938bda"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedPurple
+  - type: Construction # Imp change
+    graph: ColoredPaper
+    node: paperPurple
 
 - type: entity
   parent: Paper
@@ -246,6 +282,8 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#cfbdaa"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedTan
 
 - type: entity
   parent: Paper
@@ -267,6 +305,8 @@
       visible: false
   - type: PaperVisuals
     backgroundModulate: "#a47449"
+  - type: PaperLabelType #Imp change
+    paperType: PaperDyedBrown
 
 - type: entity
   parent: BoxBase

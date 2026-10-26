@@ -15,11 +15,15 @@
   recipes:
   - ConicalFlask
   - LargeConicalFlask
+  - ChemistryEmptyBottle04
+  - ChemistryEmptyBottleHeart
+  - ChemistryEmptyBottleStar
+  - ChemistryEmptyBottleSkull
 
 - type: latheRecipePack
   id: ImpMedStatic
   recipes:
-  - BaseChemistryEmptyVial
+  - ChemistryEmptyVial
   - PrescriptionLens
   - PrescriptionLensStrong
   - BlindingLens

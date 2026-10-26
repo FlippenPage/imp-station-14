@@ -168,6 +168,25 @@
   parent: Radium
   desc: reagent-desc-gray-blood
   physicalDesc: reagent-physical-desc-glowing
+  metabolisms:
+    Food:
+      effects:
+      - !type:AdjustReagent
+        reagent: UncookedAnimalProteins
+        amount: 0.1
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Gray ]
+    Poison:
+      effects:
+      - !type:HealthChange
+        damage:
+          types:
+            Radiation: 0.5 #weaker than radium
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Gray ]
+          inverted: true
 
 - type: reaction
   id: GrayBloodBreakdown
@@ -256,3 +275,9 @@
   physicalDesc: reagent-physical-desc-dusty
   flavor: dusty
   color: "#cba956"
+
+- type: reagent
+  parent: ZombieBlood
+  id: DriedZombieBlood
+  name: reagent-name-dried-zombie-blood
+  desc: reagent-desc-dried-zombie-blood

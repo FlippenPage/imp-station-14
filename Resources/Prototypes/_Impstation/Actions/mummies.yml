@@ -10,7 +10,7 @@
     icon:
       sprite: Actions/smokeaction.rsi # MUMMY TODO: sprite
       state: smokeaction
-    priority: 2
+    priority: 4
   - type: InstantAction
     event: !type:InstantSpawnSpellEvent
       prototype: SandWave
@@ -48,3 +48,23 @@
     range: 60
   - type: WorldTargetAction
     event: !type:ActionGunShootEvent
+
+- type: entity
+  parent: BaseAction
+  id: ActionMummyWall
+  name: Dust Wall
+  description: Creates a dusty mewling barrier.
+  components:
+  - type: Action
+    useDelay: 3 
+    itemIconStyle: BigAction
+    sound: !type:SoundPathSpecifier
+      path: /Audio/Magic/forcewall.ogg #MUMMY TODO: mummy sounds
+    icon:
+      sprite: _Impstation/Structures/Magic/mummysandwall.rsi #MUMMY TODO: mummy action icons
+      state: mummysandwall
+    priority: 2
+  - type: InstantAction
+    event: !type:InstantSpawnSpellEvent
+      prototype: WallForceMummySpawn
+      posData: !type:TargetInFront

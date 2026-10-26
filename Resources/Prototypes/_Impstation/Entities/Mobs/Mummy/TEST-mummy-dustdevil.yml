@@ -1,6 +1,6 @@
 - type: entity
   name: dust devil
-  parent: [SimpleMobBase]
+  parent: [BaseSimpleMob]
   id: MobMummyDustDevil
   description: It twists and swirls and meows with renewed ferocity.
   components:
@@ -15,10 +15,10 @@
     weightless: true
   - type: MovementAlwaysTouching
   - type: MovementSpeedModifier
-    baseWalkSpeed: 2 # same as slime
+    baseWalkSpeed: 3 
     baseSprintSpeed: 4.2
-    baseWeightlessModifier: 1.0
-    baseWeightlessFriction: 1
+    baseWeightlessModifier: 1.5
+    baseWeightlessFriction: 1.5
     weightlessFrictionNoInput: 4
     baseWeightlessAcceleration: 4
   - type: Fixtures
@@ -50,6 +50,21 @@
     - Mummy
   - type: WalkingConvertsTiles
     conversionTile: FloorMummyDesert
+  - type: FloatingVisuals
+  - type: Climbing
+  - type: HTN
+    rootTask:
+      task: IdleCompound
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      60: 0.7
+      80: 0.5
+  - type: CollisionFilter
+    requiredTags: [MummyMinion]
+  - type: Tag #mummy tag for imprinting mobs
+    tags:
+    - DoorBumpOpener
+    - Mummy
 
 # Polymorph proto for Dust Devil
 - type: polymorph
@@ -57,6 +72,7 @@
   configuration:
     entity: MobMummyDustDevil
     transferName: true
-    inventory: Transfer
+    inventory: None
     revertOnDeath: true
     revertOnCrit: true
+    transferDamage: true

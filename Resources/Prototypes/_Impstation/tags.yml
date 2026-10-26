@@ -325,6 +325,9 @@
   id: Mummy
 
 - type: Tag
+  id: MummyMinion
+
+- type: Tag
   id: NullRod
 
 - type: Tag

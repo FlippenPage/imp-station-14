@@ -62,6 +62,7 @@
     actions:
     - ActionPolymorphDustDevil
     - ActionSandWave
+    - ActionMummyWall
   - type: ActionGun
     action: ActionScarabThrow
     gunProto: ScarabGun

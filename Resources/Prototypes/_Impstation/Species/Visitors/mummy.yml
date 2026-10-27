@@ -3,7 +3,7 @@
   name: species-name-mummy
   roundStart: false
   randomViable: false # imp
-  prototype: MobMummy
+  prototype: AppearanceMummy
   sprites: MobMummySprites
   defaultSkinTone: "#FFFFFF"
   markingLimits: MobMummyMarkingLimits

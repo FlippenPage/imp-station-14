@@ -1,0 +1,449 @@
+- type: entity
+  parent: BaseSpeciesAppearance
+  id: AppearanceMummy
+  categories: [ HideSpawnMenu ] 
+  name: mummy appearance
+  components:
+  - type: Inventory
+    speciesId: mummy
+    templateId: mummy
+  #IMP EDIT START: TO BE REWORKED BY VISUAL NUBODY
+  - type: EntityTableContainerFill
+    containers:
+      body_organs: !type:AllSelector
+        children:
+        - id: OrganMummyTorso
+        - id: OrganMummyHead
+        - id: OrganMummyArmLeft
+        - id: OrganMummyArmRight
+        - id: OrganMummyHandRight
+        - id: OrganMummyHandLeft
+        - id: OrganMummyLegLeft
+        - id: OrganMummyLegRight
+        - id: OrganMummyFootLeft
+        - id: OrganMummyFootRight
+  - type: HumanoidAppearance
+    species: Mummy
+    hideLayersOnEquip:
+    - HeadTop
+
+- type: entity
+  parent:   
+  - AppearanceMummy
+  - MobBloodstream # well theres mummy blood so
+  - MobFlammable # mummys are super flamable right?
+  - BaseSpeciesMob
+  id: MobMummy
+  name: Urist McMummy
+  components:
+  #they dont get hungry or thirsy, so those components aren't here
+  - type: Icon
+    sprite: _Impstation/Mobs/Species/Visitors/Mummy/parts.rsi
+    state: full
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Mummy
+  - type: Destructible #MUMMY TODO: figure out their health
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:GibBehavior { }
+  - type: MeleeWeapon
+    soundHit:
+      collection: AlienClaw
+    angle: 30
+    animation: WeaponArcClaw
+    attackRate: 1
+    damage:
+      types:
+        Slash: 10
+  - type: NpcFactionMember
+    factions:
+    - Mummy
+  - type: TypingIndicator
+    proto: mummy
+  - type: Speech
+    speechVerb: Mummy
+    speechSounds: Mummy 
+    allowedEmotes: ['Meow', 'Hiss']
+    suffixSpeechVerbs:
+      chat-speech-verb-suffix-exclamation-strong: MummyExclamationStrong
+      chat-speech-verb-suffix-exclamation: MummyExclamation
+      chat-speech-verb-suffix-stutter: MummyStutter
+  - type: Vocal
+    sounds:
+      Male: UnisexMummy
+      Female: UnisexMummy
+      Unsexed: UnisexMummy
+  - type: Access
+    tags:
+    - Wizard #for sarocpogus
+  - type: ActionGrant
+    actions:
+    - ActionPolymorphDustDevil
+    - ActionSandWave
+    - ActionMummyWall
+  - type: ActionGun
+    action: ActionScarabThrow
+    gunProto: ScarabGun
+  - type: Bloodstream
+    bloodReferenceSolution:
+      reagents:
+      - ReagentId: MummyBlood
+        Quantity: 100 # less because they are old?
+  - type: Tag #mummy tag for imprinting mobs, no anomaly host tag
+    tags:
+    - CanPilot
+    - FootstepSound
+    - DoorBumpOpener
+    - Mummy
+
+# Action gun for scarab throwing
+- type: entity
+  categories: [ HideSpawnMenu ]
+  id: ScarabGun
+  name: scarab gun
+  description: Like Halo 2.
+  components:
+  - type: RechargeBasicEntityAmmo
+    rechargeCooldown: 5
+  - type: BasicEntityAmmoProvider
+    proto: MobScarab
+    capacity: 1
+    count: 1
+  - type: Gun
+    soundEmpty: null
+    projectileSpeed: 5
+
+- type: entity
+  parent: OrganBase
+  id: OrganMummy
+  abstract: true
+  suffix: Mummy
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: MummyBlood
+        Quantity: 10
+
+- type: entity
+  parent: OrganMummy
+  id: OrganMummyExternal
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _Impstation/Mobs/Species/Visitors/Mummy/parts.rsi 
+
+# MUMMY TODO. internal organs are planned. making them functional but hidespawnmenu until they have sprites
+- type: entity
+  parent: OrganMummy
+  id: OrganMummyInternal
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _Impstation/Mobs/Species/Visitors/Mummy/parts.rsi 
+
+- type: entity
+  id: OrganMummyTorso
+  parent: [ OrganBaseTorso, OrganMummyExternal ]
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: MummyBlood
+        Quantity: 20
+
+- type: entity
+  id: OrganMummyHead
+  parent: [ OrganBaseHead, OrganMummyExternal]
+  components:
+  - type: Sprite
+    state: "head"
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: MummyBlood
+        Quantity: 10
+
+- type: entity
+  id: OrganMummyArmLeft
+  parent: [ OrganBaseArmLeft, OrganMummyExternal]
+
+- type: entity
+  id: OrganMummyArmRight
+  parent: [ OrganBaseArmRight, OrganMummyExternal]
+
+- type: entity
+  id: OrganMummyHandLeft
+  parent: [ OrganBaseHandLeft, OrganMummyExternal]
+
+- type: entity
+  id: OrganMummyHandRight
+  parent: [ OrganBaseHandRight, OrganMummyExternal]
+
+- type: entity
+  id: OrganMummyLegLeft
+  parent: [ OrganBaseLegLeft, OrganMummyExternal]
+
+- type: entity
+  id: OrganMummyLegRight
+  parent: [ OrganBaseLegRight, OrganMummyExternal]
+
+- type: entity
+  id: OrganMummyFootLeft
+  parent: [ OrganBaseFootLeft, OrganMummyExternal]
+
+- type: entity
+  id: OrganMummyFootRight
+  parent: [ OrganBaseFootRight, OrganMummyExternal]
+
+#region FUCK
+#MUMMY TODO: Rename all of these, sprites, and descriptions.
+- type: entity
+  id: OrganMummyBrain
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanBrain, OrganMummyInternal ]
+  name: brain
+  description: "The source of incredible, unending intelligence. Honk."
+  components:
+  - type: Sprite
+    state: brain
+
+- type: entity
+  id: OrganMummyEyes
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanEyes, OrganMummyInternal ]
+  name: eyes
+  description: "I see you!"
+  components:
+  - type: Sprite
+    layers:
+      - state: eyeball-l
+      - state: eyeball-r
+
+- type: entity
+  id: OrganMummyTongue
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanTongue, OrganMummyInternal ]
+  name: tongue
+  description: "A fleshy muscle mostly used for lying."
+  components:
+  - type: Sprite
+    state: tongue
+
+- type: entity
+  id: OrganMummyAppendix
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanAppendix, OrganMummyInternal ]
+  name: appendix
+  components:
+  - type: Sprite
+    layers:
+    - state: appendix
+    - state: appendix-inflamed
+      visible: false
+
+- type: entity
+  id: OrganMummyEars
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanEars, OrganMummyInternal ]
+  name: ears
+  description: "There are three parts to the ear. Inner, middle and outer. Only one of these parts should normally be visible."
+
+- type: entity
+  id: OrganMummyLungs
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanLungs, OrganMummyInternal ]
+  name: lungs
+  description: "Filters oxygen from an atmosphere, which is then sent into the bloodstream to be used as an electron carrier."
+
+- type: entity
+  id: OrganMummyHeart
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanHeart, OrganMummyInternal ]
+  name: heart
+  description: "I feel bad for the heartless bastard who lost this."
+
+- type: entity
+  id: OrganMummyStomach
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanStomach, OrganMummyInternal ]
+  name: stomach
+  description: "Gross. This is hard to stomach."
+
+- type: entity
+  id: OrganMummyLiver
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanLiver, OrganMummyInternal ]
+  name: liver
+  description: "Pairing suggestion: chianti and fava beans."
+
+- type: entity
+  id: OrganMummyKidneys
+  categories: [ HideSpawnMenu ]
+  parent: [ OrganHumanKidneys, OrganMummyInternal ]
+  name: kidneys
+  description: "Filters toxins from the bloodstream."
+
+# organs that turn into motes MUMMY TODO: these 
+- type: entity
+  id: OrganMummyBrainMote
+  parent: OrganMummyBrain
+  categories: [ HideSpawnMenu ]
+  name: brain
+  description: "The source of incredible, unending intelligence. Honk."
+  components:
+  - type: Brain
+  - type: Nymph # This will make the organs turn into a nymph when they're removed.
+    entityPrototype: OrganMummyMoteBrain
+    transferMind: true
+  - type: Tag # goob edit
+    tags:
+    - Meat
+    - Organ
+    - Brain
+
+- type: entity
+  id: OrganMummyStomachMote
+  parent: OrganMummyStomach
+  categories: [ HideSpawnMenu ]
+  name: stomach
+  description: "Gross. This is hard to stomach."
+  components:
+  - type: Nymph
+    entityPrototype: OrganMummyMoteStomach
+  - type: Tag # goob edit
+    tags:
+    - Meat
+    - Organ
+    - Stomach
+
+- type: entity
+  id: OrganMummyLungsMote
+  parent: OrganMummyLungs
+  categories: [ HideSpawnMenu ]
+  name: lungs
+  description: "Filters oxygen from an atmosphere, which is then sent into the bloodstream to be used as an electron carrier."
+  components:
+  - type: Nymph
+    entityPrototype: OrganMummyMoteLungs
+  - type: Tag # goob edit
+    tags:
+    - Meat
+    - Organ
+    - Lungs
+
+- type: entity
+  id: OrganMummyHeartMote
+  categories: [ HideSpawnMenu ]
+  parent: OrganMummyHeart
+  name: heart
+  description: "I feel bad for the heartless bastard who lost this."
+  components:
+  - type: Nymph
+    entityPrototype: OrganMummyMoteHeart
+  - type: Tag # goob edit
+    tags:
+    - Meat
+    - Organ
+    - Heart
+
+- type: entity
+  id: OrganMummyLiverMote
+  categories: [ HideSpawnMenu ]
+  parent: OrganMummyLiver
+  name: liver
+  description: "Pairing suggestion: chianti and fava beans."
+  components:
+  - type: Nymph
+    entityPrototype: OrganMummyMoteLiver
+  - type: Tag # goob edit
+    tags:
+    - Meat
+    - Organ
+    - Liver
+
+- type: entity
+  id: OrganMummyKidneysMote
+  categories: [ HideSpawnMenu ]
+  parent: OrganMummyKidneys
+  name: kidneys
+  description: "Filters toxins from the bloodstream."
+  components:
+  - type: Nymph
+    entityPrototype: OrganMummyMoteKidneys
+  - type: Tag # goob edit
+    tags:
+    - Meat
+    - Organ
+    - Kidneys
+
+# "Nymphs" for the nymph component, mummies turn into their constituent parts. MUMMY TODO: This
+- type: entity
+  id: OrganMummyMoteBrain
+  parent: MobMummyMote
+  categories: [ HideSpawnMenu ]
+  name: dust pile
+  suffix: Brain
+  description: A sentient accumulation of dust acting as the core of the mummy's body.
+  components:
+  - type: IsDeadIC
+  - type: Body
+
+- type: entity
+  id: OrganMummyMoteStomach
+  parent: MobMummyMoteAccent
+  categories: [ HideSpawnMenu ]
+  name: mummy mote
+  suffix: Stomach
+  description: A strangely motile little clump of dust and sand. It'd be cute if it weren't biting you!
+  components:
+  - type: IsDeadIC
+  - type: Body
+
+- type: entity
+  id: OrganMummyMoteLungs
+  parent: MobMummyMoteAccent
+  categories: [ HideSpawnMenu ]
+  name: mummy mote
+  suffix: Lungs
+  description: A strangely motile little clump of dust and sand. It'd be cute if it weren't biting you!
+  components:
+  - type: IsDeadIC
+  - type: Body
+
+- type: entity
+  id: OrganMummyMoteHeart
+  parent: MobMummyMoteAccent
+  categories: [ HideSpawnMenu ]
+  name: mummy mote
+  suffix: Heart
+  description: A strangely motile little clump of dust and sand. It'd be cute if it weren't biting you!
+  components:
+  - type: IsDeadIC
+  - type: Body
+
+- type: entity
+  id: OrganMummyMoteLiver
+  parent: MobMummyMoteAccent
+  categories: [ HideSpawnMenu ]
+  name: mummy mote
+  suffix: Liver
+  description: A strangely motile little clump of dust and sand. It'd be cute if it weren't biting you!
+  components:
+  - type: IsDeadIC
+  - type: Body
+
+- type: entity
+  id: OrganMummyMoteKidneys
+  parent: MobMummyMoteAccent
+  categories: [ HideSpawnMenu ]
+  name: mummy mote
+  suffix: Kidneys
+  description: A strangely motile little clump of dust and sand. It'd be cute if it weren't biting you!
+  components:
+  - type: IsDeadIC
+  - type: Body

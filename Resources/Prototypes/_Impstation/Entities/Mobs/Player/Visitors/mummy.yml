@@ -1,11 +1,5 @@
 - type: entity
   save: false
-  name: Urist McMummy
-  parent: BaseMobMummy
-  id: MobMummy
-
-- type: entity
-  save: false
   parent: MobMummy
   id: MobMummyGhostrole
   suffix: Ghost role

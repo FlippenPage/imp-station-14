@@ -22,6 +22,13 @@
         - id: OrganMummyLegRight
         - id: OrganMummyFootLeft
         - id: OrganMummyFootRight
+        - id: OrganMummyEyes
+        - id: OrganMummyBrainMote
+        - id: OrganMummyHeartMote
+        - id: OrganMummyLungsMote
+        - id: OrganMummyLiverMote
+        - id: OrganMummyKidneysMote
+        - id: OrganMummyStomachMote
   - type: HumanoidAppearance
     species: Mummy
     hideLayersOnEquip:

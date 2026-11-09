@@ -1,4 +1,15 @@
 - type: entity
+  id: ColdplateMachineCircuitboard
+  parent: HotplateMachineCircuitboard
+  name: coldplate machine board
+  description: A machine printed circuit board for a coldplate. It looks like you can use a screwdriver on it!
+  components:
+  - type: MachineBoard
+    prototype: ChemistryColdplate
+  - type: Construction # can be deconstructed into a hotplate board
+    node: coldplate
+
+- type: entity
   id: MiniGyroscopeMachineCircuitboard
   parent: BaseMachineCircuitboard
   name: mini gyroscope machine board
@@ -6,13 +17,13 @@
   - type: MachineBoard
     prototype: MiniGyroscope
     stackRequirements:
-      Manipulator: 1
       Capacitor: 1
+      Manipulator: 1
       Glass: 2
 
 - type: entity
   id: ServiceTechFabCircuitboard
-  parent: BaseMachineCircuitboard
+  parent: [ BaseMachineCircuitboard, BaseServiceContraband ]
   name: service techfab machine board
   description: A machine printed circuit board for a Service techfab.
   components:
@@ -29,3 +40,83 @@
           defaultPrototype: Beaker
     - type: StealTarget
       stealGroup: ServiceTechFab
+
+- type: entity
+  id: ImpCoffeeMachineCircuitboard
+  parent: BaseMachineCircuitboard
+  name: spacepresso machine board
+  description: A machine printed circuit board for a spacepresso machine.
+  components:
+    - type: Sprite
+      state: service
+    - type: MachineBoard
+      prototype: ImpCoffeeMachineEmpty
+      stackRequirements:
+        Steel: 5
+      tagRequirements:
+          GlassBeaker:
+            amount: 1
+            defaultPrototype: Beaker
+
+- type: entity
+  id: PrizeCounterMachineCircuitboard
+  parent: BaseMachineCircuitboard
+  name: prize counter machine board
+  description: A machine printed circuit board for a prize counter.
+  components:
+  - type: Sprite
+    state: service
+  - type: MachineBoard
+    prototype: PrizeCounter
+    stackRequirements:
+      Manipulator: 4
+      Glass: 1
+
+- type: entity
+  parent: [ BaseMachineCircuitboard, BaseCommandContraband ]
+  id: PortableCutterMachineCircuitboard
+  name: portable cutter machine board
+  description: A machine printed circuit board for a portable cutter machine.
+  categories: [ DoNotMap ] #you only get one
+  components:
+  - type: Sprite
+    state: service
+  - type: MachineBoard
+    prototype: PortableCutterMachine
+    stackRequirements:
+      Steel: 2
+      Manipulator: 2
+      Cable: 1
+  - type: StealTarget
+    stealGroup: HDCutterMachine
+
+- type: entity
+  id: PrinterDocSyndicateMachineCircuitboard
+  parent: [ BaseMachineCircuitboard, BaseSyndicateContraband ]
+  name: Syndicate document printer machine board
+  description: A machine printed circuit board for a Syndicate document printer
+  components:
+    - type: MachineBoard
+      prototype: PrinterDocSyndicate
+      stackRequirements:
+        Manipulator: 1
+        Glass: 1
+
+- type: entity
+  id: AdvancedNodeScannerMachineCircuitboard
+  parent: BaseMachineCircuitboard
+  name: advanced node scanner machine board
+  description: A machine printed circuit board for an Advanced Node Scanner.
+  components:
+  - type: Sprite
+    state: science
+  - type: MachineBoard
+    prototype: MachineAdvancedNodeScanner
+    stackRequirements:
+      Manipulator: 1 # imp 1>3
+      Capacitor: 2 # imp
+      Cable: 2
+    componentRequirements:
+      NodeScanner:
+        amount: 1
+        defaultPrototype: NodeScanner

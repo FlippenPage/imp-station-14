@@ -61,7 +61,7 @@ namespace Content.Server.GameTicking
             {
                 foundOne = true;
                 if (stationNames.Length > 0)
-                        stationNames.Append('\n');
+                    stationNames.Append('\n');
 
                 stationNames.Append(meta.EntityName);
             }
@@ -72,8 +72,8 @@ namespace Content.Server.GameTicking
                                     Loc.GetString("game-ticker-no-map-selected"));
             }
 
-            var gmTitle = Loc.GetString(preset.ModeTitle);
-            var desc = Loc.GetString(preset.Description);
+            var gmTitle = (Decoy == null) ? Loc.GetString(preset.ModeTitle) : Loc.GetString(Decoy.ModeTitle);
+            var desc = (Decoy == null) ? Loc.GetString(preset.Description) : Loc.GetString(Decoy.Description);
             return Loc.GetString(
                 RunLevel == GameRunLevel.PreRoundLobby
                     ? "game-ticker-get-info-preround-text"
@@ -94,7 +94,14 @@ namespace Content.Server.GameTicking
         private TickerLobbyStatusEvent GetStatusMsg(ICommonSession session)
         {
             _playerGameStatuses.TryGetValue(session.UserId, out var status);
-            return new TickerLobbyStatusEvent(RunLevel != GameRunLevel.PreRoundLobby, LobbyBackground, status == PlayerGameStatus.ReadyToPlay, _roundStartTime, RoundPreloadTime, RoundStartTimeSpan, Paused);
+            return new TickerLobbyStatusEvent(
+                RunLevel != GameRunLevel.PreRoundLobby,
+                LobbyBackground,
+                status == PlayerGameStatus.ReadyToPlay,
+                _roundStartTime,
+                RoundPreloadTime,
+                RoundStartTimeSpan,
+                Paused);
         }
 
         private void SendStatusToAll()
@@ -107,7 +114,7 @@ namespace Content.Server.GameTicking
 
         private TickerLobbyInfoEvent GetInfoMsg()
         {
-            return new (GetInfoText());
+            return new(GetInfoText());
         }
 
         private void UpdateLateJoinStatus()
@@ -157,7 +164,7 @@ namespace Content.Server.GameTicking
                 if (!_playerManager.TryGetSessionById(playerUserId, out var playerSession))
                     continue;
                 RaiseNetworkEvent(GetStatusMsg(playerSession), playerSession.Channel);
-                RaiseLocalEvent(new PlayerToggleReadyEvent(playerSession));
+                RaiseLocalEvent(new PlayerToggleReadyEvent(playerSession)); //imp edit, for preround ready manifest // imp ready manifest
             }
         }
 
@@ -174,15 +181,16 @@ namespace Content.Server.GameTicking
                 return;
             }
 
+            // imp edit start, no need to update if the player is already (un)readied
             var status = ready ? PlayerGameStatus.ReadyToPlay : PlayerGameStatus.NotReadyToPlay;
             if (_playerGameStatuses[player.UserId] == status)
             {
                 return;
             }
-
+            // imp edit end
             _playerGameStatuses[player.UserId] = ready ? PlayerGameStatus.ReadyToPlay : PlayerGameStatus.NotReadyToPlay;
             RaiseNetworkEvent(GetStatusMsg(player), player.Channel);
-            RaiseLocalEvent(new PlayerToggleReadyEvent(player));
+            RaiseLocalEvent(new PlayerToggleReadyEvent(player)); //imp edit, for preround ready manifest
             // update server info to reflect new ready count
             UpdateInfoText();
         }
@@ -194,6 +202,7 @@ namespace Content.Server.GameTicking
             => PlayerGameStatuses.TryGetValue(userId, out var status) && status == PlayerGameStatus.JoinedGame;
     }
 
+    //imp addition, for preround ready manifest
     public sealed class PlayerToggleReadyEvent : EntityEventArgs
     {
         public readonly ICommonSession PlayerSession;

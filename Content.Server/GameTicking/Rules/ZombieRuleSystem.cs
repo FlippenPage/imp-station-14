@@ -4,7 +4,6 @@ using Content.Server.GameTicking.Rules.Components;
 using Content.Server.Popups;
 using Content.Server.Roles;
 using Content.Server.RoundEnd;
-using Content.Server.Station.Components;
 using Content.Server.Station.Systems;
 using Content.Server.Zombies;
 using Content.Shared.GameTicking.Components;
@@ -14,11 +13,12 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Roles;
+using Content.Shared.Roles.Components;
 using Content.Shared.Zombies;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using System.Globalization;
-using Content.Server.Announcements.Systems;
+using Content.Server.Announcements.Systems; // ee announce
 
 namespace Content.Server.GameTicking.Rules;
 
@@ -26,15 +26,16 @@ public sealed class ZombieRuleSystem : GameRuleSystem<ZombieRuleComponent>
 {
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly SharedMindSystem _mindSystem = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly ISharedPlayerManager _player = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly SharedRoleSystem _roles = default!;
     [Dependency] private readonly RoundEndSystem _roundEnd = default!;
+    [Dependency] private readonly SharedMindSystem _mindSystem = default!;
+    [Dependency] private readonly SharedRoleSystem _roles = default!;
     [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly ZombieSystem _zombie = default!;
-    [Dependency] private readonly AnnouncerSystem _announcer = default!;
+    [Dependency] private readonly AnnouncerSystem _announcer = default!; // ee announce
 
     public override void Initialize()
     {
@@ -97,15 +98,17 @@ public sealed class ZombieRuleSystem : GameRuleSystem<ZombieRuleComponent>
         {
             var meta = MetaData(survivor);
             var username = string.Empty;
-            if (_mindSystem.TryGetMind(survivor, out _, out var mind) && mind.Session != null)
+            if (_mindSystem.TryGetMind(survivor, out _, out var mind) &&
+                _player.TryGetSessionById(mind.UserId, out var session))
             {
-                username = mind.Session.Name;
+                username = session.Name;
             }
 
             args.AddLine(Loc.GetString("zombie-round-end-user-was-survivor",
                 ("name", meta.EntityName),
                 ("username", username)));
         }
+        args.AddLine("");
     }
 
     /// <summary>
@@ -121,7 +124,7 @@ public sealed class ZombieRuleSystem : GameRuleSystem<ZombieRuleComponent>
         {
             foreach (var station in _station.GetStations())
             {
-                _announcer.SendAnnouncement(_announcer.GetAnnouncementId("ShuttleCalled"),
+                _announcer.SendAnnouncement(_announcer.GetAnnouncementId("ShuttleCalled"), // ee announce
                     _station.GetInOwningStation(station), "zombie-shuttle-call",
                     colorOverride: Color.Crimson);
             }
@@ -192,7 +195,7 @@ public sealed class ZombieRuleSystem : GameRuleSystem<ZombieRuleComponent>
         {
             foreach (var station in _station.GetStationsSet())
             {
-                if (TryComp<StationDataComponent>(station, out var data) && _station.GetLargestGrid(data) is { } grid)
+                if (_station.GetLargestGrid(station) is { } grid)
                     stationGrids.Add(grid);
             }
         }

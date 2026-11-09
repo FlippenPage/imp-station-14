@@ -8,19 +8,19 @@
   requirements:
     - !type:RoleTimeRequirement
       role: JobChemist
-      time: 10800 #3 hrs
+      time: 6h # imp, was 2.5h
     - !type:RoleTimeRequirement
       role: JobMedicalDoctor
-      time: 21600 #6 hrs
+      time: 6h # imp, was 5h
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 36000 #10 hrs
-    - !type:OverallPlaytimeRequirement
-      time: 144000 #40 hrs
+      time: 20h # imp, was 10h
+    - !type:OverallPlaytimeRequirement # imp add
+      time: 40h
   weight: 10
   startingGear: CMOGear
   icon: "JobIconChiefMedicalOfficer"
-  supervisors: job-supervisors-captain
+  supervisors: job-supervisors-hop-captain #imp
   canBeAntag: false
   access:
   - Medical
@@ -30,6 +30,8 @@
   - ChiefMedicalOfficer
   - Brig
   - Cryogenics
+  - External
+  - Vault #imp
   special:
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant ]
@@ -41,7 +43,20 @@
   id: CMOGear
   equipment:
     id: CMOPDA
-    belt: ClothingBeltMedicalFilled
+    ears: ClothingHeadsetCMO
+    belt: ClothingBeltMedicalFilled #imp
   storage:
     back:
     - Flash
+
+- type: chameleonOutfit
+  id: ChiefMedicalOfficerChameleonOutfit
+  job: ChiefMedicalOfficer
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHatBeretCmo
+    eyes: ClothingEyesHudMedical
+    mask: ClothingMaskSterile
+    neck: ClothingCloakCmo
+    outerClothing: ClothingOuterCoatLabCmo
+    gloves: ClothingHandsGlovesNitrile

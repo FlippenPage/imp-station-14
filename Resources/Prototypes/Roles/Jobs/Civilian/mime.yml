@@ -5,18 +5,25 @@
   playTimeTracker: JobMime
   requirements:
     - !type:OverallPlaytimeRequirement
-      time: 14400 #4 hrs
+      time: 4h
   startingGear: MimeGear
   icon: "JobIconMime"
-  supervisors: job-supervisors-hop
+  supervisors: job-supervisors-hd
   access:
   - Theatre
   - Maintenance
+  #imp edit start
+  - Mime
+  - Service
+  #imp edit end
   special:
   - !type:AddComponentSpecial
     components:
-    - type: MimePowers
+    #- type: MimePowers # imp
     - type: BasicFrenchAccent # Imp
+    - type: AddMindComponent # imp
+      components:
+      - type: MimeVow
 
 - type: startingGear
   id: MimeGear
@@ -24,21 +31,35 @@
     gloves: ClothingHandsGlovesColorWhite
     pocket1: CrayonMime
     pocket2: Paper
+    # shoes: ClothingShoesColorWhite # Imp - we let you pick your shoes here
     id: MimePDA
     ears: ClothingHeadsetService
   storage:
     back:
     - RubberStampMime
+    - MimeRoutineBook # imp
 
-- type: entity
-  id: ActionMimeInvisibleWall
-  name: Create Invisible Wall
-  description: Create an invisible wall in front of you, if placeable there.
-  components:
-  - type: InstantAction
-    priority: -1
-    useDelay: 30
-    icon:
-      sprite: Structures/Walls/solid.rsi
-      state: full
-    event: !type:InvisibleWallActionEvent
+# imp comment out
+#- type: entity
+#  parent: BaseAction
+#  id: ActionMimeInvisibleWall
+#  name: Create Invisible Wall
+#  description: Create an invisible wall in front of you, if placeable there.
+#  components:
+#  - type: Action
+#    priority: -1
+#    useDelay: 30
+#    icon:
+#      sprite: Structures/Walls/solid.rsi
+#      state: full
+#  - type: InstantAction
+#    event: !type:InvisibleWallActionEvent
+
+- type: chameleonOutfit
+  id: MimeChameleonOutfit
+  job: Mime
+  equipment:
+    head: ClothingHeadHatMimesoft
+    eyes: ClothingEyesGlassesCheapSunglasses
+    neck: ClothingNeckScarfStripedZebra
+    outerClothing: ClothingOuterWinterMime

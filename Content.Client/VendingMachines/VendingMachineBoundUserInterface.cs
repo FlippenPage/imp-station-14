@@ -4,6 +4,7 @@ using Content.Shared.VendingMachines;
 using Robust.Client.UserInterface;
 using Robust.Shared.Input;
 using System.Linq;
+using Content.Shared.Store.Components; // IMP ADD
 
 namespace Content.Client.VendingMachines
 {
@@ -23,19 +24,36 @@ namespace Content.Client.VendingMachines
         {
             base.Open();
 
-            _menu = this.CreateWindow<VendingMachineMenu>();
-            _menu.OpenCenteredLeft();
+            _menu = this.CreateWindowCenteredLeft<VendingMachineMenu>();
             _menu.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
             _menu.OnItemSelected += OnItemSelected;
+            // IMP ADD START
+            _menu.StoreButton.OnPressed += _ =>
+            {
+                SendMessage(new VendingStoreOpenMessage());
+            };
             Refresh();
         }
 
         public void Refresh()
         {
+            var enabled = EntMan.TryGetComponent(Owner, out VendingMachineComponent? bendy) && !bendy.Ejecting;
+
             var system = EntMan.System<VendingMachineSystem>();
             _cachedInventory = system.GetAllInventory(Owner);
 
-            _menu?.Populate(_cachedInventory);
+            var hasStore = EntMan.HasComponent<StoreComponent>(Owner); // imp add
+
+            _menu?.Populate(_cachedInventory, enabled, hasStore); // imp add hasStore
+        }
+
+        public void UpdateAmounts()
+        {
+            var enabled = EntMan.TryGetComponent(Owner, out VendingMachineComponent? bendy) && !bendy.Ejecting;
+
+            var system = EntMan.System<VendingMachineSystem>();
+            _cachedInventory = system.GetAllInventory(Owner);
+            _menu?.UpdateAmounts(_cachedInventory, enabled);
         }
 
         private void OnItemSelected(GUIBoundKeyEventArgs args, ListData data)
@@ -54,7 +72,7 @@ namespace Content.Client.VendingMachines
             if (selectedItem == null)
                 return;
 
-            SendMessage(new VendingMachineEjectMessage(selectedItem.Type, selectedItem.ID));
+            SendPredictedMessage(new VendingMachineEjectMessage(selectedItem.Type, selectedItem.ID));
         }
 
         protected override void Dispose(bool disposing)

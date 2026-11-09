@@ -1,5 +1,6 @@
 using Content.Shared.Medical.CrewMonitoring;
 using Robust.Client.UserInterface;
+using Content.Shared._DV.Medical.CrewMonitoring; // DeltaV
 
 namespace Content.Client.Medical.CrewMonitoring;
 
@@ -14,12 +15,21 @@ public sealed class CrewMonitoringBoundUserInterface : BoundUserInterface
 
     protected override void Open()
     {
+        base.Open();
+
         EntityUid? gridUid = null;
         var stationName = string.Empty;
 
         if (EntMan.TryGetComponent<TransformComponent>(Owner, out var xform))
         {
             gridUid = xform.GridUid;
+            // Begin DeltaV Additions - Find a station's grid instead of the current one for evil monitors
+            if (EntMan.HasComponent<LongRangeCrewMonitorComponent>(Owner))
+            {
+                gridUid = EntMan.System<LongRangeCrewMonitorSystem>().FindLargestStationGridInMap(xform.MapID);
+                gridUid ??= xform.GridUid; // fall back to whatever grid this is on if it failed
+            }
+            // End DeltaV Additions
 
             if (EntMan.TryGetComponent<MetaDataComponent>(gridUid, out var metaData))
             {

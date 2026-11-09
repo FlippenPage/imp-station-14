@@ -9,15 +9,28 @@ steal-target-groups-seedextractor = seed extractor
 steal-target-groups-medtekcartridge = MedTek cartridge
 steal-target-groups-logprobecartridge = LogProbe cartridge
 steal-target-groups-astronavcartridge = AstroNav cartridge
+steal-target-groups-medchemhud = MedChem HUD
 
 steal-target-groups-servicetechfab = service techfab machine board
 steal-target-groups-shipyardcomputercircuitboard = shipyard computer board
 steal-target-groups-commscomputercircuitboard = communications computer board
 
+steal-target-groups-hdcuttermachine = portable cutter machine board
+steal-target-groups-secpillcanister = head of security's pill canister
+steal-target-groups-evil-skull = evil skull
+steal-target-groups-antiquedisabler = "antique" disabler
+
+steal-target-groups-clothing-neck-bureaucracymedal = excellence in bureaucracy medal
+
+steal-target-groups-toolboxgolden = golden toolbox
+
 # Thief Animal
 
 steal-target-groups-finfin = Fin Fin
 steal-target-groups-finfinmeat = Fin Fin's Fin-flesh
+steal-target-groups-animal-poly = Poly, the Chief Engineer's parrot
+steal-target-groups-suppy = Suppy, Engineering's pet suppermatter chunk
+steal-target-groups-animal-oswald = Oswald, the Hospitality Director's penguin
 
 # Thief Structure
 
@@ -34,6 +47,7 @@ steal-target-groups-secdrobe = SecDrobe
 steal-target-groups-bardrobe = BarDrobe
 steal-target-groups-pietyvend = PietyVend
 steal-target-groups-cargodrobe = CargoDrobe
+steal-target-groups-salvdrobe = SalvDrobe
 steal-target-groups-medidrobe = MediDrobe
 steal-target-groups-chemdrobe = ChemDrobe
 steal-target-groups-curadrobe = CuraDrobe
@@ -54,3 +68,4 @@ steal-target-groups-positronicbrains = positronic brain
 steal-target-groups-ailawboard = AI law board
 steal-target-groups-commandheadset = commander's headset
 steal-target-groups-plushie = plushie
+steal-target-groups-silicon-synchronizer-rd = RD's silicon synchronizer

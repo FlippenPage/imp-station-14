@@ -11,6 +11,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
+using Content.Shared.Heretic.Prototypes; // imp
 
 namespace Content.Client.Store.Ui;
 
@@ -141,22 +142,42 @@ public sealed partial class StoreMenu : DefaultWindow
         else if (listing.ProductAction != null)
         {
             var actionId = _entityManager.Spawn(listing.ProductAction);
-            if (_entityManager.System<ActionsSystem>().TryGetActionData(actionId, out var action) &&
-                action.Icon != null)
-            {
-                texture = spriteSys.Frame0(action.Icon);
-            }
+            if (_entityManager.System<ActionsSystem>().GetAction(actionId)?.Comp?.Icon is {} icon)
+                texture = spriteSys.Frame0(icon);
         }
+        //imp edit
+        //i hate UI code i hate it with my life
+        //hopefully this is useful for other people messing with stores
+        string? extraText = GetExtraText(listing);
 
         var listingInStock = GetListingPriceString(listing);
         var discount = GetDiscountString(listing);
 
-        var newListing = new StoreListingControl(listing, listingInStock, discount, hasBalance, texture);
+        var newListing = new StoreListingControl(listing, listingInStock, discount, hasBalance, texture, extraText); // imp extratext
         newListing.StoreItemBuyButton.OnButtonDown += args
             => OnListingButtonPressed?.Invoke(args, listing);
 
         StoreListingsContainer.AddChild(newListing);
     }
+
+    //imp edit
+    //this will replace the text area usually reserved for discount info.
+    //this will ALWAYS show up, as opposed to discounts, which are hidden on unavailable items
+    private string? GetExtraText(ListingDataWithCostModifiers listing)
+    {
+        if (listing.ProductHereticKnowledge != null)
+        {
+            //go on a long, arduous journey to get the stage of the knowledge
+            var knowledgeID = listing.ProductHereticKnowledge;
+            var knowledgeProto = _prototypeManager.Index<HereticKnowledgePrototype>(knowledgeID);
+            var requiredPower = knowledgeProto.RequiredPower;
+
+            return Loc.GetString("store-ui-heretic-level-display", ("power", requiredPower));
+        }
+
+        return null;
+    }
+    // imp edit end
 
     private string GetListingPriceString(ListingDataWithCostModifiers listing)
     {
@@ -184,6 +205,8 @@ public sealed partial class StoreMenu : DefaultWindow
     private string GetDiscountString(ListingDataWithCostModifiers listingDataWithCostModifiers)
     {
         string discountMessage;
+        var sb = new StringBuilder(); // imp moved this up
+
 
         if (!listingDataWithCostModifiers.IsCostModified)
         {
@@ -193,7 +216,7 @@ public sealed partial class StoreMenu : DefaultWindow
         var relativeModifiersSummary = listingDataWithCostModifiers.GetModifiersSummaryRelative();
         if (relativeModifiersSummary.Count > 1)
         {
-            var sb = new StringBuilder();
+            // var sb = new StringBuilder(); // imp moved it up
             sb.Append('(');
             foreach (var (currency, amount) in relativeModifiersSummary)
             {

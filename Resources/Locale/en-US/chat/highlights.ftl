@@ -1,21 +1,29 @@
 # Command
 highlights-captain = Captain, "Cap", Command
-highlights-head-of-personnel = Head Of Personnel, "HoP", Service, Command
+#imp edit removes service from hop wordlist
+highlights-head-of-personnel = Head Of Personnel, "HoP", Command
 highlights-chief-engineer = Chief Engineer, "CE", Engineering, Engineer, "Engi", Command
 highlights-chief-medical-officer = Chief Medical Officer, "CMO", MedBay, "Med", Command
 highlights-head-of-security = Head of Security, "HoS", Security, "Sec", Command
 highlights-quartermaster = Quartermaster, "QM", Cargo, Command
 highlights-research-director = Research Director, "RD", Science, "Sci", Command
+# impstation edit - new job TODO:move added entries out of base directory
+highlights-administrative-assistant = Administrative Assistant, "AA", Command, Secretary
 
 # Security
 highlights-detective = Detective, "Det", Security, "Sec"
 highlights-security-cadet = Security Cadet, Cadet, Security, "Sec"
 highlights-security-officer = Security Officer, Secoff, Officer, Security, "Sec"
 highlights-warden = Warden, "Ward", Security, "Sec"
+# impstation edit - new job
+highlights-brigmedic = Brigmedic, Brigmed, "Medic", Security, "Sec"
 
 # Cargo
 highlights-cargo-technician = Cargo Technician, Cargo Tech, Cargo
 highlights-salvage-specialist = Salvage Specialist, Salvager, Salvage, "Salv", Miner
+# impstation edit - new job
+highlights-courier = Courier, Mail, Penalized
+highlights-supply-assistant = Supply Assistant, Supply, Cargo
 
 # Engineering
 highlights-atmospheric-technician = Atmospheric Technician, Atmos tech, Atmospheric, Atmos
@@ -43,15 +51,14 @@ highlights-lawyer = Lawyer, Attorney
 highlights-librarian = Librarian, Library
 highlights-mime = Mime
 highlights-passenger = Passenger
-highlights-service-worker = Service Worker
+highlights-service-worker = Service Attendant, Service Worker
+# imp edit service worker
 
 # Station-specific
-highlights-boxer = Boxer
 highlights-reporter = Reporter, Journalist
-highlights-zookeeper = Zookeeper
 highlights-psychologist = Psychologist, Psychology
 
 # Silicon
 highlights-personal-ai = Personal AI, "pAI"
-highlights-cyborg = Cyborg, Borg
-highlights-station-ai = Station AI, "AI"
+highlights-cyborg = Cyborg, Silicon, Borg
+highlights-station-ai = Station AI, Silicon, "AI", "sAI"

@@ -1,0 +1,14 @@
+- type: entity
+  id: XenoborgWindow
+  parent: PlastitaniumWindow
+  name: xenoborg window
+  components:
+  - type: Sprite
+    drawdepth: WallTops
+    sprite: _Impstation/Structures/Windows/xenoborg.rsi # Impstation
+  - type: Icon
+    sprite: _Impstation/Structures/Windows/xenoborg.rsi # Impstation
+    state: full
+  - type: IconSmooth
+    key: walls # Impstation
+    base: xenoborg

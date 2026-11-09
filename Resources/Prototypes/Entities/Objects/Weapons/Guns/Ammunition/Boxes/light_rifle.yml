@@ -1,7 +1,7 @@
 - type: entity
   abstract: true
   parent: BaseItem
-  id: BaseMagazineBoxLightRifle
+  id: BaseMagazineBoxLightRifleWizden #imp - see the _Impstation directory for the version we use
   name: ammunition box (.30 rifle)
   components:
   - type: BallisticAmmoProvider
@@ -26,29 +26,28 @@
 
 # Boxes
 - type: entity
-  parent: BaseMagazineBoxLightRifle
-  id: MagazineBoxLightRifleBig
+  abstract: true # imp
+  parent: BaseMagazineBoxLightRifleWizden #imp
+  id: MagazineBoxLightRifleBigWizden #imp - see the _Impstation directory for the version we use
   name: ammunition box (.30 rifle)
+  suffix: Big
   components:
   - type: BallisticAmmoProvider
     capacity: 200
     proto: CartridgeLightRifle
   - type: Sprite
     layers:
-    - state: base-b
+    - state: base
       map: ["enum.GunVisualLayers.Base"]
-    - state: magb-1
+    - state: mag-1
       map: ["enum.GunVisualLayers.Mag"]
-  - type: MagazineVisuals
-    magState: magb
-    steps: 4
-    zeroVisible: false
-  - type: Appearance
 
 - type: entity
-  parent: BaseMagazineBoxLightRifle
-  id: MagazineBoxLightRifle
+  abstract: true # imp
+  parent: BaseMagazineBoxLightRifleWizden #imp
+  id: MagazineBoxLightRifleWizden #imp - see the _Impstation directory for the version we use
   name: ammunition box (.30 rifle)
+  description: A cardboard box of .30 rifle rounds. Intended to hold general-purpose kinetic ammunition.
   components:
   - type: BallisticAmmoProvider
     proto: CartridgeLightRifle
@@ -60,9 +59,11 @@
       map: ["enum.GunVisualLayers.Mag"]
 
 - type: entity
-  parent: BaseMagazineBoxLightRifle
-  id: MagazineBoxLightRiflePractice
+  abstract: true # imp
+  parent: BaseMagazineBoxLightRifleWizden #imp
+  id: MagazineBoxLightRiflePracticeWizden #imp - see the _Impstation directory for the version we use
   name: ammunition box (.30 rifle practice)
+  description: A cardboard box of .30 rifle rounds. Intended to hold harmless practice ammunition.
   components:
   - type: BallisticAmmoProvider
     proto: CartridgeLightRiflePractice
@@ -75,9 +76,11 @@
     - state: practice
 
 - type: entity
-  id: MagazineBoxLightRifleIncendiary
-  parent: BaseMagazineBoxLightRifle
+  abstract: true # imp
+  parent: BaseMagazineBoxLightRifleWizden # imp
+  id: MagazineBoxLightRifleIncendiaryWizden #imp - see the _Impstation directory for the version we use
   name: ammunition box (.30 rifle incendiary)
+  description: A cardboard box of .30 rifle rounds. Intended to hold self-igniting incendiary ammunition.
   components:
   - type: BallisticAmmoProvider
     proto: CartridgeLightRifleIncendiary
@@ -90,9 +93,11 @@
     - state: incendiary
 
 - type: entity
-  parent: BaseMagazineBoxLightRifle
-  id: MagazineBoxLightRifleUranium
+  abstract: true # imp
+  parent: BaseMagazineBoxLightRifleWizden #imp
+  id: MagazineBoxLightRifleUraniumWizden #imp - see the _Impstation directory for the version we use
   name: ammunition box (.30 rifle uranium)
+  description: A cardboard box of .30 rifle rounds. Intended to hold exotic uranium-core ammunition.
   components:
   - type: BallisticAmmoProvider
     proto: CartridgeLightRifleUranium

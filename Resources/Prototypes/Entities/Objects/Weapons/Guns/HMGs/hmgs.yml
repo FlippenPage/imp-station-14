@@ -1,13 +1,18 @@
 - type: entity
   name: BaseWeaponHeavyMachineGun
   parent: BaseItem
-  id: BaseWeaponHeavyMachineGun
+  id: BaseWeaponHeavyMachineGunWizden #imp - see the _Impstation directory for the version we use
   description: Spray and pray.
   abstract: true
   components:
   - type: Sprite
   - type: Item
     size: Ginormous
+  - type: MultiHandedItem
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
   - type: Gun
     fireRate: 20
     selectedMode: FullAuto
@@ -23,7 +28,8 @@
 
 - type: entity
   name: minigun
-  id: WeaponMinigun
+  id: WeaponMinigunWizden #imp - see the _Impstation directory for the version we use
+  abstract: true #imp
   parent: [ BaseWeaponHeavyMachineGun, BaseMajorContraband ]
   description: Vzzzzzt! Rahrahrahrah! Vrrrrr! Uses .10 rifle ammo.
   components:
@@ -31,7 +37,6 @@
     sprite: Objects/Weapons/Guns/HMGs/minigun.rsi
     layers:
     - state: icon
-      map: ["enum.GunVisualLayers.Base"]
   - type: Item
     sprite: Objects/Weapons/Guns/HMGs/minigun.rsi
   - type: Gun
@@ -41,11 +46,6 @@
   - type: BallisticAmmoProvider
     proto: CartridgeMinigun
     capacity: 1000
-  - type: MagazineVisuals
-    magState: mag
-    steps: 4
-    zeroVisible: true
-  - type: Appearance
   - type: ContainerContainer
     containers:
       ballistic-ammo: !type:Container

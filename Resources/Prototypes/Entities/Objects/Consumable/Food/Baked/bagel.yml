@@ -2,11 +2,13 @@
 # Base
 
 - type: entity
-  id: FoodBagelBase
-  parent: FoodInjectableBase
   abstract: true
+  parent: FoodInjectableBase
+  id: FoodBagelBase
   description: A delicious bagel.
   components:
+  - type: Item
+    size: Tiny
   - type: FlavorProfile
     flavors:
       - bread
@@ -16,22 +18,23 @@
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 7
+        maxVol: 10 # imp
         reagents:
         - ReagentId: Nutriment
           Quantity: 5
-  - type: Tag
+  - type: Tag # imp
     tags:
-      - Bagel
+    - Bagel
+    - Bread # imp
 
 - type: entity
+  parent: FoodBagelBase
   id: FoodBagel
   name: bagel
-  parent: FoodBagelBase
 
 - type: entity
-  id: FoodBagelPoppy
   parent: FoodBagelBase
+  id: FoodBagelPoppy
   name: poppy seed bagel
   description: A delicious bagel topped with bicaridine-infused poppy seeds.
   components:
@@ -44,9 +47,43 @@
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 12
+        maxVol: 15 # imp
         reagents:
         - ReagentId: Bicaridine
-          Quantity: 5
+          Quantity: 4 # imp
         - ReagentId: Nutriment
-          Quantity: 5
+          Quantity: 6.5 # imp
+  - type: Tag # imp
+    tags:
+    - UnguFood
+    - Bagel
+    - Bread
+
+- type: entity
+  parent: FoodBagelBase
+  id: FoodBagelCotton
+  name: cotton bagel
+  description: A delicious bagel made with cotton dough.
+  components:
+  - type: FlavorProfile
+    flavors:
+    - bread
+    - cotton
+  - type: Sprite
+    state: bagel-cottondough
+  - type: Edible
+    requiresSpecialDigestion: true
+  - type: Tag
+    tags:
+    - ClothMade
+    - ClothFood # imp
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10 # imp
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1.5 # imp
+        - ReagentId: Fiber
+          Quantity: 3.5 # imp
+

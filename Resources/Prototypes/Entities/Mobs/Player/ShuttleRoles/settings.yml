@@ -23,8 +23,9 @@
     - type: GhostRole
       name: job-name-captain
       description: ghost-role-information-command-description
+      job: Captain #imp, playtime requirement
     - type: Loadout
-      prototypes: [ VisitorCaptain, VisitorCaptainAlt ]
+      prototypes: [ VisitorCaptain, VisitorCaptainAlt, VisitorCaptainAltA, VisitorCaptainAltB ] # imp
       roleLoadout: [ RoleSurvivalStandard ]
 
 - type: randomHumanoidSettings
@@ -34,6 +35,7 @@
     - type: GhostRole
       name: job-name-ce
       description: ghost-role-information-command-description
+      job: ChiefEngineer #imp, playtime requirement
     - type: Loadout
       prototypes: [ VisitorCE, VisitorCEAlt ]
       roleLoadout: [ RoleSurvivalExtended ]
@@ -45,8 +47,9 @@
     - type: GhostRole
       name: job-name-cmo
       description: ghost-role-information-command-description
+      job: ChiefMedicalOfficer #imp, playtime requirement
     - type: Loadout
-      prototypes: [ VisitorCMO, VisitorCMOAlt ]
+      prototypes: [ VisitorCMO, VisitorCMOAlt, VisitorCMOAltA ] # imp
       roleLoadout: [ RoleSurvivalMedical ]
 
 - type: randomHumanoidSettings
@@ -56,6 +59,7 @@
     - type: GhostRole
       name: job-name-hop
       description: ghost-role-information-command-description
+      job: HeadOfPersonnel #imp, playtime requirement
     - type: Loadout
       prototypes: [ VisitorHOP, VisitorHOPAlt ]
       roleLoadout: [ RoleSurvivalStandard ]
@@ -67,8 +71,9 @@
     - type: GhostRole
       name: job-name-hos
       description: ghost-role-information-command-description
+      job: HeadOfSecurity #imp, playtime requirement
     - type: Loadout
-      prototypes: [ VisitorHOS, VisitorHOSAlt ]
+      prototypes: [ VisitorHOS, VisitorHOSAlt, VisitorHOSAltA, VisitorHOSAltB ] # imp
       roleLoadout: [ RoleSurvivalSecurity ]
 
 - type: randomHumanoidSettings
@@ -78,6 +83,7 @@
     - type: GhostRole
       name: job-name-rd
       description: ghost-role-information-command-description
+      job: ResearchDirector #imp, playtime requirement
     - type: Loadout
       prototypes: [ VisitorRD, VisitorRDAlt ]
       roleLoadout: [ RoleSurvivalStandard ]
@@ -89,6 +95,7 @@
     - type: GhostRole
       name: job-name-qm
       description: ghost-role-information-command-description
+      job: Quartermaster #imp, playtime requirement
     - type: Loadout
       prototypes: [ VisitorQM, VisitorQMAlt ]
       roleLoadout: [ RoleSurvivalStandard ]
@@ -113,6 +120,7 @@
   components:
     - type: GhostRole
       name: job-name-cadet
+      job: SecurityCadet #imp, playtime requirement
     - type: Loadout
       prototypes: [ VisitorSecurityCadet, VisitorSecurityCadetAlt ]
       roleLoadout: [ RoleSurvivalSecurity ]
@@ -123,8 +131,9 @@
   components:
     - type: GhostRole
       name: job-name-security
+      job: SecurityOfficer #imp, playtime requirement
     - type: Loadout
-      prototypes: [ VisitorSecurityOfficer, VisitorSecurityOfficerAlt ]
+      prototypes: [ VisitorSecurityOfficer, VisitorSecurityOfficerAlt, VisitorSecurityOfficerAltA ] # imp
       roleLoadout: [ RoleSurvivalSecurity ]
 
 - type: randomHumanoidSettings
@@ -133,8 +142,9 @@
   components:
     - type: GhostRole
       name: job-name-detective
+      job: Detective #imp, playtime requirement
     - type: Loadout
-      prototypes: [ VisitorDetective, VisitorDetectiveAlt ]
+      prototypes: [ VisitorDetective, VisitorDetectiveAlt, VisitorDetectiveAltA, VisitorDetectiveAltB ] # imp
       roleLoadout: [ RoleSurvivalSecurity ]
 
 - type: randomHumanoidSettings
@@ -143,6 +153,7 @@
   components:
     - type: GhostRole
       name: job-name-warden
+      job: Warden #imp, playtime requirement
     - type: Loadout
       prototypes: [ VisitorWarden, VisitorWardenAlt ]
       roleLoadout: [ RoleSurvivalSecurity ]
@@ -303,7 +314,7 @@
     - type: GhostRole
       name: job-name-chemist
     - type: Loadout
-      prototypes: [ VisitorChemist, VisitorChemistAlt ]
+      prototypes: [ VisitorChemist, VisitorChemistAlt, VisitorChemistAltA ] # imp
       roleLoadout: [ RoleSurvivalMedical ]
 
 - type: randomHumanoidSettings
@@ -369,7 +380,7 @@
     - type: GhostRole
       name: job-name-bartender
     - type: Loadout
-      prototypes: [ VisitorBartender, VisitorBartenderAlt ]
+      prototypes: [ VisitorBartender, VisitorBartenderAlt, VisitorBartenderAltA, VisitorBartenderAltB ] # imp
       roleLoadout: [ RoleSurvivalStandard ]
 
 - type: randomHumanoidSettings
@@ -421,12 +432,12 @@
     - type: GhostRole
       name: job-name-clown
     - type: Loadout
-      prototypes: [ VisitorClown ]
+      prototypes: [ VisitorClown, VisitorClownAltA, VisitorClownAltB ] # imp
       roleLoadout: [ RoleSurvivalClown ]
     - type: RandomMetadata
       nameSegments:
-      - names_clown
-      
+      - NamesClown
+
 - type: randomHumanoidSettings
   id: VisitorJanitor
   parent: VisitorCivilian
@@ -436,6 +447,7 @@
     - type: Loadout
       prototypes: [ VisitorJanitor, VisitorJanitorAlt ]
       roleLoadout: [ RoleSurvivalStandard ]
+    - type: PerfectThrower # imp
 
 - type: randomHumanoidSettings
   id: VisitorLawyer
@@ -502,12 +514,15 @@
   id: VisitorMime
   parent: VisitorCivilian
   components:
-    - type: MimePowers
+    #- type: MimePowers # imp
     - type: GhostRole
       name: job-name-mime
     - type: Loadout
       prototypes: [ VisitorMime, VisitorMimeAlt ]
       roleLoadout: [ RoleSurvivalStandard ]
+    - type: AddMindComponent # imp
+      components:
+      - type: MimeVow
 
 - type: randomHumanoidSettings
   id: VisitorReporter
@@ -516,7 +531,7 @@
     - type: GhostRole
       name: job-name-reporter
     - type: Loadout
-      prototypes: [ VisitorReporter, VisitorReporterAlt ]
+      prototypes: [ VisitorReporter, VisitorReporterAlt, VisitorReporterAltA ]
       roleLoadout: [ RoleSurvivalStandard ]
 
 - type: randomHumanoidSettings
@@ -575,11 +590,13 @@
       roleLoadout: [ RoleSurvivalVoxSupport ]
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 - type: randomHumanoidSettings
   id: ChallengeVictimChiefEngineer
+  parent: EventHumanoidMindShielded
   randomizeName: false
   components:
     - type: GhostRole
@@ -594,11 +611,13 @@
       roleLoadout: [ RoleSurvivalVoxSupport ]
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 - type: randomHumanoidSettings
   id: ChallengeVictimCMO
+  parent: EventHumanoidMindShielded
   randomizeName: false
   components:
     - type: GhostRole
@@ -613,11 +632,13 @@
       roleLoadout: [ RoleSurvivalVoxSupport ]
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 - type: randomHumanoidSettings
   id: ChallengeVictimHeadOfPersonnel
+  parent: EventHumanoidMindShielded
   randomizeName: false
   components:
     - type: GhostRole
@@ -632,11 +653,13 @@
       roleLoadout: [ RoleSurvivalVoxSupport ]
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 - type: randomHumanoidSettings
   id: ChallengeVictimHeadOfSecurity
+  parent: EventHumanoidMindShielded
   randomizeName: false
   components:
     - type: GhostRole
@@ -651,11 +674,13 @@
       roleLoadout: [ RoleSurvivalVoxSupport ]
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 - type: randomHumanoidSettings
   id: ChallengeVictimResearchDirector
+  parent: EventHumanoidMindShielded
   randomizeName: false
   components:
     - type: GhostRole
@@ -670,11 +695,13 @@
       roleLoadout: [ RoleSurvivalVoxSupport ]
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 - type: randomHumanoidSettings
   id: ChallengeVictimQuartermaster
+  parent: EventHumanoidMindShielded
   randomizeName: false
   components:
     - type: GhostRole
@@ -689,8 +716,9 @@
       roleLoadout: [ RoleSurvivalVoxSupport ]
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 # Security
 # Following use EventHumanoidMindShielded since they are heads and probably should have mindshields
@@ -713,8 +741,9 @@
       roleLoadout: [ RoleSurvivalVoxSupport ]
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 # Engineering
 
@@ -740,6 +769,8 @@
       name: ghost-role-information-syndie-soldier-teamlead-name
       description: ghost-role-information-syndie-soldier-teamlead-description
       rules: ghost-role-information-rules-team-antagonist
+      mindRoles:
+      - MindRoleGhostRoleTeamAntagonist
       raffle:
         settings: default
     - type: Loadout
@@ -758,6 +789,8 @@
       name: ghost-role-information-syndie-soldier-name
       description: ghost-role-information-syndie-soldier-description
       rules: ghost-role-information-rules-team-antagonist
+      mindRoles:
+      - MindRoleGhostRoleTeamAntagonist
       raffle:
         settings: default
     - type: Loadout
@@ -775,6 +808,8 @@
       name: ghost-role-information-syndie-disaster-victim-name
       description: ghost-role-information-syndie-disaster-victim-description
       rules: ghost-role-information-freeagent-rules
+      mindRoles:
+      - MindRoleGhostRoleFreeAgent
       raffle:
         settings: short
     - type: Loadout
@@ -792,6 +827,8 @@
       name: ghost-role-information-pirate-name
       description: ghost-role-information-pirate-description
       rules: ghost-role-information-rules-team-antagonist
+      mindRoles:
+      - MindRoleGhostRoleTeamAntagonist
       raffle:
         settings: default
     - type: Loadout
@@ -809,6 +846,8 @@
       name: ghost-role-information-pirate-captain-name
       description: ghost-role-information-pirate-captain-description
       rules: ghost-role-information-rules-team-antagonist
+      mindRoles:
+      - MindRoleGhostRoleTeamAntagonist
       raffle:
         settings: default
     - type: Loadout
@@ -825,6 +864,8 @@
       name: ghost-role-information-blackmarketeer-name
       description: ghost-role-information-blackmarketeer-description
       rules: ghost-role-information-freeagent-rules
+      mindRoles:
+      - MindRoleGhostRoleFreeAgent
       raffle:
         settings: default
     - type: Loadout
@@ -843,6 +884,8 @@
       name: ghost-role-information-cossack-name
       description: ghost-role-information-cossack-description
       rules: ghost-role-information-freeagent-rules
+      mindRoles:
+      - MindRoleGhostRoleFreeAgent
       raffle:
         settings: default
     - type: Loadout

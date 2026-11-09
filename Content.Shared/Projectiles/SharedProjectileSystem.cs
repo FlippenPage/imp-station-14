@@ -4,17 +4,27 @@ using Content.Shared.Damage;
 using Content.Shared.DoAfter;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
-using Content.Shared.Mobs.Components;
+using Content.Shared.Inventory;
 using Content.Shared.Throwing;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
-using Robust.Shared.Physics.Dynamics;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
+// start ee throwing
+using Content.Shared._EE.Projectiles;
+using Content.Shared._EE.Throwing;
+using Content.Shared.Damage.Components;
+using Content.Shared.Examine;
+using Content.Shared.IdentityManagement;
+using Content.Shared.Mobs.Components;
+using Content.Shared.Popups;
+using Robust.Shared.Timing;
+// end ee throwing
 
 namespace Content.Shared.Projectiles;
 
@@ -22,12 +32,13 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 {
     public const string ProjectileFixture = "projectile";
 
-    [Dependency] private readonly INetManager _netManager = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly IGameTiming _timing = default!; // imp
+    [Dependency] private readonly SharedPopupSystem _popup = default!; // imp
 
     public override void Initialize()
     {
@@ -38,82 +49,116 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         SubscribeLocalEvent<EmbeddableProjectileComponent, ThrowDoHitEvent>(OnEmbedThrowDoHit);
         SubscribeLocalEvent<EmbeddableProjectileComponent, ActivateInWorldEvent>(OnEmbedActivate);
         SubscribeLocalEvent<EmbeddableProjectileComponent, RemoveEmbeddedProjectileEvent>(OnEmbedRemove);
+        SubscribeLocalEvent<EmbeddableProjectileComponent, ComponentShutdown>(OnEmbeddableCompShutdown);
+        SubscribeLocalEvent<EmbeddableProjectileComponent, ExaminedEvent>(OnExamined); // ee add
+
+        SubscribeLocalEvent<EmbeddedContainerComponent, EntityTerminatingEvent>(OnEmbeddableTermination);
     }
 
-    private void OnEmbedActivate(EntityUid uid, EmbeddableProjectileComponent component, ActivateInWorldEvent args)
+    // ee: add update. things can fall out of you.
+    public override void Update(float frameTime)
     {
-        // Nuh uh
-        if (component.RemovalTime == null)
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<EmbeddableProjectileComponent>();
+        var curTime = _timing.CurTime;
+
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (comp.AutoRemoveTime == null || comp.AutoRemoveTime > curTime)
+                continue;
+
+            if (comp.EmbeddedIntoUid is { } targetUid)
+                _popup.PopupClient(Loc.GetString("throwing-embed-falloff", ("item", uid)), targetUid, targetUid);
+
+            EmbedDetach(uid, comp);
+        }
+    }
+
+
+    private void OnEmbedActivate(Entity<EmbeddableProjectileComponent> embeddable, ref ActivateInWorldEvent args)
+    {
+        // Unremovable embeddables moment
+        if (embeddable.Comp.RemovalTime == null)
             return;
 
-        if (args.Handled || !args.Complex || !TryComp<PhysicsComponent>(uid, out var physics) || physics.BodyType != BodyType.Static)
+        if (args.Handled || !args.Complex || !TryComp<PhysicsComponent>(embeddable, out var physics) ||
+            physics.BodyType != BodyType.Static)
             return;
 
         args.Handled = true;
 
-        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.RemovalTime.Value,
-            new RemoveEmbeddedProjectileEvent(), eventTarget: uid, target: uid));
+        // ee start
+        if (embeddable.Comp.EmbeddedIntoUid is { } targetUid)
+            _popup.PopupClient(Loc.GetString("throwing-embed-remove-alert-owner", ("item", embeddable), ("other", args.User)),
+                args.User, targetUid);
+        // ee end
+
+        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager,
+            args.User,
+            embeddable.Comp.RemovalTime.Value,
+            new RemoveEmbeddedProjectileEvent(),
+            eventTarget: embeddable,
+            target: embeddable)
+        // ee add
+        {
+            DistanceThreshold = SharedInteractionSystem.InteractionRange,
+            BreakOnMove = true,
+            NeedHand = true,
+        });
+        // ee end
     }
 
-    private void OnEmbedRemove(EntityUid uid, EmbeddableProjectileComponent component, RemoveEmbeddedProjectileEvent args)
+    private void OnEmbedRemove(Entity<EmbeddableProjectileComponent> embeddable, ref RemoveEmbeddedProjectileEvent args)
     {
-        // Whacky prediction issues.
-        if (args.Cancelled || _netManager.IsClient)
+        if (args.Cancelled)
             return;
 
-        if (component.DeleteOnRemove)
-        {
-            QueueDel(uid);
-            return;
-        }
-
-        var xform = Transform(uid);
-        TryComp<PhysicsComponent>(uid, out var physics);
-        _physics.SetBodyType(uid, BodyType.Dynamic, body: physics, xform: xform);
-        _transform.AttachToGridOrMap(uid, xform);
-        component.EmbeddedIntoUid = null;
-        Dirty(uid, component);
-
-        // Reset whether the projectile has damaged anything if it successfully was removed
-        if (TryComp<ProjectileComponent>(uid, out var projectile))
-        {
-            projectile.Shooter = null;
-            projectile.Weapon = null;
-            projectile.DamagedEntity = false;
-        }
-
-        // Land it just coz uhhh yeah
-        var landEv = new LandEvent(args.User, true);
-        RaiseLocalEvent(uid, ref landEv);
-        _physics.WakeBody(uid, body: physics);
+        EmbedDetach(embeddable, embeddable.Comp, args.User);
 
         // try place it in the user's hand
-        _hands.TryPickupAnyHand(args.User, uid);
+        _hands.TryPickupAnyHand(args.User, embeddable);
     }
 
-    private void OnEmbedThrowDoHit(EntityUid uid, EmbeddableProjectileComponent component, ThrowDoHitEvent args)
+    private void OnEmbeddableCompShutdown(Entity<EmbeddableProjectileComponent> embeddable, ref ComponentShutdown arg)
     {
-        if (!component.EmbedOnThrow)
+        EmbedDetach(embeddable, embeddable.Comp);
+    }
+
+    private void OnEmbedThrowDoHit(Entity<EmbeddableProjectileComponent> embeddable, ref ThrowDoHitEvent args)
+    {
+        // ee add pacifism check
+        if (HasComp<PacifiedComponent>(args.Component.Thrower)
+            && HasComp<MobStateComponent>(args.Target)
+            && TryComp<DamageOtherOnHitComponent>(embeddable, out var damage)
+            && damage.Damage.AnyPositive())
             return;
 
-        Embed(uid, args.Target, null, component);
+        if (!embeddable.Comp.EmbedOnThrow ||
+            HasComp<ThrownItemImmuneComponent>(args.Target)) // ee add
+            return;
+
+        EmbedAttach(embeddable, args.Target, null, embeddable.Comp);
     }
 
-    private void OnEmbedProjectileHit(EntityUid uid, EmbeddableProjectileComponent component, ref ProjectileHitEvent args)
+    private void OnEmbedProjectileHit(Entity<EmbeddableProjectileComponent> embeddable, ref ProjectileHitEvent args)
     {
-        Embed(uid, args.Target, args.Shooter, component);
+        EmbedAttach(embeddable, args.Target, args.Shooter, embeddable.Comp);
 
         // Raise a specific event for projectiles.
-        if (TryComp(uid, out ProjectileComponent? projectile))
-        {
-            var ev = new ProjectileEmbedEvent(projectile.Shooter!.Value, projectile.Weapon!.Value, args.Target);
-            RaiseLocalEvent(uid, ref ev);
-        }
+        if (!TryComp<ProjectileComponent>(embeddable, out var projectile))
+            return;
+
+        var ev = new ProjectileEmbedEvent(projectile.Shooter, projectile.Weapon, args.Target);
+        RaiseLocalEvent(embeddable, ref ev);
     }
 
-    private void Embed(EntityUid uid, EntityUid target, EntityUid? user, EmbeddableProjectileComponent component)
+    private void EmbedAttach(EntityUid uid, EntityUid target, EntityUid? user, EmbeddableProjectileComponent component)
     {
-        TryComp<PhysicsComponent>(uid, out var physics);
+        // imp edit - who the fuck uses TryComp and just prays it returns something. are you fucking kidding me?
+        if (!TryComp<PhysicsComponent>(uid, out var physics))
+            return;
+
         _physics.SetLinearVelocity(uid, Vector2.Zero, body: physics);
         _physics.SetBodyType(uid, BodyType.Static, body: physics);
         var xform = Transform(uid);
@@ -124,15 +169,108 @@ public abstract partial class SharedProjectileSystem : EntitySystem
             var rotation = xform.LocalRotation;
             if (TryComp<ThrowingAngleComponent>(uid, out var throwingAngleComp))
                 rotation += throwingAngleComp.Angle;
-            _transform.SetLocalPosition(uid, xform.LocalPosition + rotation.RotateVec(component.Offset),
-                xform);
+            _transform.SetLocalPosition(uid, xform.LocalPosition + rotation.RotateVec(component.Offset), xform);
         }
 
         _audio.PlayPredicted(component.Sound, uid, null);
         component.EmbeddedIntoUid = target;
         var ev = new EmbedEvent(user, target);
         RaiseLocalEvent(uid, ref ev);
+
+        // ee add embedded shit
+        var embeddedEv = new EmbeddedEvent(user, uid);
+        RaiseLocalEvent(target, ref embeddedEv);
+
+        if (component.AutoRemoveDuration != 0)
+            component.AutoRemoveTime = _timing.CurTime + TimeSpan.FromSeconds(component.AutoRemoveDuration);
+
+        component.EmbeddedIntoUid = target;
+        // End ee edits
+
         Dirty(uid, component);
+
+        EnsureComp<EmbeddedContainerComponent>(target, out var embeddedContainer);
+
+        //Assert that this entity not embed
+        DebugTools.AssertEqual(embeddedContainer.EmbeddedObjects.Contains(uid), false);
+
+        embeddedContainer.EmbeddedObjects.Add(uid);
+    }
+
+    public void EmbedDetach(EntityUid uid, EmbeddableProjectileComponent? component, EntityUid? user = null)
+    {
+        if (!Resolve(uid, ref component))
+            return;
+
+        if (component.EmbeddedIntoUid == null)
+            return; // the entity is not embedded, so do nothing
+
+        var embeddedInto = component.EmbeddedIntoUid;
+
+        if (TryComp<EmbeddedContainerComponent>(component.EmbeddedIntoUid.Value, out var embeddedContainer))
+        {
+            embeddedContainer.EmbeddedObjects.Remove(uid);
+            Dirty(component.EmbeddedIntoUid.Value, embeddedContainer);
+            if (embeddedContainer.EmbeddedObjects.Count == 0)
+                RemCompDeferred<EmbeddedContainerComponent>(component.EmbeddedIntoUid.Value);
+        }
+
+        if (component.DeleteOnRemove)
+        {
+            PredictedQueueDel(uid);
+            return;
+        }
+
+        var xform = Transform(uid);
+        if (TerminatingOrDeleted(xform.GridUid) && TerminatingOrDeleted(xform.MapUid))
+            return;
+        // imp edit - who the fuck uses TryComp and just prays it returns something. are you fucking kidding me?
+        if (!TryComp<PhysicsComponent>(uid, out var physics))
+            return;
+
+        _physics.SetBodyType(uid, BodyType.Dynamic, body: physics, xform: xform);
+        _transform.AttachToGridOrMap(uid, xform);
+        component.EmbeddedIntoUid = null;
+        component.AutoRemoveTime = null; // ee add
+        Dirty(uid, component);
+
+        // Reset whether the projectile has damaged anything if it successfully was removed
+        if (TryComp<ProjectileComponent>(uid, out var projectile))
+        {
+            projectile.Shooter = null;
+            projectile.Weapon = null;
+            projectile.ProjectileSpent = false;
+
+            Dirty(uid, projectile);
+        }
+
+        var ev = new EmbedDetachEvent(user, embeddedInto.Value);
+        RaiseLocalEvent(uid, ref ev);
+
+        if (user != null)
+        {
+            // Land it just coz uhhh yeah
+            var landEv = new LandEvent(user, true);
+            RaiseLocalEvent(uid, ref landEv);
+        }
+
+        _physics.WakeBody(uid, body: physics);
+    }
+
+    private void OnEmbeddableTermination(Entity<EmbeddedContainerComponent> container, ref EntityTerminatingEvent args)
+    {
+        DetachAllEmbedded(container);
+    }
+
+    public void DetachAllEmbedded(Entity<EmbeddedContainerComponent> container)
+    {
+        foreach (var embedded in container.Comp.EmbeddedObjects)
+        {
+            if (!TryComp<EmbeddableProjectileComponent>(embedded, out var embeddedComp))
+                continue;
+
+            EmbedDetach(embedded, embeddedComp);
+        }
     }
 
     private void PreventCollision(EntityUid uid, ProjectileComponent component, ref PreventCollideEvent args)
@@ -150,6 +288,31 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 
         component.Shooter = shooterId;
         Dirty(id, component);
+    }
+
+    // ee add
+    private void OnExamined(EntityUid uid, EmbeddableProjectileComponent component, ExaminedEvent args)
+    {
+        var message = new FormattedMessage();
+
+        if (component.EmbeddedIntoUid is { } target)
+        {
+            var targetIdentity = Identity.Entity(target, EntityManager);
+            message.AddMarkupOrThrow(Loc.GetString("throwing-examine-embedded", ("embedded", uid), ("target", targetIdentity)));
+            message.PushNewline();
+        }
+
+        if (component.EmbedOnThrow)
+        {
+            var isHarmful = TryComp<EmbedPassiveDamageComponent>(uid, out var passiveDamage) && passiveDamage.Damage.AnyPositive();
+            var loc = isHarmful
+                ? "damage-examine-embeddable-harmful"
+                : "damage-examine-embeddable";
+            message.AddMarkupOrThrow(Loc.GetString(loc));
+            message.PushNewline();
+        }
+
+        args.AddMessage(message);
     }
 
     [Serializable, NetSerializable]
@@ -176,7 +339,10 @@ public sealed class ImpactEffectEvent : EntityEventArgs
 /// Raised when an entity is just about to be hit with a projectile but can reflect it
 /// </summary>
 [ByRefEvent]
-public record struct ProjectileReflectAttemptEvent(EntityUid ProjUid, ProjectileComponent Component, bool Cancelled);
+public record struct ProjectileReflectAttemptEvent(EntityUid ProjUid, ProjectileComponent Component, bool Cancelled) : IInventoryRelayEvent
+{
+    SlotFlags IInventoryRelayEvent.TargetSlots => SlotFlags.WITHOUT_POCKET;
+}
 
 /// <summary>
 /// Raised when a projectile hits an entity

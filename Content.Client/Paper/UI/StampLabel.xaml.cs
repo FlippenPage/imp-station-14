@@ -10,6 +10,8 @@ namespace Content.Client.Paper.UI;
 [GenerateTypedNameReferences]
 public sealed partial class StampLabel : Label
 {
+    private static readonly ProtoId<ShaderPrototype> PaperStamp = "PaperStamp";
+
     /// A scale that's applied to the text to ensure it
     /// fits in the allowed space.
     private Vector2 _textScaling = Vector2.One;
@@ -21,12 +23,15 @@ public sealed partial class StampLabel : Label
     /// this control.
     public float Orientation = 0.0f;
 
+    /// Determines whether stamp noise is applied on the shader
+    public bool StampNoise = true; // imp
+
     public StampLabel()
     {
         RobustXamlLoader.Load(this);
 
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
-        _stampShader = prototypes.Index<ShaderPrototype>("PaperStamp").InstanceUnique();
+        _stampShader = prototypes.Index(PaperStamp).InstanceUnique();
     }
 
     protected override Vector2 MeasureOverride(Vector2 availableSize)
@@ -45,6 +50,7 @@ public sealed partial class StampLabel : Label
                 PixelPosition.Y * MathF.Cos(Orientation) + PixelPosition.X * MathF.Sin(Orientation));
 
         _stampShader?.SetParameter("objCoord", GlobalPosition * UIScale * new Vector2(1, -1));
+        _stampShader?.SetParameter("useStampNoise", StampNoise); // imp
         handle.UseShader(_stampShader);
         handle.SetTransform(GlobalPixelPosition - PixelPosition + offset, Orientation, _textScaling);
         base.Draw(handle);

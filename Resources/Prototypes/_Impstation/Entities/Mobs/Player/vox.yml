@@ -1,0 +1,10 @@
+- type: entity
+  save: false
+  name: Uristititi McVox
+  id: MobVoxInternals
+  parent: MobVox
+  suffix: SpawnsWithInternals
+  components:
+  - type: Loadout
+    prototypes:
+      - StartingGearNitrogenInternals

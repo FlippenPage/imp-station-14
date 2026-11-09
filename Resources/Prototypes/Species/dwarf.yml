@@ -2,18 +2,21 @@
   id: Dwarf
   name: species-name-dwarf
   roundStart: true
+  randomViable: true # imp
   prototype: MobDwarf
   sprites: MobHumanSprites
   markingLimits: MobHumanMarkingLimits
-  dollPrototype: MobDwarfDummy
+  dollPrototype: AppearanceDwarf
   skinColoration: HumanToned
-  maleFirstNames: DwarfFirst
-  femaleFirstNames: DwarfFirst
-  middleNames: DwarfMiddle
-  lastNames: DwarfLast
-  naming: FirstMiddleLast  
+  maleFirstNames: NamesDwarfFirst
+  femaleFirstNames: NamesDwarfFirst
+  middleNames: NamesDwarfMiddle
+  lastNames: NamesDwarfLast
+  naming: FirstMiddleLast
   sexes:
   - Male
   - Female
   - Unsexed
-
+  youngAge: 60 # imp
+  oldAge: 100 # imp
+  ancientAge: 200 # imp

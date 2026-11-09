@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   id: FloorChasmEntity
   name: chasm
   description: You can't even see the bottom.
@@ -27,6 +27,8 @@
     state: full
   - type: IconSmooth
     key: chasm
+    additionalKeys:
+    - walls
     base: chasm
   - type: Physics
     bodyType: Static
@@ -45,6 +47,15 @@
   - type: Tag
     tags:
     - HideContextMenu
+  - type: SolutionContainerManager # imp
+    solutions:
+      drainBuffer:
+        maxVol: 1000
+  - type: Drain # imp
+    unitsPerSecond: 10
+    unitsDestroyedPerSecond: 10
+  - type: AcousticData # VDS. the fucking chasm ate my sound
+    absorption: 30
 
 - type: entity
   parent: FloorChasmEntity
@@ -55,7 +66,7 @@
     sprite: Tiles/Planet/Chasms/chromite_chasm.rsi
   - type: Icon
     sprite: Tiles/Planet/Chasms/chromite_chasm.rsi
-    
+
 - type: entity
   parent: FloorChasmEntity
   id: FloorDesertChasm
@@ -65,7 +76,7 @@
     sprite: Tiles/Planet/Chasms/desert_chasm.rsi
   - type: Icon
     sprite: Tiles/Planet/Chasms/desert_chasm.rsi
-    
+
 - type: entity
   parent: FloorChasmEntity
   id: FloorSnowChasm

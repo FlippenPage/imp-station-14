@@ -1,4 +1,4 @@
-﻿using Robust.Shared.Serialization;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Doors
 {
@@ -9,7 +9,9 @@ namespace Content.Shared.Doors
         BoltIndicator,
         BoltLightIndicator,
         AiControlIndicator,
+        AiVisionIndicator,
         TimingIndicator,
         SafetyIndicator,
+        AlarmIndicator,//IMP CHANGE
     }
 }

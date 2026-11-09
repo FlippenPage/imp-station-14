@@ -15,7 +15,10 @@ chat-radio-service = Service
 chat-radio-supply = Supply
 chat-radio-syndicate = Syndicate
 chat-radio-freelance = Freelance
+chat-radio-ai = AI
 
 # not headset but whatever
 chat-radio-handheld = Handheld
 chat-radio-binary = Binary
+chat-radio-xenoborg = Xenoborg
+chat-radio-mothership = Mothership

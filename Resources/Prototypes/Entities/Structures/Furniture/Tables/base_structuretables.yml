@@ -5,6 +5,7 @@
   description: A square piece of metal standing on four metal legs.
   abstract: true
   components:
+  - type: Animateable
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Metallic
@@ -19,14 +20,13 @@
         mask: # tables should collide with other tables
         - TableMask
         layer:
-        - BulletImpassable # Goobstation - Crawling
         - TableLayer
   - type: SpriteFade
   - type: Sprite
   - type: Icon
     state: full
   - type: IconSmooth
-    key: state
+    key: table # imp, from state
     base: state_
   - type: Climbable
   - type: Bonkable
@@ -37,7 +37,12 @@
   - type: FootstepModifier
     footstepSoundCollection:
       collection: FootstepHull
-  - type: RequireProjectileTarget # Goobstation - Crawling
+  - type: Tag
+    tags:
+    - ForceFixRotations
+  - type: ThrownItemImmune # imp
+  - type: AcousticData # VDS
+    absorption: 20
 
 - type: entity
   id: CounterBase
@@ -55,5 +60,6 @@
         mask:
         - TableMask
         layer:
-        - TableLayer 
-        - BulletImpassable # Goobstation - Crawling
+        - TableLayer
+  - type: AcousticData # VDS
+    absorption: 35

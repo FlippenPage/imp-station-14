@@ -63,9 +63,9 @@
       effects:
       - !type:HealthChange
         conditions:
-        - !type:OrganType
-          type: Arachnid
-          shouldHave: false
+        - !type:MetabolizerTypeCondition
+          type: [ Arachnid, Snail ] #imp, added Snail
+          inverted: true
         damage:
           types:
             Poison: 0.1
@@ -73,9 +73,8 @@
       effects:
       - !type:ModifyBloodLevel
         conditions:
-        - !type:OrganType
-          type: Arachnid
-          shouldHave: true
+        - !type:MetabolizerTypeCondition
+          type: [ Arachnid, Snail ] #imp, added Snail
         amount: 0.4
 
 - type: reagent
@@ -154,9 +153,8 @@
       effects:
       - !type:HealthChange
         conditions:
-        - !type:OrganType
-          type: Arachnid
-          shouldHave: true
+        - !type:MetabolizerTypeCondition
+          type: [ Arachnid, Snail ] #imp, added Snail
         damage:
           types:
             Poison: 0.1
@@ -164,9 +162,9 @@
       effects:
       - !type:ModifyBloodLevel
         conditions:
-        - !type:OrganType
-          type: Arachnid
-          shouldHave: false
+        - !type:MetabolizerTypeCondition
+          type: [ Arachnid, Snail ] #imp, added Snail
+          inverted: true
         amount: 0.4
 
 - type: reagent
@@ -213,9 +211,9 @@
         damage:
           types:
             Poison: 1
-      - !type:GenericStatusEffect
-        key: Stutter
-        component: ScrambledAccent
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectScrambled
+        type: Update
 
 - type: reagent
   id: Potassium
@@ -257,6 +255,24 @@
   color: "#00ff04"
   meltingPoint: 700.0
   boilingPoint: 1737.0
+# imp edit start
+  metabolisms:
+    Poison:
+      effects:
+      - !type:HealthChange
+        damage:
+          types:
+            Radiation: 2
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Gray ] # gray radiation immunity
+          inverted: true
+      - !type:SatiateThirst
+        factor: 2
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Gray ]
+#imp edit end
 
 - type: reagent
   id: Silicon
@@ -343,6 +359,17 @@
         damage:
           types:
             Radiation: 2
+        # imp edit start
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Gray ] # gray radiation immunity
+          inverted: true
+      - !type:SatiateHunger
+        factor: 1
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Gray ]
+        # imp edit end
 
 - type: reagent
   id: Zinc

@@ -8,8 +8,10 @@
     snap:
     - Disposal
   components:
+  - type: Climbable
+    vaultable: false
   - type: Sprite
-    sprite: Structures/Piping/disposal.rsi
+    sprite: _Impstation/Structures/Piping/disposal.rsi # imp
     layers:
     - state: condisposal
       map: [ "enum.DisposalUnitVisualLayers.Unanchored" ]
@@ -29,6 +31,17 @@
       map: [ "enum.DisposalUnitVisualLayers.OverlayEngaged" ]
   - type: Physics
     bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 55
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
   - type: Destructible
     thresholds:
     - trigger:
@@ -64,6 +77,7 @@
   - type: StaticPrice
     price: 70
   - type: PowerSwitch
+  - type: DamageOtherOnHitImmune # imp
 
 - type: entity
   id: DisposalUnit
@@ -71,20 +85,41 @@
   name: disposal unit
   components:
   - type: Sprite
-    sprite: Structures/Piping/disposal.rsi
+    sprite: _Impstation/Structures/Piping/disposal.rsi # imp
     snapCardinals: true
   - type: Construction
     graph: DisposalMachine
     node: disposal_unit
   - type: DisposalUnit
+    blacklist: #imp edit start
+      tags:
+      - StationAi #imp edit end
   - type: ThrowInsertContainer
     containerId: disposals
+    probability: 0.67
   - type: UserInterface
     interfaces:
       enum.DisposalUnitUiKey.Key:
         type: DisposalUnitBoundUserInterface
-  - type: RatKingRummageable
+  - type: Rummageable
+    table: !type:NestedSelector
+      tableId: RatKingLoot
   - type: RequireProjectileTarget
+  - type: AutomationSlots # Goobstation
+    slots:
+    - !type:AutomatedContainer
+      input: AutomationSlotInput
+      output: AutomationSlotInput
+      containerId: disposals
+      maxItems: 30 # disposals doesn't have a limit this is just so you can't use it as an ME system
+    - !type:AutomatedPorts
+      sinks:
+      - Toggle
+      - DisposalFlush
+      - DisposalEject
+      sources:
+      - DisposalReady
+  - type: StationAiWhitelist # imp
 
 - type: entity
   id: MailingUnit
@@ -93,7 +128,7 @@
   description: A pneumatic mail delivery unit.
   components:
   - type: Sprite
-    sprite: Structures/Piping/disposal.rsi
+    sprite: _Impstation/Structures/Piping/disposal.rsi # imp
     snapCardinals: true
     layers:
       - state: conmailing
@@ -104,9 +139,9 @@
         map: [ "enum.DisposalUnitVisualLayers.BaseCharging" ]
       - state: mailing-flush
         map: [ "enum.DisposalUnitVisualLayers.OverlayFlush" ]
-      - state: mailover-charge
+      - state: mailover-charge # imp
         map: [ "enum.DisposalUnitVisualLayers.OverlayCharging" ]
-      - state: mailover-ready
+      - state: mailover-ready # imp
         map: [ "enum.DisposalUnitVisualLayers.OverlayReady" ]
       - state: dispover-full
         map: [ "enum.DisposalUnitVisualLayers.OverlayFull" ]
@@ -116,11 +151,15 @@
     graph: DisposalMachine
     node: mailing_unit
   - type: DisposalUnit
-    autoEngageEnabled: false
     whitelist:
       components:
       - Item
       - Goblin # NF
+    blacklist:
+      components:
+      - EntityStorage
+      tags: # imp
+      - StationAi
   - type: MailingUnit
   - type: DeviceNetwork
     deviceNetId: Wired
@@ -134,6 +173,7 @@
   - type: UserInterface
     interfaces:
       enum.MailingUnitUiKey.Key:
-        type: DisposalUnitBoundUserInterface
+        type: MailingUnitBoundUserInterface
       enum.ConfigurationUiKey.Key:
         type: ConfigurationBoundUserInterface
+  - type: StationAiWhitelist # imp

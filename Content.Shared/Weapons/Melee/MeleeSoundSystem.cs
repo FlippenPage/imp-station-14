@@ -31,10 +31,11 @@ public sealed class MeleeSoundSystem : EntitySystem
     /// </summary>
     /// <param name="damageType"> Serves as a lookup key for a hit sound </param>
     /// <param name="hitSoundOverride"> A sound can be supplied by the <see cref="MeleeHitEvent"/> itself to override everything else </param>
-    public void PlayHitSound(EntityUid targetUid, EntityUid? userUid, string? damageType, SoundSpecifier? hitSoundOverride, MeleeWeaponComponent weaponComponent)
+    // EE edit, moved hitSound and noDamageSound to parameters, replacing MeleeWeaponComponent parameter for throwing changes
+    public void PlayHitSound(EntityUid targetUid, EntityUid? userUid, string? damageType, SoundSpecifier? hitSoundOverride, SoundSpecifier? hitSound, SoundSpecifier? noDamageSound)
     {
-        var hitSound      = weaponComponent.HitSound;
-        var noDamageSound = weaponComponent.NoDamageSound;
+        //var hitSound      = weaponComponent.HitSound; // EE edit for throwing changes
+        //var noDamageSound = weaponComponent.NoDamageSound; // EE edit for throwing changes
 
         var playedSound = false;
 
@@ -48,17 +49,17 @@ public sealed class MeleeSoundSystem : EntitySystem
         {
             if (damageType == null && damageSoundComp.NoDamageSound != null)
             {
-                _audio.PlayPredicted(damageSoundComp.NoDamageSound, coords, userUid, AudioParams.Default.WithVariation(DamagePitchVariation));
+                _audio.PlayPredicted(damageSoundComp.NoDamageSound, coords, userUid, damageSoundComp.NoDamageSound.Params.WithVariation(DamagePitchVariation));
                 playedSound = true;
             }
             else if (damageType != null && damageSoundComp.SoundTypes?.TryGetValue(damageType, out var damageSoundType) == true)
             {
-                _audio.PlayPredicted(damageSoundType, coords, userUid, AudioParams.Default.WithVariation(DamagePitchVariation));
+                _audio.PlayPredicted(damageSoundType, coords, userUid, damageSoundType.Params.WithVariation(DamagePitchVariation));
                 playedSound = true;
             }
             else if (damageType != null && damageSoundComp.SoundGroups?.TryGetValue(damageType, out var damageSoundGroup) == true)
             {
-                _audio.PlayPredicted(damageSoundGroup, coords, userUid, AudioParams.Default.WithVariation(DamagePitchVariation));
+                _audio.PlayPredicted(damageSoundGroup, coords, userUid, damageSoundGroup.Params.WithVariation(DamagePitchVariation));
                 playedSound = true;
             }
         }
@@ -68,17 +69,17 @@ public sealed class MeleeSoundSystem : EntitySystem
         {
             if (hitSoundOverride != null)
             {
-                _audio.PlayPredicted(hitSoundOverride, coords, userUid, AudioParams.Default.WithVariation(DamagePitchVariation));
+                _audio.PlayPredicted(hitSoundOverride, coords, userUid, hitSoundOverride.Params.WithVariation(DamagePitchVariation));
                 playedSound = true;
             }
             else if (hitSound != null)
             {
-                _audio.PlayPredicted(hitSound, coords, userUid, AudioParams.Default.WithVariation(DamagePitchVariation));
+                _audio.PlayPredicted(hitSound, coords, userUid, hitSound.Params.WithVariation(DamagePitchVariation));
                 playedSound = true;
             }
-            else
+            else if (noDamageSound != null) //imp edit, null check
             {
-                _audio.PlayPredicted(noDamageSound, coords, userUid, AudioParams.Default.WithVariation(DamagePitchVariation));
+                _audio.PlayPredicted(noDamageSound, coords, userUid, noDamageSound.Params.WithVariation(DamagePitchVariation));
                 playedSound = true;
             }
         }

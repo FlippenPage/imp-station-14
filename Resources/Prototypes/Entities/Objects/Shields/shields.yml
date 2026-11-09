@@ -30,8 +30,28 @@
           Slash: 1
           Piercing: 1
           Heat: 1
+    - type: MeleeWeapon #imp
+      range: 0.8
+      attackRate: 0.6
+      damage:
+        types:
+          Blunt: 2
+      angle: 0
+      animation: WeaponArcThrust
+      soundHit:
+        path: /Audio/Effects/hit_kick.ogg
+      soundSwing:
+        path: /Audio/_Impstation/Weapons/Guns/Melee/shove_foley.ogg
+      resetOnHandSelected: false
+    - type: AltFireMelee #imp
+      attackType: Light
+    - type: MeleeThrowOnHit #imp
+      distance: 0.8
+      speed: 5
     - type: Damageable
       damageContainer: Shield
+    - type: ExaminableDamage
+      messages: ShieldMessages
     - type: Destructible
       thresholds:
         - trigger:
@@ -60,11 +80,28 @@
     - type: StaticPrice
       price: 100
 
+- type: entity
+  name: base repairable shield
+  parent: BaseShield
+  id: BaseRepairableShield
+  description: A repairable shield!
+  abstract: true
+  components:
+  - type: Repairable # Negative values represent healing
+    damage:
+      groups:
+        Brute: -60 # 20 of each Brute Type - 20% of a basic shield HP
+      types:
+        Heat: -20
+    fuelCost: 10 # 1/2 of a Welder for a full repair
+    doAfterDelay: 5
+    allowSelfRepair: false
+
 #Security Shields
 
 - type: entity
   name: riot shield
-  parent: [ BaseShield, BaseRestrictedContraband ]
+  parent: [ BaseRepairableShield, BaseSecurityContraband ]
   id: RiotShield
   description: A large tower shield. Good for controlling crowds.
   components:
@@ -84,10 +121,10 @@
           Slash: 1
 
 - type: entity
-  name: riot laser shield
-  parent: [ BaseShield, BaseRestrictedContraband ]
+  name: laser shield
+  parent: [ BaseRepairableShield, BaseSecurityContraband ]
   id: RiotLaserShield
-  description: A riot shield built for withstanding lasers, but not much else.
+  description: A shield built for withstanding lasers, but not much else.
   components:
     - type: Sprite
       state: riot_laser-icon
@@ -104,10 +141,10 @@
           Heat: 1
 
 - type: entity
-  name: riot bullet shield
-  parent: [ BaseShield, BaseRestrictedContraband ]
+  name: ballistic shield
+  parent: [ BaseRepairableShield, BaseSecurityContraband ]
   id: RiotBulletShield
-  description: A ballistic riot shield built for withstanding bullets, but not much else.
+  description: A shield built for protecting against ballistics, but not much else.
   components:
     - type: Sprite
       state: riot_bullet-icon
@@ -152,6 +189,8 @@
           Blunt: 1
           Slash: 1
           Piercing: 1
+      passiveBlockFraction: 0.6  #Imp change
+      activeBlockFraction: 0.7  #Imp change
     - type: Construction
       graph: WoodenBuckler
       node: woodenBuckler
@@ -159,13 +198,13 @@
       thresholds:
         - trigger:
             !type:DamageTrigger
-            damage: 60
+            damage: 120 #Imp changes 60 -> 120
           behaviors:
             - !type:DoActsBehavior
               acts: [ "Destruction" ]
         - trigger:
             !type:DamageTrigger
-            damage: 30 #Weaker shield
+            damage: 60 #Weaker shield  (Imp changes 30 -> 60)
           behaviors:
             - !type:DoActsBehavior
               acts: [ "Destruction" ]
@@ -181,8 +220,64 @@
       price: 150
 
 - type: entity
-  name: makeshift shield
+  name: cardboard shield
   parent: BaseShield
+  id: CardShield
+  description: A shield made of cardboard. Won't protect you from much.
+  components:
+    - type: Sprite
+      state: cardshield-icon
+    - type: Item
+      heldPrefix: cardshield
+    - type: Blocking
+      passiveBlockModifier:
+        coefficients:
+          Blunt: 1
+          Slash: 2
+          Piercing: 0.6
+          Heat: 3
+      activeBlockModifier:
+        coefficients:
+          Blunt: 0.9
+          Slash: 1.8
+          Piercing: 0.5
+          Heat: 2.5
+        flatReductions:
+          Blunt: 0.5
+    - type: Construction
+      graph: CardShield
+      node: cardShield
+    - type: MeleeWeapon #imp
+      damage:
+        types:
+          Blunt: 0.2
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 25
+        behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+      - trigger:
+          !type:DamageTrigger
+          damage: 10 #Very very weak shield
+        behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+        - !type:PlaySoundBehavior
+          sound: /Audio/Items/Toys/ToyFall2.ogg
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            MaterialCardboard:
+              min: 2
+              max: 4
+    - type: StaticPrice
+      price: 20
+
+- type: entity
+  name: makeshift shield
+  parent: BaseRepairableShield
   id: MakeshiftShield
   description: A rundown looking shield, not good for much.
   components:
@@ -208,6 +303,8 @@
           Slash: 0.5
           Piercing: 0.5
           Heat: 1
+      passiveBlockFraction: 0.4 #Imp change
+      activeBlockFraction: 0.8 #Imp change
     - type: Construction
       graph: MakeshiftShield
       node: makeshiftShield
@@ -215,13 +312,13 @@
       thresholds:
         - trigger:
             !type:DamageTrigger
-            damage: 40
+            damage: 100 #Imp Changes 40 -> 100
           behaviors:
             - !type:DoActsBehavior
               acts: [ "Destruction" ]
         - trigger:
             !type:DamageTrigger
-            damage: 20 #Very weak shield
+            damage: 50 #Very weak shield (Imp changes 20 -> 50)
           behaviors:
             - !type:DoActsBehavior
               acts: [ "Destruction" ]
@@ -261,6 +358,10 @@
           Blunt: 0.5
           Slash: 0.5
           Piercing: 0.5
+    - type: MeleeWeapon #imp
+      damage:
+        types:
+          Blunt: 0.2
     - type: Construction
       graph: WebObjects
       node: shield
@@ -268,13 +369,13 @@
       thresholds:
         - trigger:
             !type:DamageTrigger
-            damage: 40
+            damage: 80 #Imp changes 40 -> 80
           behaviors:
             - !type:DoActsBehavior
               acts: [ "Destruction" ]
         - trigger:
             !type:DamageTrigger
-            damage: 20
+            damage: 40 #Imp changes 20 -> 40
           behaviors:
             - !type:DoActsBehavior
               acts: [ "Destruction" ]
@@ -291,7 +392,7 @@
 
 - type: entity
   name: clockwork shield
-  parent: BaseShield
+  parent: BaseRepairableShield
   id: ClockworkShield
   description: Ratvar oyrffrf lbh jvgu uvf cebgrpgvba.
   components:
@@ -320,7 +421,7 @@
 
 - type: entity
   name: mirror shield
-  parent: BaseShield
+  parent: [ BaseShield, BaseMagicalContraband ]
   id: MirrorShield
   description: Eerily glows red... you hear the geometer whispering
   components:
@@ -368,7 +469,7 @@
 
 - type: entity
   name: energy shield
-  parent: [BaseItem, BaseSyndicateContraband]
+  parent: [BaseItem, Tier3Contraband]
   id: EnergyShield
   description: Exotic energy shield, when folded, can even fit in your pocket.
   components:
@@ -401,7 +502,7 @@
       heldPrefix: eshield
     - type: UseDelay
       delay: 0.5
-    - type: ToggleableLightVisuals
+    - type: ToggleableVisuals
       spriteLayer: shield
       inhandVisuals:
         left:
@@ -440,6 +541,8 @@
     - type: Appearance
     - type: Damageable
       damageContainer: Shield
+    - type: ExaminableDamage
+      messages: EnergyShieldMessages
     - type: Destructible
       thresholds:
         - trigger:
@@ -481,7 +584,7 @@
 
 - type: entity
   name: telescopic shield
-  parent: BaseShield
+  parent: BaseRepairableShield
   id: TelescopicShield
   description: An advanced riot shield made of lightweight materials that collapses for easy storage.
   components:
@@ -513,7 +616,7 @@
       heldPrefix: teleriot
     - type: UseDelay
       delay: 0.5
-    - type: ToggleableLightVisuals
+    - type: ToggleableVisuals
       spriteLayer: shield
       inhandVisuals:
         left:
@@ -547,4 +650,4 @@
                   min: 2
                   max: 2
     - type: StaticPrice
-      price: 250
+      price: 150

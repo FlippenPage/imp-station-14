@@ -23,6 +23,12 @@
     count: 19
 
 - type: localizedDataset
+  id: JuiceOMatAds
+  values:
+    prefix: advertisement-juiceomat-
+    count: 17
+
+- type: localizedDataset
   id: BruiseOMatAds
   values:
     prefix: advertisement-bruiseomat-
@@ -32,6 +38,12 @@
   id: CargoDrobeAds
   values:
     prefix: advertisement-cargodrobe-
+    count: 3
+
+- type: localizedDataset #imp
+  id: SalvDrobeAds
+  values:
+    prefix: advertisement-salvdrobe-
     count: 3
 
 - type: localizedDataset
@@ -82,6 +94,24 @@
     prefix: advertisement-cola-
     count: 8
 
+- type: localizedDataset #imp
+  id: DanShrimpAds
+  values:
+    prefix: advertisement-danshrimp-
+    count: 8
+
+- type: localizedDataset
+  id: DrGibbAds
+  values:
+    prefix: advertisement-gibb-
+    count: 8
+
+- type: localizedDataset
+  id: SmiteAds
+  values:
+    prefix: advertisement-smite-
+    count: 8
+
 - type: localizedDataset
   id: CondimentVendAds
   values:
@@ -129,12 +159,6 @@
   values:
     prefix: fat-extractor-fact-
     count: 6
-
-- type: localizedDataset
-  id: FirebotAd
-  values:
-    prefix: advertisement-firebot-
-    count: 4
 
 - type: localizedDataset
   id: GoodCleanFunAds
@@ -218,7 +242,7 @@
   id: SecDrobeAds
   values:
     prefix: advertisement-secdrobe-
-    count: 5
+    count: 6 # imp
 
 - type: localizedDataset
   id: SecTechAds
@@ -269,7 +293,7 @@
     count: 3
 
 - type: localizedDataset
-  id: MedibotAds
+  id: PrideDrobeAds
   values:
-    prefix: advertisement-medibot-
-    count: 17
+    prefix: advertisement-pride-
+    count: 4

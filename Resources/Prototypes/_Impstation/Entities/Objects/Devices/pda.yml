@@ -55,6 +55,14 @@
     accentVColor: "#FF9500"
   - type: Icon
     state: pda-seniorcargo
+  - type: CartridgeLoader
+    uiKey: enum.PdaUiKey.Key
+    preinstalled:
+      - CrewManifestCartridge
+      - NotekeeperCartridge
+      - NewsReaderCartridge
+      - NanoChatCartridge # DeltaV
+      - SOSCartridge # Imp
 
 - type: entity
   parent: BasePDA
@@ -81,7 +89,8 @@
     - NotekeeperCartridge
     - NewsReaderCartridge
     - AstroNavCartridge
-    - NanoChatCartridge # DeltaV
+    - NanoChatCartridge # DV
+    - SOSCartridge # Imp
 
 - type: entity
   parent: BasePDA
@@ -101,7 +110,6 @@
     accentVColor: "#c7c7c7"
   - type: Icon
     state: pda-seniorbartender
-
 
 - type: entity
   parent: BaseMedicalPDA
@@ -169,6 +177,8 @@
   components:
   - type: Pda
     id: AtmosIDCard
+  - type: Sprite
+    sprite: _Impstation/Objects/Devices/atmos_pda.rsi
   - type: Appearance
     appearanceDataInit:
       enum.PdaVisuals.PdaType:
@@ -176,7 +186,7 @@
         pda-senioratmos
   - type: PdaBorderColor
     borderColor: "#949137"
-    accentVColor: "#447987"
+    accentVColor: "#488B8F"
   - type: Icon
     state: pda-senioratmos
 
@@ -200,80 +210,191 @@
     state: pda-seniordetective
 
 - type: entity
-  parent: BasePDA
-  id: SeniorEngineerPDA
-  name: senior engineer PDA
-  description: Seems to have been taken apart and put back together several times.
+  parent: LawyerPDA
+  id: SeniorLawyerPDA
+  name: senior lawyer PDA
+  description: Contains enough sensitive documents to blackmail half of Nanotrasen.
   components:
   - type: Pda
-    id: SeniorEngineerIDCard
+    id: LawyerIDCard
+    penSlot:
+      startingItem: DesignerPen # Also add to SeniorLibrarianPDA and SeniorReporterPDA if they're added in the future
+      priority: -2
+      whitelist:
+        tags:
+        - Write
   - type: Appearance
     appearanceDataInit:
-      enum.PdaVisuals.PdaType:
-        !type:String
-        pda-seniorengineer
+     enum.PdaVisuals.PdaType:
+       !type:String
+       pda-seniorlawyer
   - type: PdaBorderColor
-    borderColor: "#949137"
-    accentVColor: "#CD6900"
+    borderColor: "#6f6192"
+    accentVColor: "#c7c7c7"
   - type: Icon
-    state: pda-seniorengineer
+    state: pda-seniorlawyer
 
+# Syndicate
+- type: entity
+  parent: PassengerPDA
+  id: UndercoverPDA
+  suffix: Syndicate
+  components:
+  - type: Pda
+    id: UndercoverIDCard
+
+#Roboticist
 - type: entity
   parent: BasePDA
-  id: SeniorResearcherPDA
-  name: senior researcher PDA
-  description: Looks like it's been through years of chemical burns and explosions.
+  id: RoboticsPDA
+  name: robotics PDA
+  description: It's covered in scratches.
   components:
   - type: Pda
-    id: SeniorResearcherIDCard
+    id: ResearchIDCard
   - type: Appearance
     appearanceDataInit:
       enum.PdaVisuals.PdaType:
         !type:String
-        pda-seniorresearcher
+        pda-roboticist
   - type: PdaBorderColor
-    borderColor: "#d7d7d0"
-    accentHColor: "#8900c9"
-    accentVColor: "#8900c9"
+    borderColor: "#484848"
+    accentVColor: "#d33725"
   - type: Icon
-    state: pda-seniorresearcher
+    state: pda-roboticist
 
+#Courier
 - type: entity
-  parent: BaseMedicalPDA
-  id: SeniorPhysicianPDA
-  name: senior physician PDA
-  description: Smells faintly like iron and chemicals.
+  parent: BasePDA
+  id: CourierPDA
+  name: courier PDA
+  description: PDA for the guys deliver the pizzas.
   components:
   - type: Pda
-    id: SeniorPhysicianIDCard
+    id: CourierIDCard
   - type: Appearance
     appearanceDataInit:
       enum.PdaVisuals.PdaType:
         !type:String
-        pda-seniorphysician
+        pda-cargo
   - type: PdaBorderColor
-    borderColor: "#d7d7d0"
+    borderColor: "#e39751"
+  - type: Icon
+    state: pda-cargo
+  - type: CartridgeLoader # DeltaV - MailMetrics courier tracker
+    preinstalled:
+    - CrewManifestCartridge
+    - NotekeeperCartridge
+    - NewsReaderCartridge
+    - NanoChatCartridge
+    # - MailMetricsCartridge - turning this off to fix with the rest of the mail
+    - SOSCartridge # Imp
+
+#Hospitality Director
+- type: entity
+  parent: BasePDA
+  id: HDPDA
+  name: hospitality director PDA
+  description: Looks recently cleaned.
+  components:
+  - type: Pda
+    id: HDIDCard
+  - type: Appearance
+    appearanceDataInit:
+     enum.PdaVisuals.PdaType:
+       !type:String
+       pda-hd
+  - type: PdaBorderColor
+    borderColor: "#77b861"
     accentHColor: "#447987"
-    accentVColor: "#B34200"
   - type: Icon
-    state: pda-seniorphysician
+    state: pda-hd
 
+# Griffy
 - type: entity
-  parent: BaseSecurityPDA
-  id: SeniorOfficerPDA
-  name: senior officer PDA
-  description: Beaten, battered and broken, but just barely useable.
+  id: GriffyPDA
+  parent: BasePDA
+  name: griffy's PDA
+  description: PDA for Griffy, the Sec Safety Dog! Comes with large buttons & is bone-shaped, so as to be usable by dog mascots.
   components:
   - type: Pda
-    id: SeniorOfficerIDCard
+    id: null
+    paiSlot:
+      priority: -2
+      whitelist:
+        components:
+        - PAI
+    penSlot:
+      startingItem: GriffyPen
+      priority: -1
+      whitelist:
+        tags:
+        - Write
+    idSlot:
+      name: access-id-card-component-default
+      ejectSound: /Audio/Machines/id_swipe.ogg
+      insertSound: /Audio/Machines/id_insert.ogg
+      whitelist:
+        components:
+        - IdCard
+  - type: Sprite
+    layers:
+    - map: [ "enum.PdaVisualLayers.Base" ]
+      sprite: _Impstation/Objects/Devices/griffy_pda.rsi
+      state: pda-mascotgriffy
+    - sprite: Objects/Devices/pda.rsi
+      state: "light_overlay"
+      map: [ "enum.PdaVisualLayers.Flashlight" ]
+      shader: "unshaded"
+      visible: false
+    - sprite: Objects/Devices/pda.rsi
+      state: "id_overlay"
+      map: [ "enum.PdaVisualLayers.IdLight" ]
+      shader: "unshaded"
+      visible: false
   - type: Appearance
     appearanceDataInit:
       enum.PdaVisuals.PdaType:
         !type:String
-        pda-seniorofficer
+        pda-mascotgriffy
+  - type: CartridgeLoader
+    uiKey: enum.PdaUiKey.Key
+    preinstalled:
+    - CrewManifestCartridge
+    - NotekeeperCartridge
+    - NanoTaskCartridge
+    - NewsReaderCartridge
+    - WantedListCartridge
+    - NanoChatCartridge # DV
+    - SOSCartridge # Imp
   - type: PdaBorderColor
     borderColor: "#A32D26"
-    accentVColor: "#DFDFDF"
   - type: Icon
-    state: pda-seniorofficer
+    sprite: _Impstation/Objects/Devices/griffy_pda.rsi
+    state: pda-mascotgriffy
 
+- type: entity
+  parent: CentcomPDA
+  id: CentcommInternPDA
+  name: CentComm intern PDA
+  components:
+  - type: Pda
+    id: CentcommInternIDCard
+
+- type: entity
+  parent: CentcomPDA
+  id: CentcommInternLeaderPDA
+  name: CentComm head intern PDA
+  components:
+  - type: Pda
+    id: CentcommInternLeaderIDCard
+
+- type: entity
+  parent: ClearPDA
+  id: BountyHunterPDA
+  components:
+  - type: Pda
+    id: BountyHunterIDCard
+  - type: Tag #  Ignore Chameleon tags
+    tags:
+    - DoorBumpOpener

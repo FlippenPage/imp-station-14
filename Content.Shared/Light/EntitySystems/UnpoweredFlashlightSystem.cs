@@ -2,12 +2,15 @@ using Content.Shared.Actions;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Light.Components;
 using Content.Shared.Mind.Components;
+using Content.Shared.Storage.Components;
 using Content.Shared.Toggleable;
 using Content.Shared.Verbs;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using Content.Shared.Item.ItemToggle; //imp
+using Content.Shared.Item.ItemToggle.Components; //imp
 
 namespace Content.Shared.Light.EntitySystems;
 
@@ -22,6 +25,8 @@ public sealed class UnpoweredFlashlightSystem : EntitySystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
     [Dependency] private readonly SharedPointLightSystem _light = default!;
+    [Dependency] private readonly EmagSystem _emag = default!;
+    [Dependency] private readonly ItemToggleSystem _itemToggle = default!; //imp
 
     public override void Initialize()
     {
@@ -78,10 +83,13 @@ public sealed class UnpoweredFlashlightSystem : EntitySystem
 
     private void OnGotEmagged(EntityUid uid, UnpoweredFlashlightComponent component, ref GotEmaggedEvent args)
     {
+        if (!_emag.CompareFlag(args.Type, EmagType.Interaction))
+            return;
+
         if (!_light.TryGetLight(uid, out var light))
             return;
 
-        if (_prototypeManager.TryIndex(component.EmaggedColorsPrototype, out var possibleColors))
+        if (_prototypeManager.Resolve(component.EmaggedColorsPrototype, out var possibleColors))
         {
             var pick = _random.Pick(possibleColors.Colors.Values);
             _light.SetColor(uid, pick, light);
@@ -95,6 +103,11 @@ public sealed class UnpoweredFlashlightSystem : EntitySystem
     {
         if (!Resolve(ent, ref ent.Comp, false))
             return;
+
+        if (TryComp<ItemToggleComponent>(ent, out var toggleComp)) // imp
+        {
+            _itemToggle.Toggle((ent, toggleComp));
+        }
 
         SetLight(ent, !ent.Comp.LightOn, user, quiet);
     }

@@ -21,7 +21,7 @@
     layers:
     - state: green
     - state: alive
-      sprite: Mobs/Demons/tomatokisser.rsi
+      sprite: _Impstation/Mobs/Demons/tomatokisser.rsi
   - type: ConditionalSpawner
     prototypes:
     - MobTomatoKisser
@@ -35,7 +35,7 @@
     layers:
     - state: green
     - state: raptor
-      sprite: Mobs/Aliens/laser-less_laser_raptor.rsi
+      sprite: _Impstation/Mobs/Aliens/laser-less_laser_raptor.rsi
   - type: ConditionalSpawner
     prototypes:
     - MobRaptor
@@ -48,8 +48,8 @@
     - type: Sprite
       layers:
         - state: blue
-        - sprite: Mobs/Animals/bros.rsi
-          state: bros
+        - sprite: _Impstation/Mobs/Animals/Bros/bros.rsi
+          state: icon
     - type: ClusterSpawner
       prototypes:
         - MobBros
@@ -72,20 +72,6 @@
       - id: MobGoose
 
 - type: entity
-  name: xeno lone praetorian spawner
-  id: SpawnMobXenoPraetorian
-  parent: MarkerBase
-  components:
-  - type: Sprite
-    layers:
-    - state: green
-    - state: running
-      sprite: Mobs/Aliens/Xenos/praetorian.rsi
-  - type: ConditionalSpawner
-    prototypes:
-    - MobXenoLonePraetorianNoGhost
-
-- type: entity
   name: Space Bear Major Spawner
   id: SpawnMobBearMajor
   parent: MarkerBase
@@ -94,184 +80,10 @@
     layers:
     - state: green
     - state: major
-      sprite: Mobs/Animals/major.rsi
+      sprite: _Impstation/Mobs/Animals/major.rsi
   - type: ConditionalSpawner
     prototypes:
     - MobBearSpaceMajor
-
-- type: entity
-  name: random dinosaur spawner
-  id: DinosaurSpawnerRandom
-  parent: MarkerBase
-  suffix: DO NOT MAP
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: raptor
-          sprite: _Impstation/Mobs/Aliens/Dinos/raptor.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurAnki
-      - MobDinosaurCompy
-      - MobDinosaurDilo
-      - MobDinosaurKentro
-      - MobDinosaurPara
-      - MobDinosaurRaptor
-      - MobDinosaurSpino
-      - MobDinosaurStego
-      - MobDinosaurTrex
-      - MobDinosaurTrike
-
-- type: entity
-  name: dinosaur spawner
-  suffix: ankylosaurus, DO NOT MAP
-  id: DinosaurSpawnerAnki
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: anki
-          sprite: _Impstation/Mobs/Aliens/Dinos/anky.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurAnki
-
-- type: entity
-  name: dinosaur spawner
-  suffix: compsognathus, DO NOT MAP
-  id: DinosaurSpawnerCompy
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: compy
-          sprite: _Impstation/Mobs/Aliens/Dinos/compy.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurCompy
-
-- type: entity
-  name: dinosaur spawner
-  suffix: dilophosaurus, DO NOT MAP
-  id: DinosaurSpawnerDilo
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: dilo
-          sprite: _Impstation/Mobs/Aliens/Dinos/dilo.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurDilo
-
-- type: entity
-  name: dinosaur spawner
-  suffix: kentrosaurus, DO NOT MAP
-  id: DinoSpawnerKentro
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: kentro
-          sprite: _Impstation/Mobs/Aliens/Dinos/kentro.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurKentro
-
-- type: entity
-  name: dinosaur spawner
-  suffix: parasaurolophus, DO NOT MAP
-  id: DinoSpawnerPara
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: para
-          sprite: _Impstation/Mobs/Aliens/Dinos/para.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurPara
-
-- type: entity
-  name: dinosaur spawner
-  suffix: velociraptor, DO NOT MAP
-  id: DinoSpawnerRaptor
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: raptor
-          sprite: _Impstation/Mobs/Aliens/Dinos/raptor.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurRaptor
-
-- type: entity
-  name: dinosaur spawner
-  suffix: spinosaurus, DO NOT MAP
-  id: DinoSpawnerSpino
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: spino
-          sprite: _Impstation/Mobs/Aliens/Dinos/spino.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurSpino
-
-- type: entity
-  name: dinosaur spawner
-  suffix: stegosaurus, DO NOT MAP
-  id: DinoSpawnerStego
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: stego
-          sprite: _Impstation/Mobs/Aliens/Dinos/stego.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurStego
-
-- type: entity
-  name: dinosaur spawner
-  suffix: tyrannosaurus, DO NOT MAP
-  id: DinoSpawnerTrex
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: trex
-          sprite: _Impstation/Mobs/Aliens/Dinos/trex.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurTrex
-
-- type: entity
-  name: dinosaur spawner
-  suffix: triceratops, DO NOT MAP
-  id: DinoSpawnerTrike
-  parent: MarkerBase
-  components:
-    - type: Sprite
-      layers:
-        - state: green
-        - state: trike
-          sprite: _Impstation/Mobs/Aliens/Dinos/trike.rsi
-    - type: ConditionalSpawner
-      prototypes:
-      - MobDinosaurTrike
 
 - type: entity
   name: ray spawner
@@ -327,3 +139,163 @@
   - type: ConditionalSpawner
     prototypes:
       - MobPipi
+
+- type: entity
+  name: Dolby Spawner
+  id: SpawnMobDogPuppyDolby
+  suffix: Chemistry pet, steal target
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - state: ai
+  - type: ConditionalSpawner
+    prototypes:
+      - MobDolby
+
+- type: entity
+  name: Dog Spawner
+  id: SpawnMobChemDog
+  suffix: Chemistry pet, steal target
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - state: ai
+  - type: RandomSpawner
+    prototypes:
+      - MobWalter
+      - MobDolby
+
+- type: entity
+  name: Foes/Seof Spawner
+  id: FoesSeofSpawner
+  parent: MarkerBase
+  components:
+    - type: Sprite
+      layers:
+        - state: blue
+        - sprite: _Impstation/Mobs/Animals/Bros/foes.rsi
+          state: icon
+    - type: ClusterSpawner
+      prototypes:
+        - MobFoes
+        - MobSeof
+
+- type: entity
+  name: Eeeplet Spawner
+  id: SpawnMobEeeplet
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - state: eeeplet
+      sprite: _Impstation/Mobs/Aliens/eeeplet.rsi
+    - state: eeeplet_glow
+      sprite: _Impstation/Mobs/Aliens/eeeplet.rsi
+  - type: ConditionalSpawner
+    prototypes:
+    - MobEeeplet
+
+- type: entity
+  id: SpawnPointGhostEeeplet
+  name: ghost role spawn point
+  suffix: eeeplet
+  parent: MarkerBase
+  components:
+  - type: GhostRole
+    name: ghost-role-information-eeeplet-name
+    description: ghost-role-information-eeeplet-desc
+    rules: ghost-role-information-antagonist-rules
+    mindRoles:
+    - MindRoleGhostRoleTeamAntagonist
+    raffle:
+      settings: default
+  - type: GhostRoleMobSpawner
+    prototype: MobEeeplet
+  - type: Sprite
+    layers:
+    - state: green
+    - state: eeeplet
+      sprite: _Impstation/Mobs/Aliens/eeeplet.rsi
+    - state: eeeplet_glow
+      sprite: _Impstation/Mobs/Aliens/eeeplet.rsi
+
+- type: entity
+  name: Boar Spawner
+  id: BoarSpawner
+  parent: MarkerBase
+  components:
+    - type: Sprite
+      layers:
+        - state: blue
+        - sprite: _Impstation/Mobs/Animals/boar.rsi
+          state: boar
+    - type: ClusterSpawner
+      prototypes:
+        - MobBoar
+
+- type: entity
+  name: tck'ut spawner
+  suffix: Borg
+  id: BorgSpawnerTckut
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+  - type: ConditionalSpawner
+    prototypes:
+    - MobTckut
+
+- type: entity
+  name: Jonny spawner
+  suffix: passenger pet
+  id: SpawnMobDogCockroachJonny
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - state: ai
+  - type: ConditionalSpawner
+    prototypes:
+    - MobCockroachJonnyCutter
+    - MobCockroachJonnyDriver
+    - MobCockroachJonnyCrowbar
+    - MobCockroachJonnyWrench
+    - MobCockroachJonnyNetworkConfig
+    - MobCockroachJonnyPulser
+    - MobCockroachJonnyWelder
+
+- type: entity
+  name: tck'ju'q'tp spawner
+  suffix: Decapoid Core
+  id: BorgSpawnerDecapoidCore
+  parent: MarkerBase
+  components:
+    - type: Sprite
+      layers:
+        - state: green
+        - sprite: _Impstation/Mobs/Silicon/Bots/decacore.rsi
+          state: icon
+    - type: ConditionalSpawner
+      prototypes:
+        - DecapoidCore
+
+- type: entity
+  name: Turtle Spawner
+  id: SpawnMobTurtle
+  parent: MarkerBase
+  components:
+    - type: Sprite
+      layers:
+        - state: green
+        - state: alive
+          sprite: _Impstation/Mobs/Animals/turtle.rsi
+    - type: ConditionalSpawner
+      prototypes:
+        - MobTurtle

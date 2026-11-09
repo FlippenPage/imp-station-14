@@ -1,15 +1,13 @@
 using System.Text.RegularExpressions;
-using Content.Server.Speech.Components;
+using Content.Server._Impstation.Speech.Components;
+using Content.Server.Speech.EntitySystems;
+using Content.Shared.Speech;
 
-namespace Content.Server.Speech.EntitySystems;
+namespace Content.Server._Impstation.Speech.EntitySystems;
 
 public sealed class NoContractionsAccentComponentAccentSystem : EntitySystem
 {
-    private static readonly Regex RegexLowerS = new("s+");
-    private static readonly Regex RegexUpperS = new("S+");
-    private static readonly Regex RegexInternalX = new(@"(\w)x");
-    private static readonly Regex RegexLowerEndX = new(@"\bx([\-|r|R]|\b)");
-    private static readonly Regex RegexUpperEndX = new(@"\bX([\-|r|R]|\b)");
+    [Dependency] private readonly ReplacementAccentSystem _replacement = default!;
 
     public override void Initialize()
     {
@@ -17,10 +15,9 @@ public sealed class NoContractionsAccentComponentAccentSystem : EntitySystem
         SubscribeLocalEvent<NoContractionsAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, NoContractionsAccentComponent component, AccentGetEvent args)
-    {
-        var message = args.Message;
 
-        args.Message = message;
+    private void OnAccent(Entity<NoContractionsAccentComponent> entity, ref AccentGetEvent args)
+    {
+        args.Message = _replacement.ApplyReplacements(args.Message, "nocontractions");
     }
 }

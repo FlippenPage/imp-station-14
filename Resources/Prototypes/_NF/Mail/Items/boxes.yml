@@ -1,0 +1,146 @@
+# Mail-only boxes. If/when something uses these outside of the mail, move the entry into Catalog/Fills.
+
+- type: entity
+  name: scented soap sampler pack
+  parent: BoxCardboard
+  id: BoxSoapsAssorted
+  description: A box of various scented soaps. Ooh, lavender.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: SoapNT
+        - id: Soap
+        - id: SoapHomemade
+        - id: SoapDeluxe
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+      - 0,0,3,1
+    whitelist:
+      tags:
+        - Soap
+  - type: Sprite
+    layers:
+      - state: box
+
+- type: entity
+  name: scented soap sampler pack
+  parent: BoxCardboard
+  id: BoxSoapsAssortedOmega
+  description: A box of various scented soaps. Ooh, bluespace.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: SoapNT
+        - id: Soap
+        - id: SoapOmega
+        - id: SoapDeluxe
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+      - 0,0,3,1
+    whitelist:
+      tags:
+        - Soap
+  - type: Sprite
+    layers:
+      - state: box
+
+- type: entity
+  name: Build-a-Buddy kit
+  suffix: Human
+  parent: BoxHug
+  id: BoxBuildABuddyHuman
+  description: "\"Henry the Human\" Build-a-Buddy kit. Some assembly required."
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: OrganHumanHead
+        - id: OrganHumanTorso
+        - id: OrganHumanArmLeft
+        - id: OrganHumanArmRight
+        - id: OrganHumanHandLeft
+        - id: OrganHumanHandRight
+        - id: OrganHumanLegLeft
+        - id: OrganHumanLegRight
+        - id: OrganHumanFootLeft
+        - id: OrganHumanFootRight
+  - type: Storage
+    grid:
+    - 0,0,4,3
+    whitelist:
+      components:
+        - Organ
+
+
+- type: entity
+  name: Build-a-Buddy kit
+  suffix: Goblin
+  parent: BoxBuildABuddyHuman
+  id: BoxBuildABuddyGoblin
+  description: "\"Greta the Goblin\" Build-a-Buddy kit. Some assembly required."
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: OrganGoblinHead
+        - id: OrganGoblinTorso
+        - id: OrganGoblinArmLeft
+        - id: OrganGoblinArmRight
+        - id: OrganGoblinHandLeft
+        - id: OrganGoblinHandRight
+        - id: OrganGoblinLegLeft
+        - id: OrganGoblinLegRight
+        - id: OrganGoblinFootLeft
+        - id: OrganGoblinFootRight
+
+- type: entity
+  name: Build-a-Buddy kit
+  suffix: Reptilian
+  parent: BoxBuildABuddyHuman
+  id: BoxBuildABuddyReptilian
+  description: "\"Randy the Reptilian\" Build-a-Buddy kit. Some assembly required."
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: OrganReptilianHead
+        - id: OrganReptilianTorso
+        - id: OrganReptilianArmLeft
+        - id: OrganReptilianArmRight
+        - id: OrganReptilianHandLeft
+        - id: OrganReptilianHandRight
+        - id: OrganReptilianLegLeft
+        - id: OrganReptilianLegRight
+        - id: OrganReptilianFootLeft
+        - id: OrganReptilianFootRight
+
+- type: entity
+  name: Build-a-Buddy kit
+  suffix: Slime
+  parent: BoxBuildABuddyHuman
+  id: BoxBuildABuddySlime
+  description: "\"Steven the Slime\" Build-a-Buddy kit. Some assembly required."
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: OrganSlimePersonHead
+        - id: OrganSlimePersonTorso
+        - id: OrganSlimePersonArmLeft
+        - id: OrganSlimePersonArmRight
+        - id: OrganSlimePersonHandLeft
+        - id: OrganSlimePersonHandRight
+        - id: OrganSlimePersonLegLeft
+        - id: OrganSlimePersonLegRight
+        - id: OrganSlimePersonFootLeft
+        - id: OrganSlimePersonFootRight

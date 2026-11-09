@@ -1,9 +1,15 @@
-using Content.Server.Storage.Components;
 using Content.Shared.Inventory;
+using Content.Shared.Storage.Components;
 using Content.Shared.Whitelist;
-using Robust.Shared.Map;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
+// imp add start
+using Content.Shared.Examine;
+using Content.Shared.Hands.Components;
+using Content.Shared.Popups;
+using Content.Shared.Verbs;
+using Robust.Shared.Utility;
+// imp end
 
 namespace Content.Shared.Storage.EntitySystems;
 
@@ -18,22 +24,70 @@ public sealed class MagnetPickupSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedStorageSystem _storage = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!; // imp
 
 
     private static readonly TimeSpan ScanDelay = TimeSpan.FromSeconds(1);
 
     private EntityQuery<PhysicsComponent> _physicsQuery;
 
+    private static readonly string MagnetVerbIcon = "/Textures/Interface/VerbIcons/Spare/poweronoff.svg.192dpi.png";
+
     public override void Initialize()
     {
         base.Initialize();
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
         SubscribeLocalEvent<MagnetPickupComponent, MapInitEvent>(OnMagnetMapInit);
+        SubscribeLocalEvent<MagnetPickupComponent, ExaminedEvent>(OnExamined); // imp
+        SubscribeLocalEvent<MagnetPickupComponent, GetVerbsEvent<AlternativeVerb>>(AddToggleMagnetVerb); // imp
     }
 
     private void OnMagnetMapInit(EntityUid uid, MagnetPickupComponent component, MapInitEvent args)
     {
         component.NextScan = _timing.CurTime;
+    }
+
+    // imp. used to add the magnet toggle to the context menu
+    private void AddToggleMagnetVerb(EntityUid uid, MagnetPickupComponent component, GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract)
+            return;
+
+        if (!HasComp<HandsComponent>(args.User))
+            return;
+
+        AlternativeVerb verb = new()
+        {
+            Act = () =>
+            {
+                ToggleMagnet(uid, component, args);
+            },
+            Icon = new SpriteSpecifier.Texture(new(MagnetVerbIcon)),
+            Text = Loc.GetString("magnet-pickup-component-toggle-verb"),
+            Priority = 3
+        };
+
+        args.Verbs.Add(verb);
+    }
+
+    // used to show the magnet state on examination
+    private void OnExamined(EntityUid uid, MagnetPickupComponent component, ExaminedEvent args)
+    {
+        args.PushMarkup(Loc.GetString("magnet-pickup-component-on-examine-main",
+                        ("stateText", Loc.GetString(component.MagnetEnabled
+                        ? "magnet-pickup-component-magnet-on"
+                        : "magnet-pickup-component-magnet-off"))));
+    }
+
+    // used to toggle the magnet on the ore bag/box
+    public bool ToggleMagnet(EntityUid uid, MagnetPickupComponent comp, GetVerbsEvent<AlternativeVerb> args)
+    {
+        _popup.PopupPredicted(Loc.GetString(comp.MagnetEnabled
+                            ? "magnet-pickup-component-toggle-off"
+                            : "magnet-pickup-component-toggle-on"), uid, args.User);
+        comp.MagnetEnabled = !comp.MagnetEnabled;
+        Dirty(uid, comp);
+        return comp.MagnetEnabled;
     }
 
     public override void Update(float frameTime)
@@ -48,6 +102,7 @@ public sealed class MagnetPickupSystem : EntitySystem
                 continue;
 
             comp.NextScan += ScanDelay;
+            Dirty(uid, comp);
 
             if (!_inventory.TryGetContainingSlot((uid, xform, meta), out var slotDef))
                 continue;
@@ -57,6 +112,11 @@ public sealed class MagnetPickupSystem : EntitySystem
 
             // No space
             if (!_storage.HasSpace((uid, storage)))
+                continue;
+
+            // imp add start
+            // magnet disabled
+            if (!comp.MagnetEnabled)
                 continue;
 
             var parentUid = xform.ParentUid;
@@ -81,7 +141,7 @@ public sealed class MagnetPickupSystem : EntitySystem
                 // game state handling we can't show a lerp animation for it.
                 var nearXform = Transform(near);
                 var nearMap = _transform.GetMapCoordinates(near, xform: nearXform);
-                var nearCoords = EntityCoordinates.FromMap(moverCoords.EntityId, nearMap, _transform, EntityManager);
+                var nearCoords = _transform.ToCoordinates(moverCoords.EntityId, nearMap);
 
                 if (!_storage.Insert(uid, near, out var stacked, storageComp: storage, playSound: !playedSound))
                     continue;

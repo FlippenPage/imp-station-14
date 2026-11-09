@@ -54,7 +54,8 @@ public abstract class SharedStealthSystem : EntitySystem
 
     public virtual void SetEnabled(EntityUid uid, bool value, StealthComponent? component = null)
     {
-        if (!Resolve(uid, ref component, false) || component.Enabled == value)
+        if (!Resolve(uid, ref component, false))
+            //|| component.Enabled == value) // imp remove enabled check
             return;
 
         component.Enabled = value;
@@ -98,7 +99,7 @@ public abstract class SharedStealthSystem : EntitySystem
 
     private void OnStealthGetState(EntityUid uid, StealthComponent component, ref ComponentGetState args)
     {
-        args.State = new StealthComponentState(component.LastVisibility, component.LastUpdated, component.Enabled);
+        args.State = new StealthComponentState(component.LastVisibility, component.LastUpdated, component.Enabled, component.UseAltShader, component.MinVisibility); // imp add altshader and minvisibility
     }
 
     private void OnStealthHandleState(EntityUid uid, StealthComponent component, ref ComponentHandleState args)
@@ -106,9 +107,12 @@ public abstract class SharedStealthSystem : EntitySystem
         if (args.Current is not StealthComponentState cast)
             return;
 
-        SetEnabled(uid, cast.Enabled, component);
+        //SetEnabled(uid, cast.Enabled, component); // imp move
         component.LastVisibility = cast.Visibility;
         component.LastUpdated = cast.LastUpdated;
+        component.UseAltShader = cast.UseAltShader; // imp add
+        component.MinVisibility = cast.MinVisibility; // imp add
+        SetEnabled(uid, cast.Enabled, component); // imp, moved this down
     }
 
     private void OnMove(EntityUid uid, StealthOnMoveComponent component, ref MoveEvent args)
@@ -209,6 +213,7 @@ public abstract class SharedStealthSystem : EntitySystem
         }
     }
 
+    // imp add
     /// <summary>
     /// Sets the minimum visibility
     /// </summary>
@@ -219,6 +224,20 @@ public abstract class SharedStealthSystem : EntitySystem
             return;
 
         component.MinVisibility = value;
+
+        Dirty(uid, component);
+    }
+
+    // imp add
+    /// <summary>
+    /// Sets whether the alternate full invis shader should be used
+    /// </summary>
+    public void SetUseAltShader(EntityUid uid, bool value, StealthComponent? component = null)
+    {
+        if (!Resolve(uid, ref component))
+            return;
+
+        component.UseAltShader = value;
 
         Dirty(uid, component);
     }

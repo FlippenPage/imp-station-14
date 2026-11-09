@@ -8,7 +8,9 @@
   - type: MindRole
     antagPrototype: Changeling
     exclusiveAntag: true
-  - type: ChangelingRole
+    roleType: SoloAntagonist # imp edit
+    primaryCurrency: EvolutionPoint #imp edit
+  - type: GoobChangelingRole
 
 - type: entity
   parent: BaseMindRoleAntag
@@ -19,4 +21,6 @@
   - type: MindRole
     antagPrototype: Heretic
     exclusiveAntag: true
+    roleType: SoloAntagonist # imp edit
+    primaryCurrency: KnowledgePoint #imp edit
   - type: HereticRole

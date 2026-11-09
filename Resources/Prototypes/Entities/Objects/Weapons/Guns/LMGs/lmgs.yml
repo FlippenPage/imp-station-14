@@ -1,7 +1,7 @@
 - type: entity
   name: BaseWeaponLightMachineGun
   parent: BaseItem
-  id: BaseWeaponLightMachineGun
+  id: BaseWeaponLightMachineGunWizden #imp - see the _Impstation directory for the version we use
   description: A rooty tooty point and shooty.
   abstract: true
   components:
@@ -51,11 +51,10 @@
             - MagazineLightRifleBox
       gun_chamber:
         name: Chamber
-        startingItem: CartridgeRifle
         priority: 1
         whitelist:
           tags:
-            - CartridgeRifle
+            - CartridgeLightRifle
   - type: ContainerContainer
     containers:
       gun_magazine: !type:ContainerSlot
@@ -67,9 +66,10 @@
 
 - type: entity
   name: L6 SAW
-  id: WeaponLightMachineGunL6
+  id: WeaponLightMachineGunL6Wizden #imp - see the _Impstation directory for the version we use
+  abstract: true #imp
   parent: [BaseWeaponLightMachineGun, BaseSyndicateContraband]
-  description: A rather traditionally-made Squad Automatic Weapon with a pleasantly lacquered wooden pistol grip. Lacks an LMG stock, decreasing controllability. Uses .20 rifle ammo.
+  description: Developed by Waffle Corp, the L6 Squad Automatic Weapon is a deadly light machine gun often used by the Gorlex Marauders. Although bulky and cumbersome, its heavy barrel and high ammo capacity make it perfect for suppressing combatants with a hail of bullets. Feeds from .30 ammo belts.
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/LMGs/l6.rsi
@@ -83,12 +83,15 @@
     steps: 4
     zeroVisible: true
   - type: Appearance
+  - type: StaticPrice
+    price: 10000
 
 - type: entity
   name: L6C ROW
-  id: WeaponLightMachineGunL6C
+  id: WeaponLightMachineGunL6CWizden #imp - see the _Impstation directory for the version we use
+  abstract: true #imp
   parent: BaseItem
-  description: An L6 SAW for use by cyborgs. Creates .20 rifle ammo on the fly from an internal ammo fabricator, which slowly self-charges.
+  description: A L6 SAW for use by cyborgs. Creates .30 rifle ammo on the fly from an internal ammo fabricator, which slowly self-charges.
   components:
     - type: Gun
       minAngle: 4
@@ -115,13 +118,14 @@
     - type: ContainerContainer
       containers:
         ballistic-ammo: !type:Container
-    - type: ProjectileBatteryAmmoProvider
-      proto: CartridgeRifle
-      fireCost: 100
-    - type: Battery
-      maxCharge: 10000
-      startingCharge: 10000
-    - type: BatterySelfRecharger
-      autoRecharge: true
-      autoRechargeRate: 25
+    - type: BallisticAmmoProvider
+      whitelist:
+        tags:
+        - CartridgeLightRifle
+      capacity: 100
+      proto: CartridgeLightRifle
+      cycleable: false # No synthesizing ammo for your syndicate masters.
+    - type: BallisticAmmoSelfRefiller
+      autoRefillRate: 4s
+      affectedByEmp: true
     - type: AmmoCounter

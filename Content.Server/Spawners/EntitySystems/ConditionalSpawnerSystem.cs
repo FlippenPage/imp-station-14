@@ -89,21 +89,26 @@ namespace Content.Server.Spawners.EntitySystems
             }
 
             if (!Deleted(uid))
-                EntityManager.SpawnEntity(_robustRandom.Pick(component.Prototypes), Transform(uid).Coordinates);
+                Spawn(_robustRandom.Pick(component.Prototypes), Transform(uid).Coordinates);
         }
 
         private void Spawn(EntityUid uid, RandomSpawnerComponent component)
         {
+            var prototypes = component.Prototypes; // Imp, added prototypes var
+            var rareSpawn = false; // Imp, added to try and reduce upstream changes
+
             if (component.RarePrototypes.Count > 0 && (component.RareChance == 1.0f || _robustRandom.Prob(component.RareChance)))
             {
-                EntityManager.SpawnEntity(_robustRandom.Pick(component.RarePrototypes), Transform(uid).Coordinates);
-                return;
+                prototypes = component.RarePrototypes; // Imp, removed direct spawning on coords
+                rareSpawn = true; // Imp
+                // Spawn(_robustRandom.Pick(component.RarePrototypes), Transform(uid).Coordinates);
+                // return;
             }
 
-            if (component.Chance != 1.0f && !_robustRandom.Prob(component.Chance))
+            if (!rareSpawn && component.Chance != 1.0f && !_robustRandom.Prob(component.Chance)) // Imp, added !rareSpawn
                 return;
 
-            if (component.Prototypes.Count == 0)
+            if (!rareSpawn && component.Prototypes.Count == 0) // Imp, added !rareSpawn
             {
                 Log.Warning($"Prototype list in RandomSpawnerComponent is empty! Entity: {ToPrettyString(uid)}");
                 return;
@@ -118,7 +123,7 @@ namespace Content.Server.Spawners.EntitySystems
 
             var coordinates = Transform(uid).Coordinates.Offset(new Vector2(xOffset, yOffset));
 
-            EntityManager.SpawnEntity(_robustRandom.Pick(component.Prototypes), coordinates);
+            Spawn(_robustRandom.Pick(prototypes), coordinates); // Imp, switched to prototypes instead of direct component to give offset to rare prototype
         }
 
         private void Spawn(Entity<EntityTableSpawnerComponent> ent)
@@ -135,7 +140,7 @@ namespace Content.Server.Spawners.EntitySystems
                 var yOffset = _robustRandom.NextFloat(-ent.Comp.Offset, ent.Comp.Offset);
                 var trueCoords = coords.Offset(new Vector2(xOffset, yOffset));
 
-                Spawn(proto, trueCoords);
+                SpawnAtPosition(proto, trueCoords);
             }
         }
     }

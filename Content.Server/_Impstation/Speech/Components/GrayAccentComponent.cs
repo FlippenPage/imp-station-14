@@ -1,10 +1,6 @@
-﻿namespace Content.Server.Speech.Components;
+namespace Content.Server._Impstation.Speech.Components;
 
-/// <summary>
-///     Ayyy
-/// </summary>
 [RegisterComponent]
 public sealed partial class GrayAccentComponent : Component
 {
-
 }

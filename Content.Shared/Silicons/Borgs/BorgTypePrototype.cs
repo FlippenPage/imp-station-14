@@ -15,11 +15,10 @@ namespace Content.Shared.Silicons.Borgs;
 [Prototype]
 public sealed partial class BorgTypePrototype : IPrototype
 {
-    [ValidatePrototypeId<SoundCollectionPrototype>]
     private static readonly ProtoId<SoundCollectionPrototype> DefaultFootsteps = new("FootstepBorg");
 
     [IdDataField]
-    public required string ID { get; init; }
+    public required string ID { get; set; }
 
     //
     // Description info (name/desc) is configured via localization strings directly.
@@ -29,7 +28,7 @@ public sealed partial class BorgTypePrototype : IPrototype
     /// The prototype displayed in the selection menu for this type.
     /// </summary>
     [DataField]
-    public required EntProtoId DummyPrototype { get; init; }
+    public required EntProtoId DummyPrototype;
 
     //
     // Functional information
@@ -142,6 +141,17 @@ public sealed partial class BorgTypePrototype : IPrototype
     /// <seealso cref="InteractionPopupComponent"/>
     [DataField]
     public string PetFailureString { get; set; } = "petting-failure-generic-cyborg";
+
+    // Begin Impstation
+    [DataField]
+    public string? PdaBorderColor;
+
+    [DataField]
+    public string? PdaAccentHorizontalColor;
+
+    [DataField]
+    public string? PdaAccentVerticalColor;
+    // End Impstation
 
     //
     // Sounds

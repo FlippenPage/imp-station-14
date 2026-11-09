@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared.Mind;
 using Content.Shared.Store;
 using Content.Shared.Store.Components;
 using Robust.Shared.Prototypes;
@@ -90,7 +91,7 @@ public sealed partial class StoreSystem
     /// <returns>The available listings.</returns>
     public IEnumerable<ListingDataWithCostModifiers> GetAvailableListings(EntityUid buyer, EntityUid store, StoreComponent component)
     {
-        return GetAvailableListings(buyer, component.FullListingsCatalog, component.Categories, store);
+        return GetAvailableListings(buyer, component.FullListingsCatalog, component.Categories, store, component); // imp edit, add component
     }
 
     /// <summary>
@@ -100,12 +101,14 @@ public sealed partial class StoreSystem
     /// <param name="listings">All of the listings that are available. If null, will just get all listings from the prototypes.</param>
     /// <param name="categories">What categories to filter by.</param>
     /// <param name="storeEntity">The physial entity of the store. Can be null.</param>
+    /// <param name="component">The store component the listings are coming from.</param> // imp addd
     /// <returns>The available listings.</returns>
     public IEnumerable<ListingDataWithCostModifiers> GetAvailableListings(
         EntityUid buyer,
         IReadOnlyCollection<ListingDataWithCostModifiers>? listings,
         HashSet<ProtoId<StoreCategoryPrototype>> categories,
-        EntityUid? storeEntity = null
+        EntityUid? storeEntity = null,
+        StoreComponent? component = null // imp addition
     )
     {
         listings ??= GetAllListings();
@@ -117,16 +120,28 @@ public sealed partial class StoreSystem
 
             if (listing.Conditions != null)
             {
-                var args = new ListingConditionArgs(buyer, storeEntity, listing, EntityManager);
+                var args = new ListingConditionArgs(GetBuyerMind(buyer), storeEntity, listing, EntityManager);
                 var conditionsMet = true;
+                // imp unavailable listings start
                 listing.Buyable = true;
                 if (listing.Priority >= 1000)
                     listing.Priority -= 1000;
+                // imp end
 
                 foreach (var condition in listing.Conditions)
                 {
+                    // imp edit start
+                    if (component is { PassAllConditions: true })
+                        break;
+                    // imp edit end
+
                     if (!condition.Condition(args))
                     {
+                        // imp edit start
+                        if (condition.MakeHidden)
+                            listing.HiddenWhenUnbuyable = true;
+                        // imp edit end
+
                         conditionsMet = false;
                         break;
                     }
@@ -134,14 +149,32 @@ public sealed partial class StoreSystem
 
                 if (!conditionsMet)
                 {
+                    // imp start
                     listing.Buyable = false;
                     if (listing.Priority < 1000)
                         listing.Priority += 1000;
+
+                    if (!listing.Buyable && listing.HiddenWhenUnbuyable)
+                        continue;
+                    // imp end
                 }
             }
 
             yield return listing;
         }
+    }
+
+    /// <summary>
+    /// Returns the entity's mind entity, if it has one, to be used for listing conditions.
+    /// If it doesn't have one, or is a mind entity already, it returns itself.
+    /// </summary>
+    /// <param name="buyer">The buying entity.</param>
+    public EntityUid GetBuyerMind(EntityUid buyer)
+    {
+        if (!HasComp<MindComponent>(buyer) && _mind.TryGetMind(buyer, out var buyerMind, out var _))
+            return buyerMind;
+
+        return buyer;
     }
 
     /// <summary>

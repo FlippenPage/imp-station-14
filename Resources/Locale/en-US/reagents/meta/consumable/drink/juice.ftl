@@ -11,7 +11,8 @@ reagent-name-juice-blue-pumpkin = blue pumpkin juice
 reagent-desc-juice-blue-pumpkin = The juice of a blue pumpkin. Smells like pool water.
 
 reagent-name-juice-bungo = bungo juice
-reagent-desc-juice-bungo = The juice of a bungo fruit. Exotic!
+reagent-desc-juice-bungo = The juice of a bungo fruit. Refreshing! 
+# imp edit # changes Exotic! -> Refreshing!
 
 reagent-name-juice-berry-poison = poison berry juice
 reagent-desc-juice-berry-poison = A surprisingly tasty juice blended from various kinds of very deadly and toxic berries.
@@ -40,7 +41,7 @@ reagent-desc-juice-potato = Juice of the potato. Bleh.
 reagent-name-juice-tomato = tomato juice
 reagent-desc-juice-tomato = Tomatoes made into juice. What a waste of good tomatoes, huh?
 
-reagent-name-juice-watermelon = water melon juice
+reagent-name-juice-watermelon = watermelon juice
 reagent-desc-juice-watermelon = The delicious juice of a watermelon.
 
 reagent-name-juice-cherry = cherry juice

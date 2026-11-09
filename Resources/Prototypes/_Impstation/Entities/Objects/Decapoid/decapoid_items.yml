@@ -22,28 +22,17 @@
         Structural: 10
     soundHit:
       collection: AlienClaw
-  - type: Unremoveable
   - type: Blocking
     passiveBlockModifier:
       coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 0.95
-        Heat: 2
+        Blunt: 1 #these numbers don't matter since the shield isn't destructable, but the default values in the component are set up wrong so Some Number is required here
     activeBlockModifier:
       coefficients:
-        Blunt: 0.85
-        Slash: 0.85
-        Piercing: 0.85
-        Heat: 2
-      flatReductions:
-        Blunt: 1
-        Slash: 1
-        Piercing: 1
-    passiveBlockFraction: 0.0
-    activeBlockFraction: 0.2
+        Blunt: 1 #see above
+    passiveBlockFraction: 0.0 #does not give damage reduction passively
+    activeBlockFraction: 0.5 #gives 50% damage reduction against brute damage to the decapoid while the claw is raised
   - type: Damageable
-    damageContainer: Shield
+    damageContainer: DecapoidShield #determines what types of damage are reduced by the Blocking component, DecapoidShield damage container is brute damage only
   - type: ToolTileCompatible
     delay: 0.5
   - type: Tool
@@ -69,13 +58,16 @@
           state: icon
         useSound: /Audio/_Impstation/Items/Decapoid/claw_cutting.ogg
         changeSound: /Audio/_Impstation/Items/Decapoid/switch.ogg
+  - type: OrganAttached
+    slot: left
+    handEquipment: true
   - type: Tag
     tags:
       - DecapoidClaw
 
 - type: entity
   name: vaporizer
-  parent: ClothingMaskGas
+  parent: ClothingMaskPullableBase
   id: DecapoidBreathingApparatus
   description: 'A neck-mounted breathing apparatus for Decapoids. Moistens your gills, if you have them. Also functions as a brain-to-voice translator.'
   components:
@@ -86,6 +78,8 @@
     tags:
       - Vaporizer
       - BreathMask
+      - WhitelistChameleon
+      - GasMask
   - type: Clothing
     quickEquip: true
     slots:
@@ -100,14 +94,61 @@
   - type: HideLayerClothing
     slots:
     - Snout
+    hideOnToggle: true
   - type: SpeechSound
     speechSounds: Decapoid
     speechVerb: Robotic
 
+- type: entity
+  name: clown vaporizer
+  parent: DecapoidBreathingApparatus
+  id: DecapoidBreathingApparatusClown
+  description: 'A neck-mounted breathing apparatus for Decapoids. Moistens your gills, if you have them. Also functions as a brain-to-voice translator. This one has been modified by a clown to complement their outfit...'
+  components:
+  - type: HideLayerClothing
+    slots:
+    - Hair
+    hideOnToggle: true
+  - type: Sprite
+    sprite: _Impstation/Objects/Decapoid/vaporizerclown.rsi
+  - type: Clothing
+    sprite: _Impstation/Objects/Decapoid/vaporizerclown.rsi
+
+- type: entity
+  name: mime vaporizer
+  parent: DecapoidBreathingApparatus
+  id: DecapoidBreathingApparatusMime
+  description: 'A neck-mounted breathing apparatus for Decapoids. Moistens your gills, if you have them. Also functions as a brain-to-voice translator. This one has been modified by a mime to complement their outfit...'
+  components:
+  - type: HideLayerClothing
+    slots:
+    - Hair
+  - type: Sprite
+    sprite: _Impstation/Objects/Decapoid/vaporizermime.rsi
+  - type: Clothing
+    sprite: _Impstation/Objects/Decapoid/vaporizermime.rsi
 
 - type: entity
   name: vapor tank
+  parent: DecapoidVaporTank
+  id: DecapoidVaporTankFilled
   suffix: Filled
+  components:
+  - type: GasTank
+    outputPressure: 21.3
+    air:
+      volume: 5
+      moles:
+        - 0 # oxygen
+        - 0 # nitrogen
+        - 0 # CO2
+        - 0 # plasma
+        - 0 # tritium
+        - 2.051379050 # water vapor
+      temperature: 293.15
+
+- type: entity
+  name: vapor tank
   parent: GasTankRoundBase
   id: DecapoidVaporTank
   description: 'An alien contraption consisting of two tanks. The smaller tank takes in water and converts it into vapor, which is stored in the larger tank. It can hold 5 L of gas, and 30u of fluid.'
@@ -139,30 +180,16 @@
     slots:
     - Back
     - suitStorage
-  - type: ActivatableUI
-    key: enum.SharedGasTankUiKey.Key
   - type: UserInterface
     interfaces:
       enum.SharedGasTankUiKey.Key:
         type: GasTankBoundUserInterface
       enum.TransferAmountUiKey.Key:
         type: TransferAmountBoundUserInterface
-  - type: Tag
-    tags:
-      - GasTank
-  - type: GasTank
-    outputPressure: 21.3
-    air:
-      volume: 5
-      moles:
-        - 0 # oxygen
-        - 0 # nitrogen
-        - 0 # CO2
-        - 0 # plasma
-        - 0 # tritium
-        - 2.051379050 # water vapor
-      temperature: 293.15
-  - type: Drink
+  - type: Edible
+    edible: Drink
+    solution: waterTank
+    destroyOnEmpty: false
   - type: SolutionContainerManager
     solutions:
       waterTank:

@@ -1,4 +1,3 @@
-using Content.Shared._White.StoreDiscount;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
@@ -38,10 +37,10 @@ public sealed partial class StoreComponent : Component
     public HashSet<ProtoId<CurrencyPrototype>> CurrencyWhitelist = new();
 
     /// <summary>
-    /// The person who "owns" the store/account. Used if you want the listings to be fixed
+    /// The person/mind who "owns" the store/account. Used if you want the listings to be fixed
     /// regardless of who activated it. I.E. role specific items for uplinks.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public EntityUid? AccountOwner = null;
 
     /// <summary>
@@ -87,10 +86,11 @@ public sealed partial class StoreComponent : Component
     [DataField]
     public EntityUid? StartingMap;
 
-    // WD EDIT START
+    /// <summary>
+    ///     Imp addition, whether the store should automatically pass all conditions for its listings, used for debug stores.
+    /// </summary>
     [DataField]
-    public SalesSpecifier Sales { get; private set; } = new();
-    // WD EDIT END
+    public bool PassAllConditions;
 
     #region audio
     /// <summary>
@@ -111,6 +111,8 @@ public readonly record struct StoreAddedEvent;
 /// </summary>
 [ByRefEvent]
 public readonly record struct StoreRemovedEvent;
+
+// imp
 /// <summary>
 /// Event that is broadcast when a store is refunded
 /// </summary>

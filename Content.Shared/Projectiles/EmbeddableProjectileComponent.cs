@@ -1,6 +1,7 @@
 using System.Numerics;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom; // ee throwing
 
 namespace Content.Shared.Projectiles;
 
@@ -27,7 +28,7 @@ public sealed partial class EmbeddableProjectileComponent : Component
     /// How long it takes to remove the embedded object.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public float? RemovalTime = 3f;
+    public float? RemovalTime = 5f; // ee, was 3f
 
     /// <summary>
     ///     Whether this entity will embed when thrown, or only when shot as a projectile.
@@ -52,4 +53,17 @@ public sealed partial class EmbeddableProjectileComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public EntityUid? EmbeddedIntoUid;
+
+    /// <summary>
+    ///   How much time before this entity automatically falls off? (0 is never)
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public float AutoRemoveDuration = 40f;
+
+    /// <summary>
+    ///   The time when this entity automatically falls off after being attached.
+    /// </summary>
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField]
+    public TimeSpan? AutoRemoveTime = null;
+    // ee end
 }

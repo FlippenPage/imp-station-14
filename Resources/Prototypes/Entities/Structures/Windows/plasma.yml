@@ -1,13 +1,13 @@
 - type: entity
   id: PlasmaWindow
   name: plasma window
-  parent: WindowRCDResistant
+  parent: [BaseDeltaPressurePlasma, WindowRCDResistant]
   components:
   - type: Sprite
     drawdepth: WallTops
-    sprite: Structures/Windows/plasma_window.rsi
+    sprite: _Impstation/Structures/Windows/plasma_window.rsi # Impstation
   - type: Icon
-    sprite: Structures/Windows/plasma_window.rsi
+    sprite: _Impstation/Structures/Windows/plasma_window.rsi # Impstation
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Glass
@@ -55,7 +55,7 @@
 
 - type: entity
   id: PlasmaWindowDirectional
-  parent: WindowDirectionalRCDResistant
+  parent: [BaseDeltaPressurePlasmaQuarter, WindowDirectionalRCDResistant]
   name: directional plasma window
   description: Don't smudge up the glass down there.
   placement:
@@ -120,14 +120,18 @@
   components:
   - type: Sprite
     drawdepth: WallTops
-    sprite: Structures/Windows/plasma_diagonal.rsi
+    sprite: _Impstation/Structures/Windows/plasma_diagonal.rsi # Impstation
     state: state0
+  - type: Tag
+    tags:
+    - Diagonal
+    - Window
   - type: IconSmooth
     mode: Diagonal
     key: windows
     base: state
   - type: Icon
-    sprite: Structures/Windows/plasma_diagonal.rsi
+    sprite: _Impstation/Structures/Windows/plasma_diagonal.rsi # Impstation
     state: state0
   - type: Fixtures
     fixtures:

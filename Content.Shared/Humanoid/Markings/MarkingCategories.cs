@@ -8,14 +8,15 @@ namespace Content.Shared.Humanoid.Markings
         Special,
         Hair,
         FacialHair,
-		Eyes,
+		Eyes, // imp
         Head,
         HeadTop,
         HeadSide,
         Snout,
+        SnoutCover,
         Chest,
-        Underwear,
-        Undershirt,
+        UndergarmentTop,
+        UndergarmentBottom,
         Arms,
         Legs,
         Tail,
@@ -31,14 +32,14 @@ namespace Content.Shared.Humanoid.Markings
                 HumanoidVisualLayers.Special => MarkingCategories.Special,
                 HumanoidVisualLayers.Hair => MarkingCategories.Hair,
                 HumanoidVisualLayers.FacialHair => MarkingCategories.FacialHair,
-				HumanoidVisualLayers.Eyes => MarkingCategories.Eyes,
+                HumanoidVisualLayers.Eyes => MarkingCategories.Eyes, // imp
                 HumanoidVisualLayers.Head => MarkingCategories.Head,
                 HumanoidVisualLayers.HeadTop => MarkingCategories.HeadTop,
                 HumanoidVisualLayers.HeadSide => MarkingCategories.HeadSide,
                 HumanoidVisualLayers.Snout => MarkingCategories.Snout,
-                HumanoidVisualLayers.Undershirt => MarkingCategories.Undershirt,
-                HumanoidVisualLayers.Underwear => MarkingCategories.Underwear,
                 HumanoidVisualLayers.Chest => MarkingCategories.Chest,
+                HumanoidVisualLayers.UndergarmentTop => MarkingCategories.UndergarmentTop,
+                HumanoidVisualLayers.UndergarmentBottom => MarkingCategories.UndergarmentBottom,
                 HumanoidVisualLayers.RArm => MarkingCategories.Arms,
                 HumanoidVisualLayers.LArm => MarkingCategories.Arms,
                 HumanoidVisualLayers.RHand => MarkingCategories.Arms,
@@ -48,6 +49,8 @@ namespace Content.Shared.Humanoid.Markings
                 HumanoidVisualLayers.LFoot => MarkingCategories.Legs,
                 HumanoidVisualLayers.RFoot => MarkingCategories.Legs,
                 HumanoidVisualLayers.Tail => MarkingCategories.Tail,
+                HumanoidVisualLayers.RArmExtension => MarkingCategories.Arms, // Frontier: species-specific layer
+                HumanoidVisualLayers.LArmExtension => MarkingCategories.Arms, // Frontier: species-specific layer
                 _ => MarkingCategories.Overlay
             };
         }

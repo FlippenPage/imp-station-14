@@ -7,7 +7,7 @@
     - type: Sprite
       layers:
         - state: red
-        - sprite: Objects/Tools/flashlight.rsi
+        - sprite: _Impstation/Objects/Tools/flashlight.rsi # imp
           state: flashlight
     - type: RandomSpawner
       rarePrototypes:
@@ -45,14 +45,16 @@
           state: icon
     - type: RandomSpawner
       rarePrototypes:
-        - CapacitorStockPart
         - MicroManipulatorStockPart
-        - MatterBinStockPart
         - CableHVStack10
         - WelderIndustrial
         - PowerCellHigh
         - PowerCellSmall
         - ClothingHandsGlovesColorYellowBudget
+        # imp edit start
+        - CapacitorStockPart
+        - MatterBinStockPart
+        # imp edit end
       rareChance: 0.2
       prototypes:
         - ClothingHeadHatWelding

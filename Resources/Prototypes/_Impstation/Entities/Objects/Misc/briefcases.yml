@@ -1,0 +1,71 @@
+- type: entity
+  parent: [BriefcaseBase, ContentsExplosionResistanceBase]
+  id: BriefcaseSteel
+  name: reinforced steel briefcase
+  description: A reinforced steel briefcase with a soft durathread internal coating, used for transporting fragile material or sensitive documents.
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Storage/Briefcases/briefcase_steel.rsi
+    state: icon
+  - type: Item
+    sprite: _Impstation/Objects/Storage/Briefcases/briefcase_steel.rsi
+  - type: ExplosionResistance
+    damageCoefficient: 0.2
+ 
+- type: entity
+  parent: BriefcaseBrown
+  id: BriefcaseBlack
+  name: black briefcase
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Storage/Briefcases/briefcase_black.rsi
+    state: icon
+  - type: Item
+    sprite: _Impstation/Objects/Storage/Briefcases/briefcase_black.rsi
+
+- type: entity
+  parent: BriefcaseWeapon
+  id: ImpBriefcaseWeaponSmall
+  suffix: Gun, Small, Empty
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Storage/Briefcases/weapon_case_small.rsi
+  - type: Item
+    size: Small
+    shape:
+    - 0,0,3,1
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+
+- type: entity
+  parent: BriefcaseWeapon
+  id: ImpBriefcaseWeaponMedium
+  suffix: Gun, Medium, Empty
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Storage/Briefcases/weapon_case_medium.rsi
+  - type: Item
+    size: Large
+    shape:
+    - 0,0,4,2
+  - type: Storage
+    maxItemSize: Large
+    grid:
+    - 0,0,4,2
+
+- type: entity
+  parent: BriefcaseWeapon
+  id: ImpBriefcaseWeaponLarge
+  suffix: Gun, Large, Empty
+  components:
+  - type: Sprite
+    sprite: _Impstation/Objects/Storage/Briefcases/weapon_case_large.rsi
+  - type: Item
+    size: Ginormous
+  - type: MultiHandedItem
+  - type: Storage
+    maxItemSize: Huge
+    grid:
+    - 0,0,5,3

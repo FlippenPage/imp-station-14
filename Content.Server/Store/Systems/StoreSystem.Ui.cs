@@ -1,17 +1,14 @@
 using System.Linq;
 using Content.Server.Actions;
 using Content.Server.Administration.Logs;
-using Content.Server.Heretic.EntitySystems;
-using Content.Server.PDA.Ringer;
 using Content.Server.Stack;
 using Content.Server.Store.Components;
 using Content.Shared.Actions;
 using Content.Shared.Database;
 using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
-using Content.Shared.Heretic;
-using Content.Shared.Heretic.Prototypes;
 using Content.Shared.Mind;
+using Content.Shared.PDA.Ringer;
 using Content.Shared.Store;
 using Content.Shared.Store.Components;
 using Content.Shared.UserInterface;
@@ -19,6 +16,10 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Content.Server.Heretic.EntitySystems; // imp
+using Content.Shared.Heretic; // imp
+using Content.Shared.Heretic.Prototypes; // imp
+using Content.Shared.Roles.Components; // imp
 
 namespace Content.Server.Store.Systems;
 
@@ -150,9 +151,9 @@ public sealed partial class StoreSystem
             return;
 
         //condition checking because why not
-        if (listing.Conditions != null)
+        if (listing.Conditions != null && !component.PassAllConditions) // imp edit, add "&& !component.PassAllConditions"
         {
-            var args = new ListingConditionArgs(component.AccountOwner ?? buyer, uid, listing, EntityManager);
+            var args = new ListingConditionArgs(component.AccountOwner ?? GetBuyerMind(buyer), uid, listing, EntityManager);
             var conditionsMet = listing.Conditions.All(condition => condition.Condition(args));
 
             if (!conditionsMet)
@@ -170,7 +171,7 @@ public sealed partial class StoreSystem
         }
 
         if (!IsOnStartingMap(uid, component))
-            component.RefundAllowed = false;
+            DisableRefund(buyer, uid, component); // imp buyer
 
         //subtract the cash
         foreach (var (currency, amount) in cost)
@@ -218,7 +219,7 @@ public sealed partial class StoreSystem
             EntityUid? actionId;
             // I guess we just allow duplicate actions?
             // Allow duplicate actions and just have a single list buy for the buy-once ones.
-            if (!_mind.TryGetMind(buyer, out var mind, out _))
+            if (listing.ApplyToMob || !_mind.TryGetMind(buyer, out var mind, out _))
                 actionId = _actions.AddAction(buyer, listing.ProductAction);
             else
                 actionId = _actionContainer.AddAction(mind, listing.ProductAction);
@@ -282,6 +283,49 @@ public sealed partial class StoreSystem
             LogImpact.Low,
             $"{ToPrettyString(buyer):player} purchased listing \"{ListingLocalisationHelpers.GetLocalisedNameOrEntityName(listing, _proto)}\" from {ToPrettyString(uid)}");
 
+        //imp edit - add a record of this purchase to the mind that bought this item
+        if (_mind.TryGetMind(buyer, out _, out var mindComp))
+        {
+            //get the currency that makes up most of the listing's base cost
+            //uses base cost for consistency reasons
+            //has the side effect of not tracking things that are free
+            //not sure if I want that to happen tbh? though for now all it misses is the business cards, which don't really matter w/r/t tc spend
+            ProtoId<CurrencyPrototype>? primaryCurrency = null;
+            var primaryCurrencyCost = 0;
+            foreach (var (currency, amount) in listing.OriginalCost)
+            {
+                if (primaryCurrencyCost < amount.Int()) //this assumes that the costs will be in order of priority, not great but it works:tm:
+                {
+                    primaryCurrencyCost = amount.Int();
+                    primaryCurrency = currency;
+                }
+            }
+
+            //get the role that "purchased" this item by primary currency & purchase priority.
+            var purchasePriority = -1;
+            MindRoleComponent? purchaserComp = null;
+            foreach (var mindRole in mindComp.MindRoleContainer.ContainedEntities) //go over all of the player's mindRoles
+            {
+                foreach (var roleComp in AllComps<MindRoleComponent>(mindRole)) //go over all of their mindRole components
+                {
+                    if (roleComp.PrimaryCurrency == null)
+                        continue;
+                    if (roleComp.PrimaryCurrency == primaryCurrency && roleComp.PurchasePriority >= purchasePriority) //if the primary currencies match & thw new role has a higher priority, replace the old role with the new one
+                    {
+                        purchasePriority = roleComp.PurchasePriority;
+                        purchaserComp = roleComp;
+                    }
+                }
+            }
+
+            //get the name for the thing that was purchased
+            var productIdentifier = listing.Name ?? listing.ID;
+
+            //finally, add it to the list of purchases
+            purchaserComp?.Purchases.Add((productIdentifier, listing.Cost));
+        }
+        //imp edit end
+
         listing.PurchaseAmount++; //track how many times something has been purchased
         _audio.PlayEntity(component.BuySuccessSound, msg.Actor, uid); //cha-ching!
 
@@ -329,7 +373,7 @@ public sealed partial class StoreSystem
         {
             var cashId = proto.Cash[value];
             var amountToSpawn = (int) MathF.Floor((float) (amountRemaining / value));
-            var ents = _stack.SpawnMultiple(cashId, amountToSpawn, coordinates);
+            var ents = _stack.SpawnMultipleAtPosition(cashId, amountToSpawn, coordinates);
             if (ents.FirstOrDefault() is {} ent)
                 _hands.PickupOrDrop(buyer, ent);
             amountRemaining -= value * amountToSpawn;
@@ -348,7 +392,7 @@ public sealed partial class StoreSystem
 
         if (!IsOnStartingMap(uid, component))
         {
-            component.RefundAllowed = false;
+            DisableRefund(buyer, uid, component); // imp buyer
             UpdateUserInterface(buyer, uid, component);
         }
 
@@ -366,12 +410,9 @@ public sealed partial class StoreSystem
 
             component.BoughtEntities.RemoveAt(i);
 
-            if (_actions.TryGetActionData(purchase, out var actionComponent, logError: false))
-            {
-                _actionContainer.RemoveAction(purchase, actionComponent);
-            }
+            _actionContainer.RemoveAction(purchase, logMissing: false);
 
-            EntityManager.DeleteEntity(purchase);
+            Del(purchase);
         }
 
         component.BoughtEntities.Clear();
@@ -386,8 +427,10 @@ public sealed partial class StoreSystem
         component.BalanceSpent = new();
         UpdateUserInterface(buyer, uid, component);
 
+        // imp start
         var ev = new StoreRefundedEvent();
         RaiseLocalEvent(uid, ref ev, true);
+        // imp end
     }
 
     private void HandleRefundComp(EntityUid uid, StoreComponent component, EntityUid purchase)
@@ -395,6 +438,7 @@ public sealed partial class StoreSystem
         component.BoughtEntities.Add(purchase);
         var refundComp = EnsureComp<StoreRefundComponent>(purchase);
         refundComp.StoreEntity = uid;
+        refundComp.BoughtTime = _timing.CurTime;
     }
 
     private bool IsOnStartingMap(EntityUid store, StoreComponent component)
@@ -403,6 +447,7 @@ public sealed partial class StoreSystem
         return component.StartingMap == xform.MapUid;
     }
 
+    // imp add
     /// <summary>
     ///     Enables refunds for this store
     /// </summary>
@@ -419,14 +464,14 @@ public sealed partial class StoreSystem
     /// <summary>
     ///     Disables refunds for this store
     /// </summary>
-    public void DisableRefund(EntityUid buyer, EntityUid store, StoreComponent? component = null)
+    public void DisableRefund(EntityUid buyer, EntityUid store, StoreComponent? component = null) // imp add buyer
     {
         if (!Resolve(store, ref component))
             return;
 
         component.RefundAllowed = false;
 
-        UpdateUserInterface(buyer, store, component);
+        UpdateUserInterface(buyer, store, component); // imp add
     }
 }
 

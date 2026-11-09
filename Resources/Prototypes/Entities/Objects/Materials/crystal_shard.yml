@@ -10,7 +10,7 @@
     doAfterDuration: 4.0
   - type: Sprite
     layers:
-      - sprite: Objects/Materials/Shards/crystal.rsi
+      - sprite: _Impstation/Materials/crystal.rsi # imp
         state: shard1
         map: [ "enum.DamageStateVisualLayers.Base" ]
   - type: RandomSprite
@@ -19,6 +19,8 @@
           shard1: ""
           shard2: ""
           shard3: ""
+          shard4: "" # imp
+          shard5: "" # imp
   - type: SpaceGarbage
   - type: MeleeWeapon
     wideAnimationRotation: -22.5
@@ -56,6 +58,7 @@
     tags:
       - Trash
       - CrystalCyan
+      - Crystal #imp
 
 - type: entity
   parent: ShardCrystalBase
@@ -72,6 +75,24 @@
     tags:
       - Trash
       - CrystalBlue
+      - Crystal #imp
+
+- type: entity
+  parent: ShardCrystalBase
+  name: yellow crystal shard
+  id: ShardCrystalYellow
+  components:
+  - type: Sprite
+    color: "#ffde46"
+  - type: PointLight
+    radius: 2
+    energy: 2.5
+    color: "#ffde46"
+  - type: Tag
+    tags:
+      - Trash
+      - CrystalYellow
+      - Crystal #imp
 
 - type: entity
   parent: ShardCrystalBase
@@ -88,6 +109,24 @@
     tags:
       - Trash
       - CrystalOrange
+      - Crystal #imp
+
+- type: entity
+  parent: ShardCrystalBase
+  name: black crystal shard
+  id: ShardCrystalBlack
+  components:
+  - type: Sprite
+    color: "#363636"
+  - type: PointLight
+    radius: 2
+    energy: 2.5
+    color: "#363636"
+  - type: Tag
+    tags:
+      - Trash
+      - CrystalBlack
+      - Crystal #imp
 
 - type: entity
   parent: ShardCrystalBase
@@ -104,6 +143,7 @@
     tags:
       - Trash
       - CrystalPink
+      - Crystal #imp
 
 - type: entity
   parent: ShardCrystalBase
@@ -120,6 +160,7 @@
     tags:
       - Trash
       - CrystalGreen
+      - Crystal #imp
 
 - type: entity
   parent: ShardCrystalBase
@@ -136,18 +177,22 @@
     tags:
       - Trash
       - CrystalRed
+      - Crystal #imp
 
 - type: entity
   parent: ShardCrystalBase
   id: ShardCrystalRandom
   name: random crystal shard
   components:
-  - type: RandomSpawner
-    prototypes:
-      - ShardCrystalGreen
-      - ShardCrystalPink
-      - ShardCrystalOrange
-      - ShardCrystalBlue
-      - ShardCrystalCyan
-      - ShardCrystalRed
-    chance: 1
+  - type: EntityTableSpawner
+    table: !type:GroupSelector
+      children:
+      - id: ShardCrystalGreen
+      - id: ShardCrystalPink
+      - id: ShardCrystalYellow
+      - id: ShardCrystalBlack
+      - id: ShardCrystalOrange
+      - id: ShardCrystalBlue
+      - id: ShardCrystalCyan
+      - id: ShardCrystalRed
+      - id: ShardCrystalPurple # imp

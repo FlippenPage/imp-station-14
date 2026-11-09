@@ -1,10 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Players;
 using Content.Shared.Players.PlayTimeTracking;
+using Content.Shared.Roles.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Mind; // imp heretic
 
 namespace Content.Shared.Roles.Jobs;
 
@@ -16,6 +18,7 @@ public abstract class SharedJobSystem : EntitySystem
     [Dependency] private readonly SharedPlayerSystem _playerSystem = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
     [Dependency] private readonly SharedRoleSystem _roles = default!;
+    [Dependency] private readonly SharedMindSystem _mindSystem = default!; // imp
 
     private readonly Dictionary<string, string> _inverseTrackerLookup = new();
 
@@ -41,6 +44,13 @@ public abstract class SharedJobSystem : EntitySystem
         {
             _inverseTrackerLookup.Add(job.PlayTimeTracker, job.ID);
         }
+        // imp
+        foreach (var antag in _prototypes.EnumeratePrototypes<AntagPrototype>())
+        {
+            if (antag.PlayTimeTracker != string.Empty)
+                _inverseTrackerLookup.Add(antag.PlayTimeTracker, antag.ID);
+        }
+        // end imp
     }
 
     /// <summary>
@@ -100,6 +110,95 @@ public abstract class SharedJobSystem : EntitySystem
         return false;
     }
 
+    //imp addition
+    public bool MindsHaveSameJobDept(EntityUid entID1, EntityUid entID2)
+    {
+        if (!_mindSystem.TryGetMind(entID1, out var mindId1, out _))
+        {
+            Log.Debug($"trygetmind for entid 1 {ToPrettyString(entID1)}  - failed, no Mind found");
+            return false;
+        }
+        if (!_mindSystem.TryGetMind(entID2, out var mindId2, out _))
+        {
+            Log.Debug($"trygetmind for entid 2 {ToPrettyString(entID1)}  - failed, no Mind found");
+            return false;
+        }
+        MindTryGetJob(mindId1, out var job1);
+        MindTryGetJob(mindId2, out var job2);
+        return JobsHaveSameDept(job1, job2);
+    }
+
+    public bool JobsHaveSameDept(JobPrototype? job1, JobPrototype? job2)
+    {
+        if (job1 == null || job2 == null)
+            return false;
+        TryGetPrimaryDepartment(job1.ID, out var dept1);
+        TryGetPrimaryDepartment(job2.ID, out var dept2);
+        if (dept1 == null || dept2 == null)
+            return false;
+        return (dept1.Equals(dept2));
+    }
+
+    public bool MindHasJobDept(EntityUid entID, JobPrototype? givenJob)
+    {
+        if (!_mindSystem.TryGetMind(entID, out var mindId, out _))
+        {
+            Log.Debug($"trygetmind for entid{ToPrettyString(entID)}  - failed, no Mind found");
+            return false;
+        }
+
+        if (!MindTryGetJob(mindId, out var mindJob))
+            return false;
+        if (mindJob == null || givenJob == null)
+            return false;
+        TryGetPrimaryDepartment(mindJob.ID, out var dept1);
+        TryGetPrimaryDepartment(givenJob.ID, out var dept2);
+        if (dept1 == null || dept2 == null)
+            return false;
+        return (dept1.Equals(dept2));
+    }
+
+    //end imp additions
+
+    /// <summary>
+    /// Tries to get all the departments for a given job. Will return an empty list if none are found.
+    /// </summary>
+    public bool TryGetAllDepartments(string jobProto, out List<DepartmentPrototype> departmentPrototypes)
+    {
+        // not sorting it since there should only be 1 primary department for a job.
+        // this is enforced by the job tests.
+        var departmentProtos = _prototypes.EnumeratePrototypes<DepartmentPrototype>();
+        departmentPrototypes = new List<DepartmentPrototype>();
+        var found = false;
+
+        foreach (var department in departmentProtos)
+        {
+            if (department.Roles.Contains(jobProto))
+            {
+                departmentPrototypes.Add(department);
+                found = true;
+            }
+        }
+
+        return found;
+    }
+
+    /// <summary>
+    /// Try to get the lowest weighted department for the given job. If the job has no departments will return null.
+    /// </summary>
+    public bool TryGetLowestWeightDepartment(string jobProto, [NotNullWhen(true)] out DepartmentPrototype? departmentPrototype)
+    {
+        departmentPrototype = null;
+
+        if (!TryGetAllDepartments(jobProto, out var departmentPrototypes) || departmentPrototypes.Count == 0)
+            return false;
+
+        departmentPrototypes.Sort((x, y) => y.Weight.CompareTo(x.Weight));
+
+        departmentPrototype = departmentPrototypes[0];
+        return true;
+    }
+
     public bool MindHasJobWithId(EntityUid? mindId, string prototypeId)
     {
 
@@ -121,7 +220,7 @@ public abstract class SharedJobSystem : EntitySystem
         prototype = null;
         MindTryGetJobId(mindId, out var protoId);
 
-        return _prototypes.TryIndex(protoId, out prototype) || prototype is not null;
+        return _prototypes.Resolve(protoId, out prototype) || prototype is not null;
     }
 
     public bool MindTryGetJobId(

@@ -7,6 +7,8 @@ paper-ui-blank-page-message = This page intentionally left blank
 paper-component-examine-detail-has-words = {CAPITALIZE(THE($paper))} has something written on it.
 # Shown when paper with stamps examined
 paper-component-examine-detail-stamped-by = {CAPITALIZE(THE($paper))} {CONJUGATE-HAVE($paper)} been stamped by: {$stamps}.
+paper-component-illiterate = You are unable to write.
+paper-component-illiterate-mime = Your vow forbids you from writing.
 
 paper-component-action-stamp-paper-other = {CAPITALIZE(THE($user))} stamps {THE($target)} with {THE($stamp)}.
 paper-component-action-stamp-paper-self = You stamp {THE($target)} with {THE($stamp)}.
@@ -17,3 +19,7 @@ paper-ui-fill-level = {$currentLength}/{$maxLength}
 paper-ui-save-button = Save ({$keybind})
 
 paper-tamper-proof-modified-message = This page was written using tamper-proof ink.
+
+### IMP
+paper-component-action-stamp-paper-other-isstamp = {CAPITALIZE(THE($user))} stamps {THE($target)}.
+paper-component-action-stamp-paper-self-isstamp = You stamp {THE($target)}.

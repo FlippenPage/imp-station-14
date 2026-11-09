@@ -6,7 +6,7 @@
       requirement:
         !type:DepartmentTimeRequirement
         department: Science
-        time: 36000 #10 hrs
+        time: 10h
 
 # Jumpsuit
 - type: loadout
@@ -16,3 +16,26 @@
     proto: Science10hr
   equipment:
     jumpsuit: ClothingUniformSpaceJumpsuitScientist
+
+- type: loadout
+  id: ScientistJumpsuitFormal
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitScientistFormal
+
+# Outer Clothing
+- type: loadout
+  id: BomberScience
+  equipment:
+    outerClothing: ClothingOuterCoatBomberScience
+
+# Shoes
+- type: loadout
+  id: RoboticistWinterBoots
+  equipment:
+    shoes: ClothingShoesBootsWinterRobo
+
+# ID
+- type: loadout
+  id: RoboticistPDA
+  equipment:
+    id: RoboticsPDA

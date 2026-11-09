@@ -3,6 +3,7 @@ using Content.Shared.Dataset;
 using Content.Shared.Heretic;
 using Content.Shared.Heretic.Prototypes;
 using Content.Shared.Tag;
+using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using System.Text;
@@ -19,6 +20,8 @@ public sealed partial class RitualKnowledgeBehavior : RitualCustomBehavior
     private IRobustRandom _rand = default!;
     private EntityLookupSystem _lookup = default!;
     private HereticSystem _heretic = default!;
+    private SharedContainerSystem _container = default!;
+
 
     [ValidatePrototypeId<DatasetPrototype>]
     public const string EligibleTagsDataset = "EligibleTags";
@@ -26,10 +29,12 @@ public sealed partial class RitualKnowledgeBehavior : RitualCustomBehavior
     // this is basically a ripoff from hereticritualsystem
     public override bool Execute(RitualData args, out string? outstr)
     {
+        //this isn't a system or a component so we gotta get a little shitcodey with it
         _prot = IoCManager.Resolve<IPrototypeManager>();
         _rand = IoCManager.Resolve<IRobustRandom>();
         _lookup = args.EntityManager.System<EntityLookupSystem>();
         _heretic = args.EntityManager.System<HereticSystem>();
+        _container = args.EntityManager.System<SharedContainerSystem>();
 
         outstr = null;
 
@@ -45,7 +50,9 @@ public sealed partial class RitualKnowledgeBehavior : RitualCustomBehavior
         {
             foreach (var tag in requiredTags)
             {
-                if (!args.EntityManager.TryGetComponent<TagComponent>(look, out var tags))
+                //WHY DID THEY JUST COPY-PASTE THE NORMAL RITUAL CODE. JUST USE THE NORMAL RITUAL CODE I AM BEGGING
+                if (!args.EntityManager.TryGetComponent<TagComponent>(look, out var tags)
+                    || _container.IsEntityInContainer(look))
                     continue;
                 var ltags = tags.Tags;
 

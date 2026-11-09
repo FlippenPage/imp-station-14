@@ -1,15 +1,16 @@
-using Content.Shared.Heretic.Prototypes;
-using Content.Shared.Changeling;
-using Content.Shared.Mobs.Components;
-using Robust.Shared.Prototypes;
-using Content.Shared.Humanoid;
-using Content.Server.Revolutionary.Components;
-using Content.Server.Objectives.Components;
-using Content.Shared.Mind;
-using Content.Shared.Damage;
-using Content.Shared.Damage.Prototypes;
-using Content.Shared.Heretic;
 using Content.Server.Heretic.EntitySystems;
+using Content.Server.Objectives.Components;
+using Content.Server.Revolutionary.Components;
+using Content.Shared._Impstation.Heretic;
+using Content.Shared._Impstation.Heretic.Components;
+using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
+using Content.Shared.Heretic;
+using Content.Shared.Heretic.Prototypes;
+using Content.Shared.Humanoid;
+using Content.Shared.Mind;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Components;
 
 namespace Content.Server.Heretic.Ritual;
 
@@ -18,7 +19,9 @@ namespace Content.Server.Heretic.Ritual;
 ///     gibs it and gives the heretic knowledge points.
 /// </summary>
 // these classes should be lead out and shot
-[Virtual] public partial class RitualSacrificeBehavior : RitualCustomBehavior
+
+[Virtual]
+public partial class RitualSacrificeBehavior : RitualCustomBehavior
 {
     /// <summary>
     ///     Minimal amount of corpses.
@@ -31,35 +34,58 @@ namespace Content.Server.Heretic.Ritual;
     [DataField] public float Max = 1;
 
     /// <summary>
-    ///     Should we count only targets?
+    ///     Points gained on sacrificing a normal crewmember.
     /// </summary>
-    [DataField] public bool OnlyTargets = false;
+    [DataField] public float SacrificePoints = 2f;
+
+    /// <summary>
+    ///     Points gained on sacrificing a command member.
+    /// </summary>
+    [DataField] public float CommandSacrificePoints = 3f;
+
+    /// <summary>
+    /// The type of damage to do to victims who aren't already dead.
+    /// </summary>
+    [DataField]
+    public DamageSpecifier SacDamage = new()
+    {
+        DamageDict = new()
+        {
+            {"Asphyxiation", 100},
+        }
+    };
 
     // this is awful but it works so i'm not complaining
-    protected SharedMindSystem _mind = default!;
-    protected HereticSystem _heretic = default!;
-    protected DamageableSystem _damage = default!;
-    protected EntityLookupSystem _lookup = default!;
-    [Dependency] protected IPrototypeManager _proto = default!;
+    // i'm complaining -kandiyaki
+    // IM ALSO COMPLAINING -mq
+    // im mad. -honeyed
+    private EntityLookupSystem _lookup = default!;
+    private HereticSystem _heretic = default!;
+    private SharedMindSystem _mind = default!;
+    private DamageableSystem _dmg = default!;
 
-    protected List<EntityUid> uids = new();
+
+    protected List<EntityUid> Uids = [];
 
     public override bool Execute(RitualData args, out string? outstr)
     {
-        _mind = args.EntityManager.System<SharedMindSystem>();
+        // this fucking sucks -mq
+        // why is this like this -honeyed
         _heretic = args.EntityManager.System<HereticSystem>();
-        _damage = args.EntityManager.System<DamageableSystem>();
         _lookup = args.EntityManager.System<EntityLookupSystem>();
-        _proto = IoCManager.Resolve<IPrototypeManager>();
+        _mind = args.EntityManager.System<SharedMindSystem>();
+        _dmg = args.EntityManager.System<DamageableSystem>();
 
-        if (!args.EntityManager.TryGetComponent<HereticComponent>(args.Performer, out var hereticComp))
+        //if the performer isn't a heretic, stop
+        if (!args.EntityManager.TryGetComponent<HereticComponent>(args.Performer, out _))
         {
             outstr = string.Empty;
             return false;
         }
 
+        //get all entities in range of the circle
         var lookup = _lookup.GetEntitiesInRange(args.Platform, .75f);
-        if (lookup.Count == 0 || lookup == null)
+        if (lookup.Count == 0)
         {
             outstr = Loc.GetString("heretic-ritual-fail-sacrifice");
             return false;
@@ -69,15 +95,22 @@ namespace Content.Server.Heretic.Ritual;
         foreach (var look in lookup)
         {
             if (!args.EntityManager.TryGetComponent<MobStateComponent>(look, out var mobstate) // only mobs
-            || !args.EntityManager.HasComponent<HumanoidAppearanceComponent>(look) // only humans
-            || (OnlyTargets && !hereticComp.SacrificeTargets.Contains(args.EntityManager.GetNetEntity(look)))) // only targets
+            || !args.EntityManager.HasComponent<HumanoidAppearanceComponent>(look) //player races only
+            || args.EntityManager.HasComponent<NoSacrificeComponent>(look) //no reusing corpses
+            || args.EntityManager.HasComponent<GhoulComponent>(look)) //shouldn't happen because they gib on death but. sanity check
                 continue;
 
-            if (mobstate.CurrentState == Shared.Mobs.MobState.Dead)
-                uids.Add(look);
+            if (mobstate.CurrentState != MobState.Alive)
+                Uids.Add(look);
+
+            if (mobstate.CurrentState == MobState.Critical) //if still alive, do enough damage to kill
+            {
+                _dmg.TryChangeDamage(look, SacDamage, true, origin: args.Performer);
+            }
         }
 
-        if (uids.Count < Min)
+        //if none are dead, say so
+        if (Uids.Count < Min)
         {
             outstr = Loc.GetString("heretic-ritual-fail-sacrifice-ineligible");
             return false;
@@ -89,19 +122,21 @@ namespace Content.Server.Heretic.Ritual;
 
     public override void Finalize(RitualData args)
     {
-        for (int i = 0; i < Max; i++)
+
+        for (var i = 0; i < Max; i++)
         {
-            var isCommand = args.EntityManager.HasComponent<CommandStaffComponent>(uids[i]);
-            var knowledgeGain = isCommand ? 2f : 1f;
+            var isCommand = args.EntityManager.HasComponent<CommandStaffComponent>(Uids[i]);
+            var knowledgeGain = isCommand ? CommandSacrificePoints : SacrificePoints;
 
-            // YES!!! GIB!!!
-            if (args.EntityManager.TryGetComponent<DamageableComponent>(uids[i], out var dmg))
-            {
-                var prot = (ProtoId<DamageGroupPrototype>) "Brute";
-                var dmgtype = _proto.Index(prot);
-                _damage.TryChangeDamage(uids[i], new DamageSpecifier(dmgtype, 1984f), true);
-            }
+            //add the component to track the hell adventure
+            args.EntityManager.AddComponent<InHellComponent>(Uids[i]);
 
+            //make a hell event and send it
+            //idk why i split these up but i'll probably thank myself for it later
+            args.EntityManager.EventBus.RaiseLocalEvent(Uids[i], new HereticBeforeHellEvent());
+            args.EntityManager.EventBus.RaiseLocalEvent(Uids[i], new HereticSendToHellEvent());
+
+            //update the heretic's knowledge
             if (args.EntityManager.TryGetComponent<HereticComponent>(args.Performer, out var hereticComp))
                 _heretic.UpdateKnowledge(args.Performer, hereticComp, knowledgeGain);
 
@@ -119,9 +154,8 @@ namespace Content.Server.Heretic.Ritual;
                     crewHeadObjComp.Sacrificed += 1;
             }
         }
-
         // reset it because it refuses to work otherwise.
-        uids = new();
+        Uids = [];
         args.EntityManager.EventBus.RaiseLocalEvent(args.Performer, new EventHereticUpdateTargets());
     }
 }

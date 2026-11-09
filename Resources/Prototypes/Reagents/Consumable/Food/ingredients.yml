@@ -78,6 +78,14 @@
       - !type:AdjustReagent
         reagent: UncookedAnimalProteins
         amount: 0.5
+      # imp edit start
+      - !type:AdjustReagent
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Kodepiia ]
+        reagent: UncookedAnimalProteins
+        amount: 1
+      # imp edit end
 
 - type: reagent
   id: EggCooked
@@ -94,6 +102,12 @@
       - !type:AdjustReagent
         reagent: Protein
         amount: 1
+        # imp edit start
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Kodepiia ]
+          inverted: true
+        # imp edit end
 
 - type: reagent
   id: Blackpepper
@@ -109,14 +123,20 @@
       effects:
       - !type:Emote
         emote: Cough
-        probability: 0.7
+        showInChat: true
+        showInGuidebook: true
+        probability: 0.05
   reactiveEffects:
     Acidic:
       methods: [ Touch ]
       effects:
       - !type:Emote
         emote: Cough
-        force: true
+        showInGuidebook: true
+        conditions:
+        - !type:BreathingCondition
+        - !type:InternalsCondition
+          inverted: true
 
 - type: reagent
   id: Vinegar
@@ -136,10 +156,11 @@
       - !type:AdjustReagent
         reagent: Vitamin
         amount: 0.1
-      - !type:ChemVomit
+      - !type:Vomit
         probability: 0.1
         conditions:
-          - !type:ReagentThreshold
+          - !type:ReagentCondition
+            reagent: Vinegar
             min: 6
 
 - type: reagent
@@ -217,7 +238,8 @@
           amount: 250 # thermal energy, not temp
         - !type:HealthChange
           conditions:
-            - !type:ReagentThreshold
+            - !type:ReagentCondition
+              reagent: CapsaicinOil
               min: 5
           damage:
             types:
@@ -241,10 +263,17 @@
       effects:
       - !type:SatiateHunger
         conditions:
-        - !type:ReagentThreshold #Only satiates when eaten with nutriment
+        - !type:ReagentCondition #Only satiates when eaten with nutriment
           reagent: Nutriment
           min: 0.1
+        # imp edit start
+        - !type:MetabolizerTypeCondition
+          type: [ Kodepiia ]
+          inverted: true
+        # imp edit end
         factor: 1
+
+
   plantMetabolism:
   - !type:PlantAdjustNutrition
     amount: 0.1
@@ -287,3 +316,34 @@
       - !type:AdjustReagent
         reagent: Nutriment
         amount: 0.1
+
+- type: reagent
+  id: FrostOil
+  name: reagent-name-frost-oil
+  group: Foods
+  desc: reagent-desc-frost-oil
+  physicalDesc: reagent-physical-desc-oily
+  flavor: cold
+  color: skyblue
+  metabolisms:
+    Food:
+      effects:
+      - !type:AdjustReagent
+        reagent: Nutriment #Oils enhance nutrition
+        amount: 0.75
+    Poison:
+      effects:
+      - !type:AdjustTemperature
+        amount: -250 # thermal energy, not temp
+      - !type:HealthChange
+        conditions:
+        - !type:ReagentCondition
+          reagent: FrostOil
+          min: 5
+        damage:
+          types:
+            Cold: 1
+      - !type:PopupMessage
+        type: Local
+        messages: [ "frost-oil-effect-light-cold" ]
+        probability: 0.2

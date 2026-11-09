@@ -1,17 +1,16 @@
-﻿using System.Linq;
-using Content.Server.GameTicking.Rules.Components;
+﻿using Content.Server.GameTicking.Rules.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Station.Components;
 using Content.Server.Station.Events;
 using Content.Shared.GameTicking.Components;
+using Content.Shared.Station.Components;
 using Content.Shared.Storage;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Server.GameTicking.Rules;
 
 /// <inheritdoc cref="RoundstartStationVariationRuleComponent"/>
-public sealed class RoundstartStationVariationRuleSystem : GameRuleSystem<RoundstartStationVariationRuleComponent>
+public sealed partial class RoundstartStationVariationRuleSystem : GameRuleSystem<RoundstartStationVariationRuleComponent> // Imp, partial
 {
     [Dependency] private readonly IRobustRandom _random = default!;
 
@@ -20,6 +19,7 @@ public sealed class RoundstartStationVariationRuleSystem : GameRuleSystem<Rounds
         base.Initialize();
 
         SubscribeLocalEvent<StationPostInitEvent>(OnStationPostInit, after: new []{typeof(ShuttleSystem)});
+        SubscribeLocalEvent<RulePlayerJobsAssignedEvent>(OnPlayersSpawned); // Imp
     }
 
     protected override void Added(EntityUid uid, RoundstartStationVariationRuleComponent component, GameRuleComponent gameRule, GameRuleAddedEvent args)

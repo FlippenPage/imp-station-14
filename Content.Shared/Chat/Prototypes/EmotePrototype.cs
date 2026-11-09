@@ -9,7 +9,7 @@ namespace Content.Shared.Chat.Prototypes;
 ///     IC emotes (scream, smile, clapping, etc).
 ///     Entities can activate emotes by chat input, radial or code.
 /// </summary>
-[Prototype("emote")]
+[Prototype]
 public sealed partial class EmotePrototype : IPrototype
 {
     [IdDataField]
@@ -40,7 +40,7 @@ public sealed partial class EmotePrototype : IPrototype
     ///     An icon used to visually represent the emote in radial UI.
     /// </summary>
     [DataField]
-    public SpriteSpecifier Icon = new SpriteSpecifier.Texture(new("/Textures/Interface/Actions/scream.png"));
+    public SpriteSpecifier Icon = new SpriteSpecifier.Texture(new("/Textures/_Impstation/Interface/Emotes/general.png")); // imp edit - changed the fallback emote icon
 
     /// <summary>
     ///     Determines conditions to this emote be available to use
@@ -72,6 +72,10 @@ public sealed partial class EmotePrototype : IPrototype
     // goob edit - animations
     [DataField]
     public object? Event = null;
+
+    //imp edit - for targeted emotes e.g. "x looks at y"
+    [DataField]
+    public bool Targeted = false;
 }
 
 /// <summary>
@@ -85,5 +89,6 @@ public enum EmoteCategory : byte
     Invalid = 0,
     Vocal = 1 << 0,
     Hands = 1 << 1,
+    Targeted = 1 << 2, //imp edit - for pointing, looking, waving, etc
     General = byte.MaxValue
 }

@@ -1,0 +1,135 @@
+- type: entity
+  parent: ClothingBackpackDuffelSyndicateBundle
+  id: ClothingBackpackDuffelSyndicateFilledAkurra
+  name: Akurra bundle
+  description: "A fearsome liquid-ammo plasma rifle, bundled with 4 canisters of its proprietary fuel."
+  suffix: Akurra bundle
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: WeaponPlasmaAkurra
+        - id: EchionCanister
+          amount: 4
+
+- type: entity
+  parent: ClothingBackpackDuffelDeadlyBundle
+  id: ClothingBackpackDuffelDeadlyFilledClubPack
+  name: Deadly Dan's ValuShot club bundle
+  description: "A real bargain! 14 guns for the price of 10!"
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: CigPackMixed
+        - id: CheapLighter
+        - !type:GroupSelector
+          children:
+          - id: WeaponPistolValu
+            amount: 14
+            weight: 90
+          - id: WeaponPistolValuPlus
+            amount: 5
+            weight: 10
+
+- type: entity
+  parent: ClothingBackpackDuffelSyndicateBundle
+  id: ClothingBackpackDuffelSyndicateFilledBR
+  name: Basilisk-11 bundle
+  description: "Precise and deadly, just as a professional should be. Bundled with 3 magazines."
+  suffix: Basilisk-11 bundle
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: WeaponRifleNemesis
+        - id: MagazineBR
+          amount: 2
+
+- type: entity
+  parent: ClothingBackpackDuffelSyndicateBundle
+  id: ClothingBackpackDuffelSyndicateFilledBaseball
+  name: Syndi-Cats baseball uniform bundle
+  description: Go to bat for the winning team with this stylish uniform.
+  suffix: Syndi-Cats baseball bundle
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: ClothingHeadHatSyndieballsoft
+        - id: ClothingUniformJumpsuitBaseballSyndicate
+        - id: ClothingHandsGlovesColorWhite
+        - id: ClothingShoesBootsLaceup
+        - id: SyndieHandyFlag
+
+- type: entity
+  parent: ClothingBackpackDuffelSyndicateHardsuitBundle
+  id: ClothingBackpackDuffelSyndicateHardsuitBundleBlue
+  suffix: Blue
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: ClothingOuterHardsuitSyndieBlue
+        - !type:NestedSelector
+          tableId: SyndicateHardsuitExtrasEntityTable
+
+- type: entity
+  parent: ClothingBackpackDuffelSyndicateBundle
+  id: ClothingBackpackDuffelSyndicateFilledAnanke
+  name: Ananke bundle
+  description: "A deadly liquid-ammo plasma shotgun, bundled with 4 canisters of its proprietary fuel."
+  suffix: Ananke bundle
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: WeaponPlasmaAnanke
+        - id: EchionCanister
+          amount: 4
+
+- type: entity
+  parent: ClothingBackpackDuffelSyndicateBundle
+  id: ClothingBackpackDuffelSyndicateFilledGlykon
+  name: Glykon bundle
+  description: "A sophisticated liquid-ammo plasma sniper, bundled with 4 canisters of its proprietary fuel."
+  suffix: Glykon bundle
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: WeaponPlasmaGlykon
+        - id: EchionCanister
+          amount: 4
+
+- type: entity
+  parent: ClothingBackpackDuffelSyndicateBundle
+  id: ClothingBackpackDuffelSyndicateMurderSceneBundle
+  name: murder scene bundle
+  description: "Everything you need to make a convincing murder scene! Developed for Gorlex Public Relation Studios."
+  suffix: murder scene bundle
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: BalloonCrewSecurity
+        - id: BalloonCrewSalvage
+        - id: BalloonCrewCaptain
+        - id: BalloonCrewEmergency
+        - id: BalloonCrewParamedic
+        - id: BalloonCrewEngineer
+        - id: RedPaintBucket
+          amount: 2
+        - id: Casingsbag
+          amount: 2
+        - id: CombatKnife
+        - id: KitchenKnife
+        - id: SurvivalKnife

@@ -37,4 +37,8 @@ public sealed partial class DragonRiftComponent : SharedDragonRiftComponent
 
     [ViewVariables(VVAccess.ReadWrite), DataField("spawn", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
     public string SpawnPrototype = "MobCarpDragon";
+
+    // imp: dino wars
+    [ViewVariables(VVAccess.ReadWrite), DataField("announcement")]
+    public string Announcement = "carp-rift-warning";
 }

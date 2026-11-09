@@ -4,6 +4,7 @@ using Robust.Shared.Audio;
 namespace Content.Server.ImmovableRod;
 
 [RegisterComponent]
+[AutoGenerateComponentPause] // imp add
 public sealed partial class ImmovableRodComponent : Component
 {
     public int MobCount = 0;
@@ -49,4 +50,20 @@ public sealed partial class ImmovableRodComponent : Component
     /// </summary>
     [DataField]
     public DamageSpecifier? Damage;
+
+    // imp add start
+    /// <summary>
+    ///     The string used when the rod gibs a mob.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public LocId EviscerationPopup = "immovable-rod-penetrated-mob";
+
+    /// <summary>
+    ///     The time between gib popups
+    /// </summary>
+    public TimeSpan EviscerationPopupDelay = TimeSpan.FromMilliseconds(200);
+
+    [AutoPausedField]
+    public TimeSpan NextEviscerationPopup = new();
+    // imp add end
 }

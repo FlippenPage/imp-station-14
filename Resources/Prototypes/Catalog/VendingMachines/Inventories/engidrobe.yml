@@ -14,7 +14,12 @@
     ClothingHeadHatHardhatOrange: 3
     ClothingHeadsetEngineering: 3
     ClothingOuterWinterEngi: 2
+    ClothingOuterCoatBomberEngineer: 2 # imp
     ClothingNeckScarfStripedOrange: 3
+    ClothingNeckScarfStripedYellow: 3 # imp
     ClothingShoesBootsWinterEngi: 2
   contrabandInventory:
-    ClothingMaskClownEngineer: 1
+    ClothingMaskClownEngineer: 1 # imp
+    ClothingUniformCybersunHazard: 1 # DeltaV
+    ToyFigurineEngineer: 1
+    ToyFigurineChiefEngineer: 1

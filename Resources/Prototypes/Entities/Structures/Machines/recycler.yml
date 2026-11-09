@@ -84,6 +84,11 @@
       params:
         volume: -3
     cutOffSound: false
+    damage: # imp addition, damage to ungibbed mobs
+      types:
+        Piercing: 5
+        Blunt: 5
+        Slash: 5
   - type: MaterialStorage
     insertOnInteract: false
   - type: Conveyor
@@ -108,3 +113,10 @@
     interactFailureString: petting-failure-generic
     interactSuccessSound:
       path: /Audio/Items/drill_hit.ogg
+  - type: SpookySpeaker
+    speakChance: 0.1
+    cooldown: 120
+    messageSet: SpookySpeakerMessagesRecycler
+  - type: Speech
+    speechVerb: Robotic
+    speechSounds: SyndieBorg

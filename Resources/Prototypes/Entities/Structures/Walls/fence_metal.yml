@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   parent: BaseStructure
   id: BaseFenceMetal
   name: chain link fence
@@ -79,6 +79,8 @@
     cost: 2
     delay: 2
     fx: EffectRCDDeconstruct2
+  - type: AcousticData # VDS
+    absorption: 2
 
 - type: entity
   parent: BaseFenceMetal
@@ -324,9 +326,9 @@
     openingAnimationTime: 0
     closingAnimationTime: 0
     openSound:
-      path: /Audio/Effects/door_chainlink_open.ogg
+      collection: FenceRattle #Imp
     closeSound:
-      path: /Audio/Effects/door_chainlink_close.ogg
+      collection: FenceRattle #Imp
   - type: Construction
     graph: FenceMetal
     node: gate

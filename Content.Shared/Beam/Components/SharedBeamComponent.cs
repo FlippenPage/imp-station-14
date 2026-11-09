@@ -1,5 +1,6 @@
-﻿using Robust.Shared.Audio;
+using Robust.Shared.Audio;
 using Robust.Shared.Serialization;
+using Robust.Shared.Map; // imp
 
 namespace Content.Shared.Beam.Components;
 /// <summary>
@@ -44,6 +45,13 @@ public abstract partial class SharedBeamComponent : Component
     [ViewVariables(VVAccess.ReadWrite)]
     [DataField("sound")]
     public SoundSpecifier? Sound;
+
+    // imp
+    /// <summary>
+    /// Sound played upon creation
+    /// </summary>
+    [DataField, ViewVariables]
+    public bool AllowSpriteOverwrite = true;
 }
 
 /// <summary>
@@ -69,11 +77,19 @@ public sealed class CreateBeamSuccessEvent : EntityEventArgs
 {
     public readonly EntityUid User;
     public readonly EntityUid Target;
+    public readonly MapCoordinates Coordinates; // imp
 
     public CreateBeamSuccessEvent(EntityUid user, EntityUid target)
     {
         User = user;
         Target = target;
+    }
+
+    // imp add
+    public CreateBeamSuccessEvent(EntityUid user, MapCoordinates coordinates)
+    {
+        User = user;
+        Coordinates = coordinates;
     }
 }
 

@@ -10,6 +10,9 @@
   - type: Item
     sprite: Objects/Specific/Detective/evidence_marker.rsi
     size: Tiny
+  - type: Tag
+    tags:
+    - EvidenceMarker # Imp edit
 
 - type: entity
   parent: EvidenceMarker
@@ -76,15 +79,18 @@
 
 - type: entity
   name: evidence marker box
-  parent: BoxCardboard
+  parent: BoxBase # imp edit. entity is heavily edited
   id: BoxEvidenceMarkers
-  description: A pack of numbered yellow markers, useful for labeling evidence on a crime scene.
+  description: A small pack of numbered yellow markers, useful for labeling evidence on a crime scene. # Imp edit
   components:
-    - type: Item
-      shape:
-      - 0,0,1,1
-    - type: StorageFill
-      contents:
+  - type: Item
+    size: Tiny # Imp edit
+    shape:
+    - 0,0,0,1 # Imp edit (was 0,0,1,1)
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
         - id: EvidenceMarkerOne
         - id: EvidenceMarkerTwo
         - id: EvidenceMarkerThree
@@ -94,7 +100,15 @@
         - id: EvidenceMarkerSeven
         - id: EvidenceMarkerEight
         - id: EvidenceMarkerNine
-    - type: Sprite
-      layers:
-        - state: box_security
-        - state: evidence_markers
+  - type: Storage # Imp edit
+    maxItemSize: Small
+    grid:
+      - 0,0,2,2
+    whitelist:
+      tags:
+        - EvidenceMarker
+  - type: Sprite
+    sprite: _Impstation/Objects/Storage/boxes.rsi # Imp edit
+    layers:
+      - state: box_security_tiny # Imp edit
+      - state: evidence_markers

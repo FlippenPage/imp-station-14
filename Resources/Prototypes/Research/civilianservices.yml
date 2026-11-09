@@ -10,11 +10,10 @@
   tier: 1
   cost: 5000
   recipeUnlocks:
-  - BorgModuleGardening
-  - BorgModuleHarvesting
   - SeedExtractorMachineCircuitboard
   - HydroponicsTrayMachineCircuitboard
   - ReagentGrinderIndustrialMachineCircuitboard
+  - PlantAnalyzer # Frontier
 
 - type: technology
   id: CritterMechs
@@ -53,6 +52,7 @@
   - SurveillanceCameraMonitorCircuitboard
   - SurveillanceWirelessCameraMonitorCircuitboard
   - TelecomServerCircuitboard
+  - HolopadMachineCircuitboard
 
 - type: technology
   id: AdvancedEntertainment
@@ -69,18 +69,7 @@
     - DawInstrumentMachineCircuitboard
     - MassMediaCircuitboard
     - JukeboxCircuitBoard
-
-- type: technology
-  id: RoboticCleanliness
-  name: research-technology-robotic-cleanliness
-  icon:
-    sprite: Mobs/Silicon/chassis.rsi
-    state: janitor
-  discipline: CivilianServices
-  tier: 1
-  cost: 5000
-  recipeUnlocks:
-  - BorgModuleAdvancedCleaning
+    - CameraHandheld #Imp
 
 - type: technology
   id: MeatManipulation
@@ -95,6 +84,7 @@
   - FatExtractorMachineCircuitboard
   - BiofabricatorMachineCircuitboard
   - BiomassReclaimerMachineCircuitboard
+  - PortableIncubator # Imp
 
 # Tier 2
 
@@ -111,14 +101,22 @@
   - FauxTileAstroGrass
   - FauxTileMowedAstroGrass
   - FauxTileJungleAstroGrass
+  - FauxTileDarkAstroGrass
+  - FauxTileLightAstroGrass
   - FauxTileAstroIce
   - FauxTileAstroSnow
+  - FauxTileAstroAsteroidSand
+  - FauxTileDesertAstroSand
+  - FauxTileAstroIronsand
+  - FauxTileAstroIronsandBorderless
+  - FauxTileShoveledAstroSnow # imp
+  - FauxTileAstroCave # imp
 
 - type: technology
   id: BiochemicalStasis
   name: research-technology-biochemical-stasis
   icon:
-    sprite: Structures/Machines/stasis_bed.rsi
+    sprite: _Impstation/Structures/Machines/stasis_bed.rsi # imp
     state: icon
   discipline: CivilianServices
   tier: 2
@@ -129,7 +127,7 @@
   - CryostasisBeaker
   - SyringeCryostasis
 
-- type: technology
+- type: technology # Merge with other T2 medical research if possible!
   id: MechanizedTreatment
   name: research-technology-mechanized-treatment
   icon:
@@ -139,8 +137,8 @@
   tier: 2
   cost: 5000
   recipeUnlocks:
-  - BorgModuleAdvancedTreatment
-  - BorgModuleDefibrillator
+  - BorgModuleAdvancedTopical
+  - AdvancedJetInjector
 
 - type: technology
   id: AdvancedCleaning
@@ -154,7 +152,7 @@
   recipeUnlocks:
   - AdvMopItem
   - MegaSprayBottle
-  - CleanerGrenade #imp addition
+  - BorgModuleAdvancedCleaning
 
 - type: technology
   id: HONKMech
@@ -193,13 +191,26 @@
   id: BluespaceCargoTransport
   name: research-technology-bluespace-cargo-transport
   icon:
-    sprite: Structures/cargo_telepad.rsi
+    sprite: _Impstation/Structures/cargo_telepad.rsi #imp
     state: display
   discipline: CivilianServices
   tier: 2
   cost: 15000
   recipeUnlocks:
   - CargoTelepadMachineCircuitboard
+
+- type: technology
+  id: PushHorn
+  name: research-technology-clowning-utilities
+  icon:
+    sprite: Objects/Fun/push_horn.rsi
+    state: icon
+  discipline: CivilianServices
+  tier: 2
+  cost: 4000
+  recipeUnlocks:
+  - PushHorn
+  - BorgModuleAdvancedClowning
 
 # Tier 3
 
@@ -219,7 +230,7 @@
   id: BluespaceChemistry
   name: research-technology-bluespace-chemistry
   icon:
-    sprite: Objects/Specific/Chemistry/beaker_bluespace.rsi
+    sprite: _Impstation/Objects/Specific/Chemistry/beaker_bluespace.rsi # imp
     state: beakerbluespace
   discipline: CivilianServices
   tier: 3
@@ -227,3 +238,16 @@
   recipeUnlocks:
   - BluespaceBeaker
   - SyringeBluespace
+
+- type: technology
+  id: LauncherSyringe
+  name: research-technology-launcher-syringe
+  icon:
+    sprite: Objects/Weapons/Guns/Cannons/syringe_gun.rsi
+    state: syringe_gun
+  discipline: CivilianServices
+  tier: 3
+  cost: 15000
+  recipeUnlocks:
+  - LauncherSyringe
+  - MiniSyringe

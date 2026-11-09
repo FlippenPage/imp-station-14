@@ -71,17 +71,17 @@ public sealed partial class MaterialDisplay : PanelContainer
         if (!_canEject)
             return;
 
-        int[] sheetsToEjectArray = { 1, 5, 10 };
+        int[] sheetsToEjectArray = { 1, 5, 10, 30 }; //imp, added 30
 
         for (var i = 0; i < sheetsToEjectArray.Length; i++)
         {
             var sheetsToEject = sheetsToEjectArray[i];
 
-            var styleClass = StyleBase.ButtonOpenBoth;
+            var styleClass = StyleClass.ButtonOpenBoth;
             if (i == 0)
-                styleClass = StyleBase.ButtonOpenRight;
+                styleClass = StyleClass.ButtonOpenRight;
             else if (i == sheetsToEjectArray.Length - 1)
-                styleClass = StyleBase.ButtonOpenLeft;
+                styleClass = StyleClass.ButtonOpenLeft;
 
             var button = new Button
             {

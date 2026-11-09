@@ -6,14 +6,21 @@ using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
+using Robust.Client.UserInterface.RichText; // imp
 
 namespace Content.Client.Paper.UI;
 
 [GenerateTypedNameReferences]
 public sealed partial class StampWidget : PanelContainer
 {
-    private StyleBoxTexture _borderTexture;
+    private static readonly ProtoId<ShaderPrototype> PaperStamp = "PaperStamp";
+    private static readonly ProtoId<FontPrototype> DefaultFont = "Default"; // imp
+
+    private StyleBoxTexture? _borderTexture; //imp edit, nullable
     private ShaderInstance? _stampShader;
+
+    /// Imp edit, determines whether stamp noise is applied on the shader
+    public bool StampNoise = true;
 
     public float Orientation
     {
@@ -22,32 +29,81 @@ public sealed partial class StampWidget : PanelContainer
     }
 
     public StampDisplayInfo StampInfo {
-        set {
-            StampedByLabel.Text = Loc.GetString(value.StampedName);
-            StampedByLabel.FontColorOverride = value.StampedColor;
-            ModulateSelfOverride = value.StampedColor;
+        set
+        {
+            // pretty much this whole thing is an imp edit
+
+            var resCache = IoCManager.Resolve<IResourceCache>();
+            var prototypes = IoCManager.Resolve<IPrototypeManager>();
+            var icon = value.StampLargeIcon;
+            var hasIcon = value.HasIcon;
+
+            if (hasIcon)
+            {
+                var borderImage = resCache.GetResource<TextureResource>(
+                        "/Textures/Interface/Paper/paper_stamp_border.svg.96dpi.png");
+
+                if (icon != null)
+                {
+                    borderImage = resCache.GetResource<TextureResource>(
+                            "/Textures/_Impstation/Interface/Paper/Stamps/" + icon + ".png");
+
+                    // make stamps 50% larger to better match the original stamp sizes
+                    var width = (int)(borderImage.Texture.Width * 1.5);
+                    var height = (int)(borderImage.Texture.Height * 1.5);
+                    SetSize = new Vector2(width, height);
+                }
+
+                _borderTexture = new StyleBoxTexture { Texture = borderImage };
+                _borderTexture.SetPatchMargin(StyleBoxTexture.Margin.All, 7.0f);
+                PanelOverride = _borderTexture;
+            }
+            else
+            {
+                StampNoise = false;
+                StampedByLabel.StampNoise = false;
+            }
+
+            if (icon == null)
+            {
+                StampedByLabel.Text = Loc.GetString(value.StampedName);
+                StampedByLabel.FontColorOverride = value.StampedColor;
+                ModulateSelfOverride = value.StampedColor;
+
+                var font = prototypes.Index(DefaultFont);
+                if (value.StampFont != null && prototypes.TryIndex<FontPrototype>(value.StampFont, out var stampFont))
+                    font = stampFont;
+
+                StampedByLabel.FontOverride = new VectorFont(resCache.GetResource<FontResource>(font.Path), 40);
+            }
+
+            _stampShader = prototypes.Index(PaperStamp).InstanceUnique();
+            // imp end
         }
     }
 
     public StampWidget()
     {
         RobustXamlLoader.Load(this);
-        var resCache = IoCManager.Resolve<IResourceCache>();
-        var borderImage = resCache.GetResource<TextureResource>(
-                "/Textures/Interface/Paper/paper_stamp_border.svg.96dpi.png");
-        _borderTexture = new StyleBoxTexture {
-            Texture = borderImage,
-        };
-        _borderTexture.SetPatchMargin(StyleBoxTexture.Margin.All, 7.0f);
-        PanelOverride = _borderTexture;
+        // imp: commenting this all out
 
-        var prototypes = IoCManager.Resolve<IPrototypeManager>();
-        _stampShader = prototypes.Index<ShaderPrototype>("PaperStamp").InstanceUnique();
+        //var resCache = IoCManager.Resolve<IResourceCache>();
+        //        var borderImage = resCache.GetResource<TextureResource>(
+        //                "/Textures/Interface/Paper/paper_stamp_border.svg.96dpi.png");
+        //        _borderTexture = new StyleBoxTexture {
+        //            Texture = borderImage,
+        //        };
+        //        _borderTexture.SetPatchMargin(StyleBoxTexture.Margin.All, 7.0f);
+        //        PanelOverride = _borderTexture;
+        //
+        //        var prototypes = IoCManager.Resolve<IPrototypeManager>();
+        //        _stampShader = prototypes.Index(PaperStamp).InstanceUnique();
     }
 
     protected override void Draw(DrawingHandleScreen handle)
     {
         _stampShader?.SetParameter("objCoord", GlobalPosition * UIScale * new Vector2(1, -1));
+        _stampShader?.SetParameter("useStampNoise", StampNoise); // imp
         handle.UseShader(_stampShader);
         handle.SetTransform(GlobalPosition * UIScale, Orientation, Vector2.One);
         base.Draw(handle);

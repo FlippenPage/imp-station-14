@@ -8,29 +8,62 @@
     state: icon
   discipline: Arsenal
   tier: 1
-  cost: 10000
+  cost: 8000
   recipeUnlocks:
   - FullAutoConversionKit
   - HyperBurstConversionKit
-  - MagazineLPistolEmpty
-  - MagazineLPistol
-  - MagazineLPistolPractice
-  - MagazineBoxLPistol
-  - MagazineBoxLPistolPractice
-
-# Tier 2
+  - MagazinePistolP2Extended
+  - MagazinePistolP2ExtendedEmpty
+  - PowerCellBlasterMilitary
+  
+- type: technology
+  id: TranqDartResearch
+  name: research-technology-tranquilizer
+  icon:
+    sprite: _Impstation/Objects/Weapons/Guns/Snipers/tranqrifle.rsi
+    state: icon
+  discipline: Arsenal
+  tier: 1
+  cost: 6000
+  recipeUnlocks:
+  - WeaponRifleTranq
+  - BoxTranqDart
+  - BoxIrwizineDart
 
 - type: technology
-  id: AdvancedPistolMunitions
-  name: research-technology-advanced-pistol-munitions
+  id: AdvancedMunitions
+  name: research-technology-advanced-munitions
   icon:
-    sprite: _Impstation/Objects/Weapons/Guns/Ammunition/Boxes/light_pistol.rsi
+    sprite: _Impstation/Objects/Weapons/Guns/Ammunition/Boxes/pistol.rsi
     state: incendiarydisplay
   discipline: Arsenal
-  tier: 2
+  tier: 1
   cost: 12000
   recipeUnlocks:
+  - BoxShotgunIncendiary
+  - MagazineDMRIncendiary
+  - MagazineRifleIncendiary
+  - MagazinePistolIncendiary
+  - MagazinePistolSubMachineGunIncendiary
+  - MagazinePistolP2Incendiary
+  - MagazineLightRifleIncendiary
   - MagazineLPistolIncendiary
+  - SpeedLoaderMagnumIncendiary
+  - MagazineShotgunIncendiary
+  - MagazineBoxPistolIncendiary
+  - MagazineBoxMagnumIncendiary
+  - MagazineBoxLightRifleIncendiary
+  - MagazineBoxRifleIncendiary
+  - MagazineRifleUranium
   - MagazineLPistolUranium
-  - MagazineBoxLPistolIncendiary
-  - MagazineBoxLPistolUranium
+  - MagazinePistolUranium
+  - MagazinePistolP2Uranium
+  - MagazineDMRUranium
+  - MagazinePistolSubMachineGunUranium
+  - MagazineLightRifleUranium
+  - SpeedLoaderMagnumUranium
+  - MagazineBoxPistolUranium
+  - MagazineBoxMagnumUranium
+  - MagazineBoxLightRifleUranium
+  - MagazineBoxRifleUranium
+  - BoxShotgunUranium

@@ -1,46 +1,48 @@
+using Content.Server.Heretic.EntitySystems;
 using Content.Shared.Heretic;
+using Content.Shared.Heretic.Prototypes;
 using Content.Shared.Mind;
 using Content.Shared.Store;
-using System.Linq;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Store.Conditions;
 
 public sealed partial class HereticPathCondition : ListingCondition
 {
-    [DataField] public HashSet<string>? Whitelist;
-    [DataField] public HashSet<string>? Blacklist;
-    [DataField] public int Stage = 0;
+    [DataField] public int AlternatePathPenalty = 1;
+    [DataField] public HashSet<ProtoId<HereticPathPrototype>>? Whitelist;
+    [DataField] public HashSet<ProtoId<HereticPathPrototype>>? Blacklist;
 
     public override bool Condition(ListingConditionArgs args)
     {
         var ent = args.EntityManager;
-        var minds = ent.System<SharedMindSystem>();
-
-        if (!minds.TryGetMind(args.Buyer, out var mindId, out var mind))
+        var knowledgeSys = ent.System<HereticKnowledgeSystem>();
+        if (args.Listing.ProductHereticKnowledge == null)
             return false;
 
-        if (!ent.TryGetComponent<HereticComponent>(args.Buyer, out var hereticComp))
+        var knowledgeProtoId = new ProtoId<HereticKnowledgePrototype>((ProtoId<HereticKnowledgePrototype>)args.Listing.ProductHereticKnowledge);
+        var knowledge = knowledgeSys.GetKnowledge(knowledgeProtoId);
+        // set effective power to required power
+        var requiredPower = knowledge.RequiredPower;
+
+        if (!ent.TryGetComponent<MindComponent>(args.Buyer, out var mind))
             return false;
 
-        if (Stage > hereticComp.PathStage)
+        if (!ent.TryGetComponent<HereticComponent>(mind.OwnedEntity, out var hereticComp))
             return false;
 
-        if (Whitelist != null)
-        {
-            foreach (var white in Whitelist)
-                if (hereticComp.CurrentPath == white)
-                    return true;
+        //Whitelist check
+        if (Whitelist != null && hereticComp.MainPath != null && !Whitelist.Contains(hereticComp.MainPath.Value))
             return false;
-        }
 
-        if (Blacklist != null)
-        {
-            foreach (var black in Blacklist)
-                if (hereticComp.CurrentPath == black)
-                    return false;
-            return true;
-        }
+        //Blacklist check
+        if (Blacklist != null && hereticComp.MainPath != null && Blacklist.Contains(hereticComp.MainPath.Value))
+            return false;
 
-        return true;
+        // If the heretic's main path and the path the knowledge isn't the same
+        if (knowledgeSys.GetKnowledgePath(knowledgeProtoId, out var path) && hereticComp.MainPath != null && hereticComp.MainPath.Value != path)
+            requiredPower += AlternatePathPenalty;
+
+        return hereticComp.Power >= requiredPower;
     }
 }

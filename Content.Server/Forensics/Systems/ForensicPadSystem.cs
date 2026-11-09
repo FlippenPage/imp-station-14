@@ -1,11 +1,16 @@
-using Content.Server.Labels;
 using Content.Server.Popups;
 using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using Content.Shared.Forensics;
+using Content.Shared.Forensics.Components;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Inventory;
+using Content.Shared.Labels.EntitySystems;
+using System.Linq; // imp
+using Content.Shared.Chemistry.EntitySystems; // imp
+using Content.Shared.Chemistry.Reagent; // imp
+using Robust.Shared.Prototypes; // imp
 
 namespace Content.Server.Forensics
 {
@@ -15,10 +20,11 @@ namespace Content.Server.Forensics
     public sealed class ForensicPadSystem : EntitySystem
     {
         [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
-        [Dependency] private readonly InventorySystem _inventory = default!;
         [Dependency] private readonly PopupSystem _popupSystem = default!;
-        [Dependency] private readonly MetaDataSystem _metaData = default!;
+        [Dependency] private readonly ForensicsSystem _forensics = default!;
         [Dependency] private readonly LabelSystem _label = default!;
+        [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!; // imp
+        [Dependency] private readonly IPrototypeManager _prototypeManager = default!; // imp edit
 
         public override void Initialize()
         {
@@ -58,9 +64,14 @@ namespace Content.Server.Forensics
                 return;
             }
 
-            if (_inventory.TryGetSlotEntity(args.Target.Value, "gloves", out var gloves))
+            if (!_forensics.CanAccessFingerprint(args.Target.Value, out var blocker))
             {
-                _popupSystem.PopupEntity(Loc.GetString("forensic-pad-gloves", ("target", Identity.Entity(args.Target.Value, EntityManager))), args.Target.Value, args.User);
+
+                if (blocker is { } item)
+                    _popupSystem.PopupEntity(Loc.GetString("forensic-pad-no-access-due", ("entity", Identity.Entity(item, EntityManager))), args.Target.Value, args.User);
+                else
+                    _popupSystem.PopupEntity(Loc.GetString("forensic-pad-no-access"), args.Target.Value, args.User);
+
                 return;
             }
 
@@ -76,7 +87,36 @@ namespace Content.Server.Forensics
             }
 
             if (TryComp<FiberComponent>(args.Target, out var fiber))
+            {
                 StartScan(uid, args.User, args.Target.Value, component, string.IsNullOrEmpty(fiber.FiberColor) ? Loc.GetString("forensic-fibers", ("material", fiber.FiberMaterial)) : Loc.GetString("forensic-fibers-colored", ("color", fiber.FiberColor), ("material", fiber.FiberMaterial)));
+                return; // imp add
+            }
+
+            if (_solutionContainerSystem.TryGetDrainableSolution(args.Target.Value, out _, out var solution) || // imp edit beginning
+                _solutionContainerSystem.TryGetDrawableSolution(args.Target.Value, out _, out solution) ||
+                _solutionContainerSystem.TryGetInjectorSolution(args.Target.Value, out _, out solution))
+            {
+                if (solution.Contents.Count == 0)
+                {
+                    return;
+                }
+
+                var sample = solution.Contents.Select(x =>
+                {
+                    if (_prototypeManager.TryIndex(x.Reagent.Prototype, out ReagentPrototype? reagent))
+                    {
+                        var localizedName = Loc.GetString(reagent.LocalizedName);
+                        if (_prototypeManager.TryIndex(reagent.ContrabandSeverity, out var contraband))
+                        {
+                            localizedName = $"[color={contraband.ExamineColor}]{localizedName}[/color]";
+                        }
+                        return localizedName;
+                    }
+                    return "???";
+                }).Aggregate((x, y) => x + ", " + y);
+                StartScan(uid, args.User, args.Target.Value, component, sample);
+                return;
+            } // imp edit end
         }
 
         private void StartScan(EntityUid used, EntityUid user, EntityUid target, ForensicPadComponent pad, string sample)

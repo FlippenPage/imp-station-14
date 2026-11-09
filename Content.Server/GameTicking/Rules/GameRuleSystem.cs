@@ -38,18 +38,32 @@ public abstract partial class GameRuleSystem<T> : EntitySystem where T : ICompon
         while (query.MoveNext(out var uid, out _, out var gameRule))
         {
             var minPlayers = gameRule.MinPlayers;
-            var maxPlayers = gameRule.MaxPlayers;
-            if (args.Players.Length >= minPlayers && args.Players.Length <= maxPlayers)
+            var name = ToPrettyString(uid);
+
+            // IMP EDIT START
+            // There should only be Ended game rules at roundstart if they are from a failed start, during a fallback start attempt
+            if (HasComp<EndedGameRuleComponent>(uid))
+            {
+                Log.Debug($"Ended gamerule ignored from startup check: {name}");
+                continue;
+            }
+            // IMP EDIT END
+
+            var maxPlayers = gameRule.MaxPlayers; // imp lowpop
+            if (args.Players.Length >= minPlayers && args.Players.Length <= maxPlayers) // imp lowpop
                 continue;
 
-            if (args.Players.Length < minPlayers && gameRule.CancelPresetOnTooFewPlayers)
+            if (args.Players.Length < minPlayers && gameRule.CancelPresetOnTooFewPlayers) // imp lowpop
             {
                 ChatManager.SendAdminAnnouncement(Loc.GetString("preset-not-enough-ready-players",
                     ("readyPlayersCount", args.Players.Length),
                     ("minimumPlayers", minPlayers),
-                    ("presetName", ToPrettyString(uid))));
+                    ("presetName", name)));
                 args.Cancel();
+                //TODO remove this once announcements are logged
+                Log.Info($"Rule '{name}' requires {minPlayers} players, but only {args.Players.Length} are ready.");
             }
+            // imp add start
             else if (args.Players.Length > maxPlayers && gameRule.CancelPresetOnTooManyPlayers)
             {
                 ChatManager.SendAdminAnnouncement(Loc.GetString("preset-too-many-ready-players",
@@ -58,6 +72,7 @@ public abstract partial class GameRuleSystem<T> : EntitySystem where T : ICompon
                     ("presetName", ToPrettyString(uid))));
                 args.Cancel();
             }
+            // imp end
             else
             {
                 ForceEndSelf(uid, gameRule);
@@ -93,6 +108,16 @@ public abstract partial class GameRuleSystem<T> : EntitySystem where T : ICompon
         {
             if (!TryComp<GameRuleComponent>(uid, out var ruleData))
                 continue;
+
+            // IMP EDIT START
+            // If a gamepreset fails to start, and the round goes into fallback, its rules will still exist, just marked as ended
+            // This check makes it so these gamerules won't show up on the round end screen
+            if (HasComp<EndedGameRuleComponent>(uid))
+            {
+                Log.Debug($"Ended gamerule ignored from round end: {ToPrettyString(uid)}");
+                continue;
+            }
+            // IMP EDIT END
 
             AppendRoundEndText(uid, comp, ruleData, ref ev);
         }

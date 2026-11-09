@@ -1,6 +1,4 @@
-using Content.Shared.Dataset;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Random;
 
 namespace Content.Shared.Store;
 
@@ -39,4 +37,20 @@ public static class ListingLocalisationHelpers
 
         return desc;
     }
+
+    // Imp start
+    /// <summary>
+    /// Gets a localization string from ListingData's flavor text field. If null, returns an empty string.
+    /// </summary>
+    public static string GetLocalisedFlavorText(ListingData listingData)
+    {
+        string flavor;
+
+        if (listingData.FlavorText != null)
+            flavor = Loc.GetString(listingData.FlavorText);
+        else
+            flavor = "";
+        return flavor;
+    }
+    // Imp end
 }

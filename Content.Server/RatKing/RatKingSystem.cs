@@ -6,17 +6,18 @@ using Content.Server.NPC.HTN;
 using Content.Server.NPC.Systems;
 using Content.Server.Popups;
 using Content.Shared.Atmos;
+using Content.Shared.Body;
+using Content.Shared.Chat;
 using Content.Shared.Dataset;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
 using Content.Shared.Pointing;
+using Content.Shared.Random.Helpers;
 using Content.Shared.RatKing;
 using Robust.Shared.Map;
-using Robust.Shared.Random;
-using Content.Shared.Damage;
-using Content.Shared.SubFloor;
-using Content.Shared.Body;
-using Content.Shared.Body.Components;
+using Content.Shared.Damage.Components; // imp
+using Content.Shared.SubFloor; // imp
+using Robust.Shared.Containers; // imp
 
 namespace Content.Server.RatKing
 {
@@ -29,7 +30,8 @@ namespace Content.Server.RatKing
         [Dependency] private readonly HungerSystem _hunger = default!;
         [Dependency] private readonly NPCSystem _npc = default!;
         [Dependency] private readonly PopupSystem _popup = default!;
-        [Dependency] private readonly EntityLookupSystem _lookup = default!;
+        [Dependency] private readonly EntityLookupSystem _lookup = default!; // imp
+        [Dependency] private readonly SharedContainerSystem _container = default!; // imp
 
         public override void Initialize()
         {
@@ -38,7 +40,7 @@ namespace Content.Server.RatKing
             SubscribeLocalEvent<RatKingComponent, RatKingRaiseArmyActionEvent>(OnRaiseArmy);
             SubscribeLocalEvent<RatKingComponent, RatKingDomainActionEvent>(OnDomain);
             SubscribeLocalEvent<RatKingComponent, AfterPointedAtEvent>(OnPointedAt);
-            SubscribeLocalEvent<RatKingComponent, AfterPointedArrowEvent>(OnPointedNearby);
+            SubscribeLocalEvent<RatKingComponent, AfterPointedArrowEvent>(OnPointedNearby); // imp
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace Content.Server.RatKing
                 return;
 
             //make sure the hunger doesn't go into the negatives
-            if (hunger.CurrentHunger < component.HungerPerArmyUse)
+            if (_hunger.GetHunger(hunger) < component.HungerPerArmyUse)
             {
                 _popup.PopupEntity(Loc.GetString("rat-king-too-hungry"), uid, uid);
                 return;
@@ -83,7 +85,7 @@ namespace Content.Server.RatKing
                 return;
 
             //make sure the hunger doesn't go into the negatives
-            if (hunger.CurrentHunger < component.HungerPerDomainUse)
+            if (_hunger.GetHunger(hunger) < component.HungerPerDomainUse)
             {
                 _popup.PopupEntity(Loc.GetString("rat-king-too-hungry"), uid, uid);
                 return;
@@ -108,6 +110,7 @@ namespace Content.Server.RatKing
         }
 
         /// <summary>
+        /// #IMP
         /// Give leeway on how close you have to point to a target.
         /// Allows you to point near someone and still have them targeted
         /// </summary>
@@ -130,10 +133,10 @@ namespace Content.Server.RatKing
                     continue;
 
                 // Remove ineligable targets
-                if (!TryComp<DamageableComponent>(ent, out var _1) || !TryComp<BodyComponent>(ent, out var _2))
+                if (!HasComp<DamageableComponent>(ent) || !HasComp<BodyComponent>(ent) || _container.IsEntityInContainer(ent))
                     continue;
 
-                if (TryComp<SubFloorHideComponent>(ent, out var _3) || TryComp<RatKingServantComponent>(ent, out var _4))
+                if (HasComp<SubFloorHideComponent>(ent) || HasComp<RatKingServantComponent>(ent))
                     continue;
 
                 if (!arrowXform.Coordinates.TryDistance(EntityManager, Transform(ent).Coordinates, out var distance))
@@ -173,10 +176,10 @@ namespace Content.Server.RatKing
             base.DoCommandCallout(uid, component);
 
             if (!component.OrderCallouts.TryGetValue(component.CurrentOrder, out var datasetId) ||
-                !PrototypeManager.TryIndex<DatasetPrototype>(datasetId, out var datasetPrototype))
+                !PrototypeManager.TryIndex<LocalizedDatasetPrototype>(datasetId, out var datasetPrototype))
                 return;
 
-            var msg = Random.Pick(datasetPrototype.Values);
+            var msg = Random.Pick(datasetPrototype);
             _chat.TrySendInGameICMessage(uid, msg, InGameICChatType.Speak, true);
         }
     }

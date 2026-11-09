@@ -2,7 +2,7 @@ using Content.Shared.Stunnable;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 
-namespace Content.Server.Stunnable.Components;
+namespace Content.Shared.Stunnable;
 
 [RegisterComponent, NetworkedComponent]
 [AutoGenerateComponentState]
@@ -15,4 +15,11 @@ public sealed partial class StunbatonComponent : Component
 
     [DataField("sparksSound")]
     public SoundSpecifier SparksSound = new SoundCollectionSpecifier("sparks");
+
+    // Impstation
+    /// <summary>
+    ///     Should this stun when turned off, instead of when on?
+    /// </summary>
+    [DataField]
+    public bool Inverted = false;
 }

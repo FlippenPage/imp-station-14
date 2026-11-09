@@ -13,14 +13,16 @@ from typing import Any, Iterable
 
 import requests
 import yaml
+import time
 
 DEBUG = False
-DEBUG_CHANGELOG_FILE_OLD = Path("../Changelog-Impstation-old.yml")
+DEBUG_CHANGELOG_FILE_OLD = Path("Resources/Changelog/Old.yml")
 GITHUB_API_URL = os.environ.get("GITHUB_API_URL", "https://api.github.com")
 
 # https://discord.com/developers/docs/resources/webhook
 DISCORD_SPLIT_LIMIT = 2000
 DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
+DISCORD_ROLE_ID = os.environ.get("DISCORD_ROLE_ID")
 
 CHANGELOG_FILE = "Resources/Changelog/Impstation.yml"
 
@@ -136,10 +138,18 @@ def diff_changelog(
 
 
 def get_discord_body(content: str):
+    if DISCORD_ROLE_ID:
+        # if a ping is configured,
+        # allow that role to be mentioned
+        allowed_mentions = {"roles": [DISCORD_ROLE_ID]}
+    else:
+        # if no role mention is allowed
+        # then this is explicitly needed to suppress @everyone
+        allowed_mentions = {"parse": []}
+
     return {
         "content": content,
-        # Do not allow any mentions.
-        "allowed_mentions": {"parse": []},
+        "allowed_mentions": allowed_mentions,
         # SUPPRESS_EMBEDS
         "flags": 1 << 2,
     }
@@ -148,9 +158,23 @@ def get_discord_body(content: str):
 def send_discord_webhook(lines: list[str]):
     content = "".join(lines)
     body = get_discord_body(content)
+    retry_attempt = 0
 
-    response = requests.post(DISCORD_WEBHOOK_URL, json=body)
-    response.raise_for_status()
+    try:
+        response = requests.post(DISCORD_WEBHOOK_URL, json=body, timeout=10)
+        while response.status_code == 429:
+            retry_attempt += 1
+            if retry_attempt > 20:
+                print("Too many retries on a single request despite following retry_after header... giving up")
+                exit(1)
+            retry_after = response.json().get("retry_after", 5)
+            print(f"Rate limited, retrying after {retry_after} seconds")
+            time.sleep(retry_after)
+            response = requests.post(DISCORD_WEBHOOK_URL, json=body, timeout=10)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send message: {e}")
+        exit(1)
 
 
 def changelog_entries_to_message_lines(entries: Iterable[ChangelogEntry]) -> list[str]:
@@ -158,6 +182,7 @@ def changelog_entries_to_message_lines(entries: Iterable[ChangelogEntry]) -> lis
     message_lines = []
 
     for contributor_name, group in itertools.groupby(entries, lambda x: x["author"]):
+        message_lines.append("\n")
         message_lines.append(f"**{contributor_name}** updated:\n")
 
         for entry in group:
@@ -174,11 +199,18 @@ def changelog_entries_to_message_lines(entries: Iterable[ChangelogEntry]) -> lis
                     message = message[: DISCORD_SPLIT_LIMIT - 100].rstrip() + " [...]"
 
                 if url is not None:
-                    line = f"{emoji} - {message} [PR]({url}) \n"
+                    pr_number = url.split("/")[-1]
+                    line = f"{emoji} - {message} ([#{pr_number}]({url}))\n"
                 else:
                     line = f"{emoji} - {message}\n"
 
                 message_lines.append(line)
+
+    # add ping if role id is configured
+    # don't add it if the message is empty, in that case we want to skip send
+    if message_lines and DISCORD_ROLE_ID:
+        ping_line = f"<@&{DISCORD_ROLE_ID}>\n"
+        message_lines.insert(0, ping_line)
 
     return message_lines
 
@@ -193,6 +225,7 @@ def send_message_lines(message_lines: list[str]):
         new_chunk_length = chunk_length + line_length
 
         if new_chunk_length > DISCORD_SPLIT_LIMIT:
+            print("Split changelog and sending to discord")
             send_discord_webhook(chunk_lines)
 
             new_chunk_length = line_length
@@ -202,6 +235,7 @@ def send_message_lines(message_lines: list[str]):
         chunk_length = new_chunk_length
 
     if chunk_lines:
+        print("Sending final changelog to discord")
         send_discord_webhook(chunk_lines)
 
 

@@ -71,7 +71,26 @@
       - FoodSoupBungo
       - FoodMealCornInButter
       - FoodSoupStew
-      - FoodMealBigLollipop #impstation edit
+      # imp below
+      - FoodToddlerRingsStew
+      - FoodBoxSushiBad
+      - FoodMealBreakfastBagel
+      - FoodMealCucumberSandwich
+      - FoodSaladGreek
+      - FoodSaladAvocado
+      - FoodMealPoachedPears
+      - FoodMealPearsBelleHelene
+      - FoodMealBasicNoodles
+      - FoodMealMisoNoodles
+      - FoodMealShioNoodles
+      - FoodMealShoyuNoodles
+      - FoodMealSpicyNoodles
+      - FoodMealTonkatsuNoodles
+      - FoodMeatGlazedHam
+      - FoodMothPizzaCotton
+      - FoodMealTomatoAndEgg
+      - FoodMealMapoTofu
+      - FoodMealSteakTartare
     chance: 0.8
     offset: 0.0
     #rare
@@ -95,4 +114,13 @@
       - FoodSoupEyeball
       - FoodSoupElectron
       - FoodNoodlesCopy
+      # imp below
+      - FoodMealCultLollipop
+      - FoodCamelSoup
+      - FoodGummyWorm
+      - FoodMealDragonOmelette
+      - FoodMealBreakfastBagelPoppy
+      - FoodMothCottonSoup
+      - FoodMothCottonSalad
+      - FoodSoupMonkeySanitized
     rareChance: 0.05

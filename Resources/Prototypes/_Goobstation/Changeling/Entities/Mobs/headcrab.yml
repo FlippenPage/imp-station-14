@@ -4,8 +4,6 @@
   id: MobHeadcrab
   description: You don't want to touch it.
   components:
-  - type: VentCrawler
-    enterDelay: 1
   - type: NoSlip
   - type: Sprite
     drawdepth: SmallMobs
@@ -17,6 +15,8 @@
     tags:
     - Meat
     - VimPilot
+    - MultitoolDefibrillatorTarget # imp edit
+    - RecyclerGibbable # imp edit
   - type: Physics
   - type: Fixtures
     fixtures:
@@ -30,8 +30,10 @@
         layer:
         - SmallMobLayer
   - type: Bloodstream
-    bloodReagent: BloodChangeling
-    bloodMaxVolume: 60
+    bloodReferenceSolution:
+      reagents:
+      - ReagentId: BloodChangeling
+        Quantity: 60
   - type: DamageStateVisuals
     states:
       Alive:
@@ -47,3 +49,27 @@
     baseSprintSpeed: 7
   - type: ExplosionResistance
     damageCoefficient: 0
+  # imp edits below
+  - type: VentCrawler
+    enterDelay: 1
+  - type: ComplexInteraction
+  - type: Clothing
+    quickEquip: false
+    sprite: _Goobstation/Changeling/headcrab.rsi
+    slots:
+    - HEAD
+  - type: Item
+    size: Normal
+    sprite: _Goobstation/Changeling/headcrab.rsi
+    inhandVisuals:
+      left:
+      - state: inhand-left
+      right:
+      - state: inhand-right
+  - type: CanEscapeInventory
+    baseResistTime: 0.25
+  - type: NightVision
+    isActive: true
+    color: "#50595C"
+    activateSound: null
+    deactivateSound: null

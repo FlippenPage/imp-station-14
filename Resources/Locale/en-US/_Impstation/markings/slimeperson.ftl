@@ -1,47 +1,120 @@
-marking-SlimeNose-nose = Nose (Profile)
-marking-SlimeNose = Nose (Profile)
+# Chest
 
-marking-SlimeMouth-mouth = Mouth
-marking-SlimeMouth = Mouth
+marking-bubble = Bubbles
+marking-bubble-bubble = Bubbles
 
-marking-SlimeBrain-brain = Brain
-marking-SlimeBrain = Brain
+marking-fishbowl = Fishbowl
+marking-fishbowl-fishbowl1 = Fish
+marking-fishbowl-fishbowl2 = Fish bubbles
 
-marking-SlimeEyeglow-eyeglow = Eye Glow
-marking-SlimeEyeglow = Eye Glow
-
-marking-SlimeCore-core = Core
-marking-SlimeCore = Core
-
-marking-SlimeLungs-lungs = Lungs
-marking-SlimeLungs = Lungs
-
-marking-SlimeBonehead-bonehead = Floating Skull
-marking-SlimeBonehead = Floating Skull
-
-marking-SlimeBonechest-bonechest = Floating Ribcage
 marking-SlimeBonechest = Floating Ribcage
+marking-SlimeBonechest-bone = Floating Ribcage
 
-marking-SlimeBonearmleft-bonearmleft = Floating Arm Bones (Left)
-marking-SlimeBonearmleft = Floating Arm Bones (Left)
+marking-SlimeCore = Core
+marking-SlimeCore-core = Core
 
-marking-SlimeBonearmright-bonearmright = Floating Arm Bones (Right)
-marking-SlimeBonearmright = Floating Arm Bones (Right)
+marking-SlimeCoreGlowing = Core (Glowing)
+marking-SlimeCoreGlowing-core = Core (Glowing)
 
-marking-SlimeBonefootleft-bonefootleft = Floating Foot Bones (Left)
-marking-SlimeBonefootleft = Floating Foot Bones (Left)
+marking-SlimeLungs = Lungs
+marking-SlimeLungs-lungs = Lungs
 
-marking-SlimeBonefootright-bonefootright = Floating Foot Bones (Right)
-marking-SlimeBonefootright = Floating Foot Bones (Right)
+# Head
 
-marking-SlimeBonehandleft-bonehandleft = Floating Hand Bones (Left)
-marking-SlimeBonehandleft = Floating Hand Bones (Left)
+marking-FadingStars = Fading Starlight
+marking-FadingStars-fadingstars1 = Brightest
+marking-FadingStars-fadingstars2 = Middling
+marking-FadingStars-fadingstars3 = Darkest
 
-marking-SlimeBonehandright-bonehandright = Floating Hand Bones (Right)
-marking-SlimeBonehandright = Floating Hand Bones (Right)
+marking-fizz = Fizz
+marking-fizz-fizz = Fizz
 
-marking-SlimeBonelegleft-bonelegleft = Floating Leg Bones (Left)
-marking-SlimeBonelegleft = Floating Leg Bones (Left)
+marking-SlimeBonehead = Floating Skull
+marking-SlimeBonehead-bone = Floating Skull
 
-marking-SlimeBonelegright-bonelegright = Floating Leg Bones (Right)
-marking-SlimeBonelegright = Floating Leg Bones (Right)
+marking-SlimeNose = Nose (Profile)
+marking-SlimeNose-nose = Nose (Profile)
+
+marking-SlimeMouth = Mouth
+marking-SlimeMouth-mouth = Mouth
+
+marking-SlimeBrain = Brain
+marking-SlimeBrain-brain = Brain
+
+# Snout
+
+# Eyes
+
+marking-SlimeEyesDefault = Eyes
+marking-SlimeEyesDefault-eyes = Eyes (Default)
+
+marking-SlimeEyeglow = Glowing Eyes
+marking-SlimeEyeglow-glow = Glowing Eyes
+
+marking-SlimeEyesDroopy = Droopy Eyes
+marking-SlimeEyesDroopy-droopy = Droopy Eyes
+
+marking-SlimeEyesDroopyGlowing = Droopy Glowing Eyes
+marking-SlimeEyesDroopyGlowing-droopyglow = Droopy Glowing Eyes
+
+marking-SlimeEyesCyclops = Cyclops Eye
+marking-SlimeEyesCyclops-cyclops = Cyclops Eye
+
+marking-SlimeEyesCyclopsGlowing = Cyclops Glowing Eye
+marking-SlimeEyesCyclopsGlowing-cyclopsglow = Cyclops Glowing Eye
+
+# RArm
+
+marking-SlimeBonearmright = Floating Bones (Right Arm)
+marking-SlimeBonearmright-bone = Floating Bones (Right Arm)
+
+# LArm
+
+marking-SlimeBonearmleft = Floating Bones (Left Arm)
+marking-SlimeBonearmleft-bone = Floating Bones (Left Arm)
+
+# RLeg
+
+marking-SlimeBonelegright = Floating Bones (Right Leg)
+marking-SlimeBonelegright-bone = Floating Bones (Right Leg)
+
+# LLeg
+
+marking-SlimeBonelegleft = Floating Bones (Left Leg)
+marking-SlimeBonelegleft-bone = Floating Bones (Left Leg)
+
+# UndergarmentBottom
+
+# UndergarmentTop
+
+# LFoot
+
+marking-SlimeBonefootleft = Floating Bones (Left Foot)
+marking-SlimeBonefootleft-bone = Floating Bones (Left Foot)
+
+# RFoot
+
+marking-SlimeBonefootright = Floating Bones (Right Foot)
+marking-SlimeBonefootright-bone = Floating Bones (Right Foot)
+
+# LHand
+
+marking-SlimeBonehandleft = Floating Bones (Left Hand)
+marking-SlimeBonehandleft-bone = Floating Bones (Left Hand)
+
+# RHand
+
+marking-SlimeBonehandright = Floating Bones (Right Hand)
+marking-SlimeBonehandright-bone = Floating Bones (Right Hand)
+
+# FacialHair
+
+# Hair
+
+# HeadSide
+
+# HeadTop
+
+# Tail
+
+# RArmExtension

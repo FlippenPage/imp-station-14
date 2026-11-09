@@ -18,10 +18,12 @@
     - Human
     - Moth
     - Reptilian
+    - Vulpkanin
+    # imp below
     - Gray
-    - Snail
-    - SpElf
-    - Decapoid
+    - Gastropoid
+    - Thaven
+    - Allulalo
 
 - type: loadoutEffectGroup
   id: EffectSpeciesVox
@@ -30,40 +32,7 @@
     species:
     - Vox
 
-- type: loadoutEffectGroup
-  id: EffectSpeciesSnail
-  effects:
-  - !type:SpeciesLoadoutEffect
-    species:
-    - Snail
-
-# commenting these out because I would like to do emergency vapor boxes at some point. - move these to imp filestructure
-#- type: loadoutEffectGroup
-#  id: EffectSpeciesDecapoid
-#  effects:
-#  - !type:SpeciesLoadoutEffect
-#    species:
-#    - Decapoid
-
-#- type: loadout
-#  id: EmergencyOxygenDecapoid
-#  effects:
-#  - !type:GroupLoadoutEffect
-#    proto: EffectSpeciesDecapoid
-#  storage:
-#    back:
-#    - BoxSurvivalVapor
-
-- type: loadout
-  id: EmergencyOxygenSnail
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: EffectSpeciesSnail
-  storage:
-    lhand:
-    - BoxSurvival
-
-    # Basic
+# Basic
 - type: loadout
   id: EmergencyOxygen
   effects:
@@ -102,11 +71,35 @@
     - BoxHugNitrogen
 
 # Mime
+- type: loadoutEffectGroup
+  id: OxygenBreatherMime
+  effects:
+  - !type:SpeciesLoadoutEffect
+    species:
+    - Arachnid
+    - Diona
+    - Dwarf
+    - Human
+    - Reptilian
+    - Vulpkanin
+    # imp below
+    - Allulalo
+    - Gray
+    - Gastropoid
+    - Thaven
+
+- type: loadoutEffectGroup
+  id: OxygenBreatherMimeMoth
+  effects:
+  - !type:SpeciesLoadoutEffect
+    species:
+    - Moth
+
 - type: loadout
   id: EmergencyOxygenMime
   effects:
   - !type:GroupLoadoutEffect
-    proto: OxygenBreather
+    proto: OxygenBreatherMime
   storage:
     back:
     - BoxMime
@@ -120,6 +113,14 @@
     back:
     - BoxMimeNitrogen
 
+- type: loadout
+  id: EmergencySpeciesMothMime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: OxygenBreatherMimeMoth
+  storage:
+    back:
+    - BoxMimeMoth
 
 # Engineering / Extended
 - type: loadout
@@ -178,25 +179,6 @@
     back:
     - BoxSurvivalSecurityNitrogen
 
-# Brigmedic
-- type: loadout
-  id: EmergencyOxygenBrigmedic
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: OxygenBreather
-  storage:
-    back:
-    - BoxSurvivalBrigmedic
-
-- type: loadout
-  id: EmergencyNitrogenBrigmedic
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: NitrogenBreather
-  storage:
-    back:
-    - BoxSurvivalBrigmedicNitrogen
-
 # Syndicate
 - type: loadout
   id: EmergencyOxygenSyndicate
@@ -216,6 +198,29 @@
     back:
     - BoxSurvivalSyndicateNitrogen
 
+# Military / Double Extended
+- type: loadout
+  id: EmergencyOxygenMilitaryDouble
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: OxygenBreather
+  equipment:
+    pocket1: DoubleEmergencyOxygenTankFilled
+  storage:
+    back:
+    - BoxSurvivalMilitaryDouble
+
+- type: loadout
+  id: EmergencyNitrogenMilitaryDouble
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: NitrogenBreather
+  equipment:
+    pocket1: DoubleEmergencyNitrogenTankFilled
+  storage:
+    back:
+    - BoxSurvivalMilitaryDoubleNitrogen
+
 # Pre-equipped species gear
 
 # Full tank for vox as part of any Survival loadout
@@ -226,16 +231,6 @@
     proto: EffectSpeciesVox
   equipment:
     suitstorage: NitrogenTankFilled
-
-# Full tank for vox in command roles as an alternative to the below section in case people don't like non-vox spawning with tanks
-# Remove LoadoutSpeciesOxygenCommand and LoadoutSpeciesNitrogenCommand from SurvivalCommand, SurvivalExtendedCommand, and SurvivalSecurityCommand in loadout_groups.yml if you wanna make that change
-- type: loadout
-  id: LoadoutSpeciesVoxNitrogenCommand
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: EffectSpeciesVox
-  equipment:
-    suitstorage: NitrogenTankCommandFilled
 
 # Full EVA Tank, Any Species
 - type: loadout
@@ -271,7 +266,7 @@
   equipment:
     pocket1: DoubleEmergencyOxygenTankFilled
 
-# Tank Harnesses for jobs that don't spawn with outerwear
+# Tank Harness
 - type: loadout
   id: LoadoutTankHarness
   effects:
@@ -279,33 +274,6 @@
     proto: EffectSpeciesVox
   equipment:
     outerClothing: ClothingOuterVestTank
-
-- type: loadout
-  id: LoadoutTankHarnessCommand
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: EffectSpeciesVox
-  equipment:
-    outerClothing: ClothingOuterVestTankCommand
-
-# Tank harnesses for jobs that spawn with outerwear, puts them in their inventory instead of dropping items at their feet
-- type: loadout
-  id: LoadoutTankHarnessWithOuterwear
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: EffectSpeciesVox
-  storage:
-    back:
-    - ClothingOuterVestTank
-
-- type: loadout
-  id: LoadoutTankHarnessCommandWithOuterwear
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: EffectSpeciesVox
-  storage:
-    back:
-    - ClothingOuterVestTankCommand
 
 # Breath Tool On Face
 - type: loadout
@@ -331,11 +299,3 @@
     proto: EffectSpeciesVox
   equipment:
     mask: ClothingMaskGasSecurity
-
-- type: loadout
-  id: LoadoutSpeciesBreathToolMedSec
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: EffectSpeciesVox
-  equipment:
-    mask: ClothingMaskBreathMedicalSecurity

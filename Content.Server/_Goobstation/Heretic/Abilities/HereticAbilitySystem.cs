@@ -1,37 +1,36 @@
+using Content.Shared._Impstation.Heretic.Components;
+using Content.Server._Impstation.Heretic.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Chat.Systems;
 using Content.Server.DoAfter;
 using Content.Server.Flash;
 using Content.Server.Hands.Systems;
+using Content.Server.Heretic.EntitySystems;
 using Content.Server.Magic;
 using Content.Server.Polymorph.Systems;
 using Content.Server.Popups;
-using Content.Server.Radio.Components;
 using Content.Server.Store.Systems;
+using Content.Shared._Starlight.CollectiveMind;
 using Content.Shared.Actions;
-using Content.Shared.Damage;
+using Content.Shared.Chat;
 using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
+using Content.Shared.Examine;
+using Content.Shared.Eye.Blinding.Systems;
 using Content.Shared.Heretic;
-using Content.Shared.Inventory;
+using Content.Shared.Interaction;
+using Content.Shared.Medical;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mobs.Systems;
-using Content.Shared.Store.Components;
-using Robust.Shared.Audio.Systems;
 using Content.Shared.Popups;
-using Robust.Shared.Random;
-using Content.Shared.Body.Systems;
-using Content.Server.Medical;
-using Robust.Server.GameObjects;
-using Content.Shared.Stunnable;
-using Robust.Shared.Map;
 using Content.Shared.StatusEffect;
+using Content.Shared.Store.Components;
+using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
-using Content.Server.Station.Systems;
-using Content.Shared.Localizations;
-using Robust.Shared.Audio;
-using Content.Shared.Mobs.Components;
+using Robust.Server.GameObjects;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 
 namespace Content.Server.Heretic.Abilities;
 
@@ -48,23 +47,23 @@ public sealed partial class HereticAbilitySystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobstate = default!;
     [Dependency] private readonly FlammableSystem _flammable = default!;
     [Dependency] private readonly DamageableSystem _dmg = default!;
-    [Dependency] private readonly StaminaSystem _stam = default!;
+    [Dependency] private readonly SharedStaminaSystem _stam = default!;
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly SharedAudioSystem _aud = default!;
     [Dependency] private readonly DoAfterSystem _doafter = default!;
     [Dependency] private readonly FlashSystem _flash = default!;
+    [Dependency] private readonly ExamineSystemShared _examine = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedBodySystem _body = default!;
+    [Dependency] private readonly BlindableSystem _blindable = default!;
     [Dependency] private readonly VomitSystem _vomit = default!;
+    [Dependency] private readonly StatusEffectsSystem _statusEffect = default!;
     [Dependency] private readonly PhysicsSystem _phys = default!;
     [Dependency] private readonly SharedStunSystem _stun = default!;
     [Dependency] private readonly ThrowingSystem _throw = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
-    [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly IMapManager _mapMan = default!;
     [Dependency] private readonly IPrototypeManager _prot = default!;
+    [Dependency] private readonly MansusGraspSystem _mansusGrasp = default!;
+    [Dependency] private readonly CollectiveMindUpdateSystem _collectiveMind = default!;
 
     private List<EntityUid> GetNearbyPeople(Entity<HereticComponent> ent, float range)
     {
@@ -74,8 +73,8 @@ public sealed partial class HereticAbilitySystem : EntitySystem
         foreach (var look in lookup)
         {
             // ignore heretics with the same path*, affect everyone else
-            if ((TryComp<HereticComponent>(look, out var th) && th.CurrentPath == ent.Comp.CurrentPath)
-            || HasComp<GhoulComponent>(look))
+            if (TryComp<HereticComponent>(look, out var th) && th.MainPath == ent.Comp.MainPath
+            || HasComp<MinionComponent>(look))
                 continue;
 
             if (!HasComp<StatusEffectsComponent>(look))
@@ -93,15 +92,13 @@ public sealed partial class HereticAbilitySystem : EntitySystem
         SubscribeLocalEvent<HereticComponent, EventHereticOpenStore>(OnStore);
         SubscribeLocalEvent<HereticComponent, EventHereticMansusGrasp>(OnMansusGrasp);
 
-        SubscribeLocalEvent<HereticComponent, EventHereticLivingHeart>(OnLivingHeart);
-        SubscribeLocalEvent<HereticComponent, EventHereticLivingHeartActivate>(OnLivingHeartActivate);
-
-        SubscribeLocalEvent<GhoulComponent, EventHereticMansusLink>(OnMansusLink);
-        SubscribeLocalEvent<GhoulComponent, HereticMansusLinkDoAfter>(OnMansusLinkDoafter);
+        SubscribeLocalEvent<MinionComponent, EventHereticMansusLink>(OnMansusLink);
+        SubscribeLocalEvent<MinionComponent, HereticMansusLinkDoAfter>(OnMansusLinkDoafter);
 
         SubscribeAsh();
         SubscribeFlesh();
         SubscribeVoid();
+        SubscribeHunt();
     }
 
     private bool TryUseAbility(EntityUid ent, BaseActionEvent args)
@@ -118,7 +115,7 @@ public sealed partial class HereticAbilitySystem : EntitySystem
             var ev = new CheckMagicItemEvent();
             RaiseLocalEvent(ent, ev);
 
-            if (!ev.Handled)
+            if (!ev.Handled && !HasComp<InnateHereticMagicComponent>(ent))
             {
                 _popup.PopupEntity(Loc.GetString("heretic-ability-fail-magicitem"), ent, ent);
                 return false;
@@ -143,7 +140,7 @@ public sealed partial class HereticAbilitySystem : EntitySystem
         if (!TryUseAbility(ent, args))
             return;
 
-        if (ent.Comp.MansusGraspActive)
+        if (_mansusGrasp.MansusGraspActive(ent.Owner))
         {
             _popup.PopupEntity(Loc.GetString("heretic-ability-fail"), ent, ent);
             return;
@@ -158,64 +155,10 @@ public sealed partial class HereticAbilitySystem : EntitySystem
             return;
         }
 
-        ent.Comp.MansusGraspActive = true;
         args.Handled = true;
     }
-    private void OnLivingHeart(Entity<HereticComponent> ent, ref EventHereticLivingHeart args)
-    {
-        if (!TryUseAbility(ent, args))
-            return;
 
-        if (!TryComp<UserInterfaceComponent>(ent, out var uic))
-            return;
-
-        if (ent.Comp.SacrificeTargets.Count == 0)
-        {
-            _popup.PopupEntity(Loc.GetString("heretic-livingheart-notargets"), ent, ent);
-            args.Handled = true;
-            return;
-        }
-
-        _ui.OpenUi((ent, uic), HereticLivingHeartKey.Key, ent);
-        args.Handled = true;
-    }
-    private void OnLivingHeartActivate(Entity<HereticComponent> ent, ref EventHereticLivingHeartActivate args)
-    {
-        var loc = string.Empty;
-
-        var target = GetEntity(args.Target);
-        if (target == null)
-            return;
-
-        if (!TryComp<MobStateComponent>(target, out var mobstate))
-            return;
-        var state = mobstate.CurrentState;
-
-        var xquery = GetEntityQuery<TransformComponent>();
-        var targetStation = _station.GetOwningStation(target);
-        var ownStation = _station.GetOwningStation(ent);
-
-        var isOnStation = targetStation != null && targetStation == ownStation;
-
-        var ang = Angle.Zero;
-        if (_mapMan.TryFindGridAt(_transform.GetMapCoordinates(Transform(ent)), out var grid, out var _))
-            ang = Transform(grid).LocalRotation;
-
-        var vector = _transform.GetWorldPosition((EntityUid) target, xquery) - _transform.GetWorldPosition(ent, xquery);
-        var direction = (vector.ToWorldAngle() - ang).GetDir();
-
-        var locdir = ContentLocalizationManager.FormatDirection(direction).ToLower();
-        var locstate = state.ToString().ToLower();
-
-        if (isOnStation)
-            loc = Loc.GetString("heretic-livingheart-onstation", ("state", locstate), ("direction", locdir));
-        else loc = Loc.GetString("heretic-livingheart-offstation", ("state", locstate), ("direction", locdir));
-
-        _popup.PopupEntity(loc, ent, ent, PopupType.Medium);
-        _aud.PlayPvs(new SoundPathSpecifier("/Audio/_Goobstation/Heretic/heartbeat.ogg"), ent, AudioParams.Default.WithVolume(-3f));
-    }
-
-    private void OnMansusLink(Entity<GhoulComponent> ent, ref EventHereticMansusLink args)
+    private void OnMansusLink(Entity<MinionComponent> ent, ref EventHereticMansusLink args)
     {
         if (!TryUseAbility(ent, args))
             return;
@@ -226,14 +169,13 @@ public sealed partial class HereticAbilitySystem : EntitySystem
             return;
         }
 
-        if (TryComp<ActiveRadioComponent>(args.Target, out var radio)
-        && radio.Channels.Contains("Mansus"))
+        if (TryComp<HereticMansusLinkComponent>(args.Target, out var _))
         {
             _popup.PopupEntity(Loc.GetString("heretic-manselink-fail-exists"), ent, ent);
             return;
         }
 
-        var dargs = new DoAfterArgs(EntityManager, ent, 5f, new HereticMansusLinkDoAfter(args.Target), ent, args.Target)
+        var dargs = new DoAfterArgs(EntityManager, ent, 5f, new HereticMansusLinkDoAfter(), ent, args.Target)
         {
             BreakOnDamage = true,
             BreakOnMove = true,
@@ -243,18 +185,18 @@ public sealed partial class HereticAbilitySystem : EntitySystem
         _popup.PopupEntity(Loc.GetString("heretic-manselink-start-target"), args.Target, args.Target, PopupType.MediumCaution);
         _doafter.TryStartDoAfter(dargs);
     }
-    private void OnMansusLinkDoafter(Entity<GhoulComponent> ent, ref HereticMansusLinkDoAfter args)
+    private void OnMansusLinkDoafter(Entity<MinionComponent> ent, ref HereticMansusLinkDoAfter args)
     {
-        if (args.Cancelled)
+        if (args.Cancelled || args.Args.Target == null)
             return;
 
-        var reciever = EnsureComp<IntrinsicRadioReceiverComponent>(args.Target);
-        var transmitter = EnsureComp<IntrinsicRadioTransmitterComponent>(args.Target);
-        var radio = EnsureComp<ActiveRadioComponent>(args.Target);
-        radio.Channels = new() { "Mansus" };
-        transmitter.Channels = new() { "Mansus" };
+        var target = args.Args.Target.Value;
+
+        EnsureComp<CollectiveMindComponent>(target, out var mind);
+        EnsureComp<HereticMansusLinkComponent>(target);
+        _collectiveMind.UpdateCollectiveMind(target, mind);
 
         // this "* 1000f" (divided by 1000 in FlashSystem) is gonna age like fine wine :clueless:
-        _flash.Flash(args.Target, null, null, 2f * 1000f, 0f, false, true, stunDuration: TimeSpan.FromSeconds(1f));
+        _flash.Flash(target, null, null, TimeSpan.FromSeconds(2f), 0f, false, true, stunDuration: TimeSpan.FromSeconds(1f));
     }
 }

@@ -17,6 +17,7 @@ using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Nuke;
 using Content.Shared.NukeOps;
+using Content.Shared.Roles.Components;
 using Content.Shared.Store;
 using Content.Shared.Tag;
 using Content.Shared.Zombies;
@@ -24,7 +25,11 @@ using Robust.Shared.Map;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using System.Linq;
+using Content.Shared.Station.Components;
 using Content.Shared.Store.Components;
+using Robust.Shared.Prototypes;
+using Content.Shared.Humanoid; //imp addition
+using Content.Shared.Mind; //imp addition
 
 namespace Content.Server.GameTicking.Rules;
 
@@ -37,12 +42,11 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
     [Dependency] private readonly RoundEndSystem _roundEndSystem = default!;
     [Dependency] private readonly StoreSystem _store = default!;
     [Dependency] private readonly TagSystem _tag = default!;
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!; //imp addition
 
-    [ValidatePrototypeId<CurrencyPrototype>]
-    private const string TelecrystalCurrencyPrototype = "Telecrystal";
+    private static readonly ProtoId<CurrencyPrototype> TelecrystalCurrencyPrototype = "Telecrystal";
+    private static readonly ProtoId<TagPrototype> NukeOpsUplinkTagPrototype = "NukeOpsUplink";
 
-    [ValidatePrototypeId<TagPrototype>]
-    private const string NukeOpsUplinkTagPrototype = "NukeOpsUplink";
 
     public override void Initialize()
     {
@@ -85,6 +89,8 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             return;
 
         component.TargetStation = RobustRandom.Pick(eligible);
+        var ev = new NukeopsTargetStationSelectedEvent(uid, component.TargetStation);
+        RaiseLocalEvent(ref ev);
     }
 
     #region Event Handlers
@@ -102,14 +108,124 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             args.AddLine(text);
         }
 
+        args.AddLine(Loc.GetString("nukeops-operation-name", ("name", uid))); // imp addition, show operation name on the roundend screen
+
         args.AddLine(Loc.GetString("nukeops-list-start"));
 
-        var antags =_antag.GetAntagIdentifiers(uid);
+        var antags = _antag.GetAntagIdentifiers(uid);
 
-        foreach (var (_, sessionData, name) in antags)
+        foreach (var (mind, sessionData, name) in antags) //imp edit - replaced an unnamed variable with "mind"
         {
             args.AddLine(Loc.GetString("nukeops-list-name-user", ("name", name), ("user", sessionData.UserName)));
+
+            //imp edit start
+            //this is mostly replicated from the server ObjectivesSystem, lines 206~312
+            //make sure we have a mindComp
+            if (!TryComp<MindComponent>(mind, out var mindComp))
+                continue;
+
+            //get the operative's gender
+            var genderString = "epicene"; //default to they/them'ing people
+            if (TryComp<HumanoidAppearanceComponent>(GetEntity(mindComp.OriginalOwnedEntity!), out var appearance))
+            {
+                genderString = appearance.Gender.ToString().ToLowerInvariant();
+            }
+
+            foreach (var mindRole in mindComp.MindRoleContainer.ContainedEntities)
+            {
+                //make sure we have a mindRole comp
+                if (!TryComp<MindRoleComponent>(mindRole, out var mindRoleComp))
+                    continue;
+
+                //make sure that the mindRole comp is from some flavour of nukie
+                if (!(mindRoleComp.AntagPrototype == "Nukeops" || mindRoleComp.AntagPrototype == "NukeopsMedic" ||
+                    mindRoleComp.AntagPrototype == "NukeopsCommander"))
+                    continue;
+
+                //get the total costs & how many times each individual thing was bought
+                var costs = new Dictionary<string, int>(); //the total costs
+                var purchaseCounts = new Dictionary<string, int>(); //how many times a given thing was bought
+                //no no-spend text for nukies despite the mindRole saying it gets it because it's annoying to implement :(
+                foreach (var purchase in mindRoleComp.Purchases)
+                {
+                    //get how much was spent
+                    foreach (var key in purchase.Item2.Keys)
+                    {
+                        var currencyName = _prototypeManager.Index(key).DisplayName;
+                        if (!costs.TryGetValue(currencyName, out var cost))
+                        {
+                            cost = 0;
+                        }
+
+                        costs[currencyName] = cost + purchase.Item2[key].Int();
+                    }
+
+                    //get the amount of times each entry was bought
+                    if (!purchaseCounts.TryGetValue(purchase.Item1, out var purchaseCount))
+                    {
+                        purchaseCount = 0;
+                    }
+
+                    purchaseCounts[purchase.Item1] = purchaseCount + 1;
+                }
+
+                var index = 0;
+                var costString = Loc.GetString("roundend-spend-summary-spent", ("gender", genderString)) + " ";
+                //list totals spent
+                //hardcoding english grammar into this probably isn't great but I don't think fluent can do lists?
+                foreach (var costPair in costs) //technically can just get index 0 of the list because it should always have only 1 entry, but let's be safe
+                {
+                    index++;
+                    //if this is the last entry, do a full stop.
+                    if (index == costs.Count)
+                    {
+                        costString += costPair.Value + " " + Loc.GetString(costPair.Key) + ".";
+                        args.AddLine(costString); //appendLine as this is the last entry
+                        continue; //continue early for sanity
+                    }
+
+                    //if this is the second to last entry, use an & instead of a comma
+                    if (index == costs.Count)
+                    {
+                        costString += costPair.Value + " " + Loc.GetString(costPair.Key) + " & ";
+                        continue; // continue early for sanity
+                    }
+
+                    //finally, just do the entry with a comma
+
+                    costString += costPair.Value + " " + Loc.GetString(costPair.Key) + ", ";
+                }
+
+                index = 0; //reset index
+
+                //list things bought
+                //todo figure out how to embed images in these? might need to wait for this UI being turned into an actual UI and not whatever the fuck it currently is
+                var purchasesString = Loc.GetString("roundend-spend-summary-bought", ("gender", genderString)) + " ";
+                foreach (var boughtThing in purchaseCounts)
+                {
+                    index++;
+                    //if this is the last entry, do a full stop.
+                    if (index == purchaseCounts.Count)
+                    {
+                        purchasesString += boughtThing.Value + "x " + Loc.GetString(boughtThing.Key) + ".";
+                        args.AddLine(purchasesString); //appendLine as this is the last entry
+                        continue; //continue early for sanity
+                    }
+
+                    //if this is the second to last entry, use an & instead of a comma
+                    if (index == purchaseCounts.Count - 1)
+                    {
+                        purchasesString += boughtThing.Value + "x " + Loc.GetString(boughtThing.Key) + " & ";
+                        continue; // continue early for sanity
+                    }
+
+                    //finally, just do the entry with a comma
+                    purchasesString += boughtThing.Value + "x " + Loc.GetString(boughtThing.Key) + ", ";
+                }
+            }
+            //imp edit end
         }
+        args.AddLine("");
     }
 
     private void OnNukeExploded(NukeExplodedEvent ev)
@@ -122,7 +238,9 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
                 if (ev.OwningStation == GetOutpost(uid))
                 {
                     nukeops.WinConditions.Add(WinCondition.NukeExplodedOnNukieOutpost);
-                    SetWinType((uid, nukeops), WinType.CrewMajor);
+                    SetWinType((uid, nukeops), WinType.CrewMajor, GameTicker.IsGameRuleActive("Nukeops")); // End the round ONLY if the actual gamemode is NukeOps.
+                    if (!GameTicker.IsGameRuleActive("Nukeops")) // End the rule if the LoneOp shuttle got nuked, because that particular LoneOp clearly failed, and should not be considered a Syndie victory even if a future LoneOp wins.
+                        GameTicker.EndGameRule(uid);
                     continue;
                 }
 
@@ -152,7 +270,27 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
                 nukeops.WinConditions.Add(WinCondition.NukeExplodedOnIncorrectLocation);
             }
 
-            _roundEndSystem.EndRound();
+            if (GameTicker.IsGameRuleActive("Nukeops")) // If it's Nukeops then end the round on any detonation
+            {
+                _roundEndSystem.EndRound();
+            }
+            else
+            { // It's a LoneOp. Only end the round if the station was destroyed
+                var handled = false;
+                foreach (var cond in nukeops.WinConditions)
+                {
+                    if (cond.ToString().ToLower() == "NukeExplodedOnCorrectStation") // If this is true, then the nuke destroyed the station! It's likely everyone is very dead so keeping the round going is pointless.
+                    {
+                        _roundEndSystem.EndRound(); // end the round!
+                        handled = true;
+                        break;
+                    }
+                }
+                if (!handled) // The round didn't end, so end the rule so it doesn't get overridden by future LoneOps.
+                {
+                    GameTicker.EndGameRule(uid);
+                }
+            }
         }
     }
 
@@ -312,7 +450,7 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             {
                 // Nukies must wait some time after declaration of war to get on the station
                 var warTime = Timing.CurTime.Subtract(nukeops.WarDeclaredTime.Value);
-                if (warTime < nukeops.WarNukieArriveDelay)
+                if (warTime < nukeops.WarEvacShuttleDisabled)
                 {
                     ev.Cancelled = true;
                     ev.Reason = Loc.GetString("war-ops-shuttle-call-unavailable");
@@ -411,9 +549,8 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
     {
         var nukeops = ent.Comp;
 
-        if (nukeops.RoundEndBehavior == RoundEndBehavior.Nothing || nukeops.WinType == WinType.CrewMajor || nukeops.WinType == WinType.OpsMajor)
+        if (nukeops.WinType == WinType.CrewMajor || nukeops.WinType == WinType.OpsMajor) // Skip this if the round's victor has already been decided.
             return;
-
 
         // If there are any nuclear bombs that are active, immediately return. We're not over yet.
         foreach (var nuke in EntityQuery<NukeComponent>())
@@ -462,11 +599,16 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
             : WinCondition.AllNukiesDead);
 
         SetWinType(ent, WinType.CrewMajor, false);
+
+        if (nukeops.RoundEndBehavior == RoundEndBehavior.Nothing) // It's still worth checking if operatives have all died, even if the round-end behaviour is nothing.
+            return; // Shouldn't actually try to end the round in the case of nothing though.
+
         _roundEndSystem.DoRoundEndBehavior(nukeops.RoundEndBehavior,
-            nukeops.EvacShuttleTime,
-            nukeops.RoundEndTextSender,
-            nukeops.RoundEndTextShuttleCall,
-            nukeops.RoundEndTextAnnouncement);
+        nukeops.EvacShuttleTime,
+        nukeops.RoundEndTextSender,
+        nukeops.RoundEndTextShuttleCall,
+        nukeops.RoundEndTextAnnouncement);
+
 
         // prevent it called multiple times
         nukeops.RoundEndBehavior = RoundEndBehavior.Nothing;
@@ -520,4 +662,21 @@ public sealed class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComponent>
 
         return null;
     }
+}
+
+/// <summary>
+/// Raised when a station has been assigned as a target for the NukeOps rule.
+/// </summary>
+[ByRefEvent]
+public readonly struct NukeopsTargetStationSelectedEvent(EntityUid ruleEntity, EntityUid? targetStation)
+{
+    /// <summary>
+    /// The entity containing the NukeOps gamerule.
+    /// </summary>
+    public readonly EntityUid RuleEntity = ruleEntity;
+
+    /// <summary>
+    /// The target station, if it exists.
+    /// </summary>
+    public readonly EntityUid? TargetStation = targetStation;
 }

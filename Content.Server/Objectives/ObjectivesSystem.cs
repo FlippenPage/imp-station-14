@@ -12,10 +12,14 @@ using Robust.Shared.Random;
 using System.Linq;
 using System.Text;
 using Content.Server.Objectives.Commands;
+using Content.Shared.CCVar;
 using Content.Shared.Prototypes;
 using Content.Shared.Roles.Jobs;
 using Robust.Server.Player;
+using Robust.Shared.Configuration;
 using Robust.Shared.Utility;
+using Content.Shared.Humanoid; //imp addition
+using Content.Shared.Roles.Components; //imp addition
 
 namespace Content.Server.Objectives;
 
@@ -27,14 +31,19 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly EmergencyShuttleSystem _emergencyShuttle = default!;
     [Dependency] private readonly SharedJobSystem _job = default!;
+    [Dependency] private readonly IConfigurationManager _cfg = default!;
 
     private IEnumerable<string>? _objectives;
+
+    private bool _showGreentext;
 
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
+
+        Subs.CVar(_cfg, CCVars.GameShowGreentext, value => _showGreentext = value, true);
 
         _prototypeManager.PrototypesReloaded += CreateCompletions;
     }
@@ -129,6 +138,10 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
             if (!TryComp<MindComponent>(mindId, out var mind))
                 continue;
 
+            // Imp Edit traitor flavor end screen
+            if (mind.ObjectiveIssuer is { } issuer)
+                agent = Loc.GetString($"traitor-{issuer}-roundend");
+
             var title = GetTitle((mindId, mind), name);
             var custody = IsInCustody(mindId, mind) ? Loc.GetString("objectives-in-custody") : string.Empty;
 
@@ -138,6 +151,11 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
                 agentSummaries.Add((Loc.GetString("objectives-no-objectives", ("custody", custody), ("title", title), ("agent", agent)), 0f, 0));
                 continue;
             }
+
+            //imp edit - track which objectives are non-trivial so that you can't cheese a Wow!
+            var completedNonTrivial = 0;
+            var totalNontrivial = 0;
+            //imp edit end
 
             var completedObjectives = 0;
             var totalObjectives = 0;
@@ -160,30 +178,162 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
                     var objectiveTitle = info.Value.Title;
                     var progress = info.Value.Progress;
                     totalObjectives++;
+                    if (!info.Value.Trivial) //imp edit
+                        totalNontrivial++;
 
                     agentSummary.Append("- ");
-                    if (progress > 0.99f)
+                    if (!_showGreentext)
+                    {
+                        agentSummary.AppendLine(objectiveTitle);
+                    }
+                    else if (progress > 0.99f)
                     {
                         agentSummary.AppendLine(Loc.GetString(
                             "objectives-objective-success",
                             ("objective", objectiveTitle),
-                            ("markupColor", "green")
+                            ("progress", progress)
                         ));
                         completedObjectives++;
+                        if (!info.Value.Trivial) //imp edit
+                            completedNonTrivial++;
+                    }
+                    else if (progress <= 0.99f && progress >= 0.5f)
+                    {
+                        agentSummary.AppendLine(Loc.GetString(
+                            "objectives-objective-partial-success",
+                            ("objective", objectiveTitle),
+                            ("progress", progress)
+                        ));
+                    }
+                    else if (progress < 0.5f && progress > 0f)
+                    {
+                        agentSummary.AppendLine(Loc.GetString(
+                            "objectives-objective-partial-failure",
+                            ("objective", objectiveTitle),
+                            ("progress", progress)
+                        ));
                     }
                     else
                     {
                         agentSummary.AppendLine(Loc.GetString(
                             "objectives-objective-fail",
                             ("objective", objectiveTitle),
-                            ("progress", (int) (progress * 100)),
-                            ("markupColor", "red")
+                            ("progress", (int)(progress * 100)) // imp edit
                         ));
                     }
                 }
             }
 
-            var successRate = totalObjectives > 0 ? (float) completedObjectives / totalObjectives : 0f;
+            //imp edit start - list the amount of currency this person spent & what they bought
+            //if they bought nothing, check if they completed their objectives
+            //so many loops........
+
+            //these todos are future maybe fixes, not super necessary
+            //todo figure out a way to get the starting balance of a given antag
+            //todo figure out a way to fix the double-objective-summary thingimajig
+
+            //get the character's gender
+            var genderString = "epicene"; //default to they/them'ing people
+            if (TryComp<HumanoidAppearanceComponent>(GetEntity(mind.OriginalOwnedEntity!), out var appearance))
+            {
+                genderString = appearance.Gender.ToString().ToLowerInvariant();
+            }
+
+            var nonTrivialSuccessRate = totalNontrivial > 0 ? (float)completedNonTrivial / totalNontrivial : 0f;
+            foreach (var mindRole in mind.MindRoleContainer.ContainedEntities)
+            {
+                if (!TryComp<MindRoleComponent>(mindRole, out var roleComp)) //sanity checking
+                    continue;
+
+                if (roleComp.Purchases.Count > 0)
+                {
+                    var costs = new Dictionary<string, int>(); //the total costs
+                    var purchaseCounts = new Dictionary<string, int>(); //how many times a given thing was bought
+                    foreach (var purchase in roleComp.Purchases)
+                    {
+                        //get how much was spent
+                        foreach (var key in purchase.Item2.Keys)
+                        {
+                            var currencyName = _prototypeManager.Index(key).DisplayName;
+                            if (!costs.TryGetValue(currencyName, out var cost))
+                            {
+                                cost = 0;
+                            }
+
+                            costs[currencyName] = cost + purchase.Item2[key].Int();
+                        }
+
+                        //get the amount of times each entry was bought
+                        if (!purchaseCounts.TryGetValue(purchase.Item1, out var purchaseCount))
+                        {
+                            purchaseCount = 0;
+                        }
+
+                        purchaseCounts[purchase.Item1] = purchaseCount + 1;
+                    }
+
+                    var index = 0;
+                    agentSummary.Append(Loc.GetString("roundend-spend-summary-spent", ("gender", genderString)) + " ");
+                    //list totals spent
+                    //hardcoding english grammar into this probably isn't great but I don't think fluent can do lists?
+                    foreach (var costPair in costs) //technically can just get index 0 of the list because it should always have only 1 entry, but let's be safe
+                    {
+                        index++;
+                        //if this is the last entry, do a full stop.
+                        if (index == costs.Count)
+                        {
+                            agentSummary.AppendLine(costPair.Value + " " + Loc.GetString(costPair.Key) +
+                                                    "."); //appendLine as this is the last entry
+                            continue; //continue early for sanity
+                        }
+
+                        //if this is the second to last entry, use an & instead of a comma
+                        if (index == costs.Count)
+                        {
+                            agentSummary.Append(costPair.Value + " " + Loc.GetString(costPair.Key) + " & ");
+                            continue; // continue early for sanity
+                        }
+
+                        //finally, just do the entry with a comma
+
+                        agentSummary.Append(costPair.Value + " " + Loc.GetString(costPair.Key) + ", ");
+                    }
+
+                    index = 0; //reset index
+
+                    //list things bought
+                    agentSummary.Append(Loc.GetString("roundend-spend-summary-bought", ("gender", genderString)) + " ");
+                    foreach (var boughtThing in purchaseCounts)
+                    {
+                        index++;
+                        //if this is the last entry, do a full stop.
+                        if (index == purchaseCounts.Count)
+                        {
+                            agentSummary.AppendLine(boughtThing.Value + "x " + Loc.GetString(boughtThing.Key) + "."); //appendLine as this is the last entry
+                            continue; //continue early for sanity
+                        }
+
+                        //if this is the second to last entry, use an & instead of a comma
+                        if (index == purchaseCounts.Count - 1)
+                        {
+                            agentSummary.Append(boughtThing.Value + "x " + Loc.GetString(boughtThing.Key) + " & ");
+                            continue; // continue early for sanity
+                        }
+
+                        //finally, just do the entry with a comma
+                        agentSummary.Append(boughtThing.Value + "x " + Loc.GetString(boughtThing.Key) + ", ");
+                    }
+                }
+                else if (roleComp.GetsNoSpendtext)
+                {
+                    agentSummary.AppendLine(nonTrivialSuccessRate >= 0.5f
+                        ? Loc.GetString("roundend-spent-nothing-success")
+                        : Loc.GetString("roundend-spent-nothing-failure", ("gender", genderString)));
+                }
+            }
+            //imp edit end
+
+            var successRate = totalObjectives > 0 ? (float)completedObjectives / totalObjectives : 0f;
             agentSummaries.Add((agentSummary.ToString(), successRate, completedObjectives));
         }
 
@@ -218,8 +368,10 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
             var objectives = group.Weights.ShallowClone();
             while (_random.TryPickAndTake(objectives, out var objectiveProto))
             {
-                if (TryCreateObjective((mindId, mind), objectiveProto, out var objective)
-                    && Comp<ObjectiveComponent>(objective.Value).Difficulty <= maxDifficulty)
+                if (!_prototypeManager.Index(objectiveProto).TryGetComponent<ObjectiveComponent>(out var objectiveComp, EntityManager.ComponentFactory))
+                    continue;
+
+                if (objectiveComp.Difficulty <= maxDifficulty && TryCreateObjective((mindId, mind), objectiveProto, out var objective))
                     return objective;
             }
         }

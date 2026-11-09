@@ -9,12 +9,27 @@
   access:
   - Service
   - Maintenance
+  - Reporter #Imp
 
 - type: startingGear
   id: ReporterGear
   equipment:
     id: ReporterPDA
     ears: ClothingHeadsetService
-  #storage:
-    #back:
-    #- Stuff
+    pocket1: HandLabeler # for labeling cassette tapes
+  storage: # Delta-V: reporters start with tape recorder equipment
+    back:
+    - TapeRecorder
+    - CassetteTape
+    - CassetteTape
+
+- type: chameleonOutfit
+  id: ReporterChameleonOutfit
+  job: Reporter
+  equipment:
+    head: ClothingHeadHatFedoraGrey
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskBreath
+    outerClothing: ClothingOuterCoatTrench
+    neck: ClothingNeckTieRed
+    gloves: ClothingHandsGlovesFingerless

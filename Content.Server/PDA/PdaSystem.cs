@@ -2,27 +2,28 @@ using Content.Server.Access.Systems;
 using Content.Server.AlertLevel;
 using Content.Server.CartridgeLoader;
 using Content.Server.Chat.Managers;
-using Content.Server.DeviceNetwork.Components;
 using Content.Server.Instruments;
-using Content.Server.Light.EntitySystems;
 using Content.Server.PDA.Ringer;
 using Content.Server.Station.Systems;
-using Content.Server.Store.Components;
 using Content.Server.Store.Systems;
 using Content.Server.Traitor.Uplink;
 using Content.Shared.Access.Components;
 using Content.Shared.CartridgeLoader;
 using Content.Shared.Chat;
+using Content.Shared.DeviceNetwork.Components;
+using Content.Shared.Implants;
+using Content.Shared.Inventory;
 using Content.Shared.Light;
-using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
 using Content.Shared.PDA;
-using Content.Shared.Store.Components;
+using Content.Shared.PDA.Ringer;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
+using Content.Shared.Silicons.Borgs.Components; // Impstation
+using Content.Shared.Silicons.StationAi; // Impstation
 
 namespace Content.Server.PDA
 {
@@ -37,8 +38,7 @@ namespace Content.Server.PDA
         [Dependency] private readonly UserInterfaceSystem _ui = default!;
         [Dependency] private readonly UnpoweredFlashlightSystem _unpoweredFlashlight = default!;
         [Dependency] private readonly ContainerSystem _containerSystem = default!;
-        [Dependency] private readonly IdCardSystem _idCardSystem = default!;
-
+        [Dependency] private readonly IdCardSystem _idCard = default!;
         public override void Initialize()
         {
             base.Initialize();
@@ -59,6 +59,14 @@ namespace Content.Server.PDA
             SubscribeLocalEvent<StationRenamedEvent>(OnStationRenamed);
             SubscribeLocalEvent<EntityRenamedEvent>(OnEntityRenamed, after: new[] { typeof(IdCardSystem) });
             SubscribeLocalEvent<AlertLevelChangedEvent>(OnAlertLevelChanged);
+            SubscribeLocalEvent<PdaComponent, InventoryRelayedEvent<ChameleonControllerOutfitSelectedEvent>>(ChameleonControllerOutfitItemSelected);
+        }
+
+        private void ChameleonControllerOutfitItemSelected(Entity<PdaComponent> ent, ref InventoryRelayedEvent<ChameleonControllerOutfitSelectedEvent> args)
+        {
+            // Relay it to your ID so it can update as well.
+            if (ent.Comp.ContainedId != null)
+                RaiseLocalEvent(ent.Comp.ContainedId.Value, args);
         }
 
         private void OnEntityRenamed(ref EntityRenamedEvent ev)
@@ -66,7 +74,7 @@ namespace Content.Server.PDA
             if (HasComp<IdCardComponent>(ev.Uid))
                 return;
 
-            if (_idCardSystem.TryFindIdCard(ev.Uid, out var idCard))
+            if (_idCard.TryFindIdCard(ev.Uid, out var idCard))
             {
                 var query = EntityQueryEnumerator<PdaComponent>();
 
@@ -149,9 +157,12 @@ namespace Content.Server.PDA
         {
             _ringer.RingerPlayRingtone(ent.Owner);
 
-            if (!_containerSystem.TryGetContainingContainer((ent, null, null), out var container)
-                || !TryComp<ActorComponent>(container.Owner, out var actor))
+            // Begin Impstation - PDAs can be self-viewed
+            if (!(TryComp<ActorComponent>(ent, out var actor) ||
+                _containerSystem.TryGetContainingContainer((ent, null, null), out var container)
+                && TryComp<ActorComponent>(container.Owner, out actor)))
                 return;
+            // End Impstation - PDAs can be self-viewed
 
             var message = FormattedMessage.EscapeText(args.Message);
             var wrappedMessage = Loc.GetString("pda-notification-message",
@@ -170,7 +181,7 @@ namespace Content.Server.PDA
         /// <summary>
         /// Send new UI state to clients, call if you modify something like uplink.
         /// </summary>
-        public void UpdatePdaUi(EntityUid uid, PdaComponent? pda = null)
+        public override void UpdatePdaUi(EntityUid uid, PdaComponent? pda = null)
         {
             if (!Resolve(uid, ref pda, false))
                 return;
@@ -193,6 +204,24 @@ namespace Content.Server.PDA
 
             var programs = _cartridgeLoader.GetAvailablePrograms(uid, loader);
             var id = CompOrNull<IdCardComponent>(pda.ContainedId);
+            // Begin Impstation - PDAs can be silicons
+            var owner = id?.FullName;
+            var job = id?.LocalizedJobTitle;
+            if (HasComp<BorgChassisComponent>(uid))
+            {
+                if (TryComp<BorgSwitchableTypeComponent>(uid, out var switchable) && switchable.SelectedBorgType is { } borgType)
+                    job = Loc.GetString($"borg-type-{borgType}-transponder");
+                else
+                    job = Loc.GetString("borg-type-any-transponder");
+
+                owner = MetaData(uid).EntityName;
+            }
+            if (HasComp<StationAiHeldComponent>(uid))
+            {
+                job = Loc.GetString($"station-ai-transponder");
+                owner = MetaData(uid).EntityName;
+            }
+            // End Impstation - PDAs can be silicons
             var state = new PdaUpdateState(
                 programs,
                 GetNetEntity(loader.ActiveProgram),
@@ -202,8 +231,8 @@ namespace Content.Server.PDA
                 new PdaIdInfoText
                 {
                     ActualOwnerName = pda.OwnerName,
-                    IdOwner = id?.FullName,
-                    JobTitle = id?.LocalizedJobTitle,
+                    IdOwner = owner, // Impstation id.fullname -> owner
+                    JobTitle = job, // Impstation id.localizedjobtitle -> job
                     StationAlertLevel = pda.StationAlertLevel,
                     StationAlertColor = pda.StationAlertColor
                 },
@@ -247,7 +276,7 @@ namespace Content.Server.PDA
                 return;
 
             if (HasComp<RingerComponent>(uid))
-                _ringer.ToggleRingerUI(uid, msg.Actor);
+                _ringer.TryToggleRingerUi(uid, msg.Actor);
         }
 
         private void OnUiMessage(EntityUid uid, PdaComponent pda, PdaShowMusicMessage msg)
@@ -276,7 +305,7 @@ namespace Content.Server.PDA
 
             if (TryComp<RingerUplinkComponent>(uid, out var uplink))
             {
-                _ringer.LockUplink(uid, uplink);
+                _ringer.LockUplink((uid, uplink));
                 UpdatePdaUi(uid, pda);
             }
         }

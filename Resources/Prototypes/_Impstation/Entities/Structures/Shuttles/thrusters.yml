@@ -93,7 +93,7 @@
           sound:
             collection: MetalBreak
   - type: Sprite
-    sprite: Structures/Shuttles/retro_thruster.rsi
+    sprite: _Impstation/Structures/Shuttles/retro_thruster.rsi
     layers:
     - state: base
       map: ["enum.ThrusterVisualLayers.Base"]
@@ -130,7 +130,7 @@
           sound:
             collection: MetalBreak
   - type: Sprite
-    sprite: Structures/Shuttles/retro_thruster.rsi
+    sprite: _Impstation/Structures/Shuttles/retro_thruster.rsi
     layers:
     - state: left
       map: ["enum.ThrusterVisualLayers.Base"]
@@ -167,7 +167,7 @@
           sound:
             collection: MetalBreak
   - type: Sprite
-    sprite: Structures/Shuttles/retro_thruster.rsi
+    sprite: _Impstation/Structures/Shuttles/retro_thruster.rsi
     layers:
     - state: right
       map: ["enum.ThrusterVisualLayers.Base"]

@@ -6,5 +6,5 @@
     - type: PowerSupplier
       supplyRate: 15000
     - type: Sprite
-      sprite: Structures/Power/power.rsi
+      sprite: _Impstation/Structures/Power/power.rsi
       state: retro_generator

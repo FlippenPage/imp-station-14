@@ -10,14 +10,14 @@
   components:
   - type: Sprite
     drawdepth: Walls
-    sprite: Structures/Walls/retro_shuttle_diagonal.rsi
+    sprite: _Impstation/Structures/Walls/retro_shuttle_diagonal.rsi
     state: state0
   - type: IconSmooth
     mode: Diagonal
     key: walls
     base: state
   - type: Icon
-    sprite: Structures/Walls/retro_shuttle_diagonal.rsi
+    sprite: _Impstation/Structures/Walls/retro_shuttle_diagonal.rsi
     state: state0
 
 - type: entity
@@ -26,10 +26,10 @@
   name: retro shuttle wall
   components:
   - type: Sprite
-    sprite: Structures/Walls/retro_shuttle.rsi
+    sprite: _Impstation/Structures/Walls/retro_shuttle.rsi
     state: white
   - type: Icon
-    sprite: Structures/Walls/retro_shuttle.rsi
+    sprite: _Impstation/Structures/Walls/retro_shuttle.rsi
     state: white
   - type: Destructible
     thresholds:
@@ -46,10 +46,10 @@
   name: retro orange shuttle wall
   components:
   - type: Sprite
-    sprite: Structures/Walls/retro_shuttle.rsi
+    sprite: _Impstation/Structures/Walls/retro_shuttle.rsi
     state: orange
   - type: Icon
-    sprite: Structures/Walls/retro_shuttle.rsi
+    sprite: _Impstation/Structures/Walls/retro_shuttle.rsi
     state: orange
   - type: Destructible
     thresholds:

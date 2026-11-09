@@ -5,6 +5,7 @@
   description: Used to pilot a shuttle.
   components:
   - type: Sprite
+    sprite: _Impstation/Structures/Machines/computers.rsi
     layers:
     - map: ["computerLayerBody"]
       state: retro_computer

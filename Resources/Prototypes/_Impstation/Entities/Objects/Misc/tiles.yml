@@ -4,6 +4,7 @@
   id: FloorTileItemRetroSteel
   components:
   - type: Sprite
+    sprite: _Impstation/Objects/Tiles/tile.rsi
     state: retrosteel
   - type: Item
     heldPrefix: retrosteel
@@ -20,6 +21,7 @@
   id: FloorTileItemRetroWhiteSteel
   components:
   - type: Sprite
+    sprite: _Impstation/Objects/Tiles/tile.rsi
     state: retrowhitesteel
   - type: Item
     heldPrefix: retrowhitesteel
@@ -36,6 +38,7 @@
   id: FloorTileItemRetroShinySteel
   components:
   - type: Sprite
+    sprite: _Impstation/Objects/Tiles/tile.rsi
     state: retroshinysteel
   - type: Item
     heldPrefix: retroshinysteel

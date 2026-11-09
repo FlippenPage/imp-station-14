@@ -6,4 +6,4 @@
   description: Necessary for connecting two space craft together.
   components:
   - type: Sprite
-    sprite: Structures/Doors/Airlocks/Standard/shuttle_retro.rsi
+    sprite: _Impstation/Structures/Doors/Airlocks/Standard/shuttle_retro.rsi

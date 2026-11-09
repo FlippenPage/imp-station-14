@@ -139,7 +139,7 @@
       shader: unshaded
   - type: HitscanBatteryAmmoProvider
     proto: RedMediumLaser
-    fireCost: 200
+    fireCost: 62.5
   - type: MagazineVisuals
     magState: mag
     steps: 5

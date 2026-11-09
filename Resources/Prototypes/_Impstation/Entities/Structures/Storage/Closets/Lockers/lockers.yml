@@ -1,0 +1,11 @@
+# Retro
+- type: entity
+  id: RetroLockerSteel
+  parent: RetroLockerBaseSecure
+  name: retro secure closet
+  components:
+  - type: Appearance
+  - type: EntityStorageVisuals
+    stateBaseClosed: retro
+    stateDoorOpen: retro_open
+    stateDoorClosed: retro_door

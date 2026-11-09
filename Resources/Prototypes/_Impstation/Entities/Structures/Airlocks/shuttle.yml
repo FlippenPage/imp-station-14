@@ -1,0 +1,9 @@
+- type: entity
+  parent: AirlockShuttle
+  id: AirlockShuttleRetro
+  suffix: Docking
+  name: retro external airlock
+  description: Necessary for connecting two space craft together.
+  components:
+  - type: Sprite
+    sprite: Structures/Doors/Airlocks/Standard/shuttle_retro.rsi

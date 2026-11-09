@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from OpenSS13",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "retro_black"
+    },
+    {
+      "name": "retro_black-1"
+    },
+    {
+      "name": "retro_blue"
+    },
+    {
+      "name": "retro_blue-1"
+    },
+    {
+      "name": "retro_red"
+    },
+    {
+      "name": "retro_red-1"
+    },
+    {
+      "name": "retro_can-o1"
+    },
+    {
+      "name": "retro_can-o2"
+    },
+    {
+      "name": "retro_can-o3"
+    }
+  ]
+}

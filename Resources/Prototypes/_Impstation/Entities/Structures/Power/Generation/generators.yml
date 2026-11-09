@@ -1,0 +1,10 @@
+- type: entity
+  parent: BaseGenerator
+  id: RetroGeneratorBasic15kW
+  suffix: Basic, 15kW
+  components:
+    - type: PowerSupplier
+      supplyRate: 15000
+    - type: Sprite
+      sprite: Structures/Power/power.rsi
+      state: retro_generator

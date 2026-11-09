@@ -1,0 +1,7 @@
+- type: entity
+  name: retro chair
+  id: ChairRetro
+  parent: Chair
+  components:
+  - type: Sprite
+    state: retro-chair

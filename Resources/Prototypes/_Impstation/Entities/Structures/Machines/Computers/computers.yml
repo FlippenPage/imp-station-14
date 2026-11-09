@@ -1,0 +1,14 @@
+- type: entity
+  parent: BaseComputerShuttle
+  id: RetroComputerShuttle
+  name: retro shuttle console
+  description: Used to pilot a shuttle.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: retro_computer
+    - map: ["computerLayerScreen"]
+      state: retro_shuttle
+  - type: Computer
+    board: ShuttleConsoleCircuitboard

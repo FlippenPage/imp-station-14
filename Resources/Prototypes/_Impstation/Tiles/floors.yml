@@ -515,7 +515,7 @@
 - type: tile
   id: FloorRetroSteel
   name: tiles-steel-retro-floor
-  sprite: /Textures/Tiles/retrosteel.png
+  sprite: /Textures/_Impstation/Tiles/retrosteel.png
   baseTurf: Plating
   isSubfloor: false
   deconstructTools: [ Prying ]
@@ -527,7 +527,7 @@
 - type: tile
   id: FloorRetroShinySteel
   name: tiles-steel-shiny-retro-floor
-  sprite: /Textures/Tiles/retroshinysteel.png
+  sprite: /Textures/_Impstation/Tiles/retroshinysteel.png
   baseTurf: Plating
   isSubfloor: false
   deconstructTools: [ Prying ]
@@ -539,7 +539,7 @@
 - type: tile
   id: FloorRetroWhiteSteel
   name: tiles-steel-white-retro-floor
-  sprite: /Textures/Tiles/retrowhitesteel.png
+  sprite: /Textures/_Impstation/Tiles/retrowhitesteel.png
   baseTurf: Plating
   isSubfloor: false
   deconstructTools: [ Prying ]
